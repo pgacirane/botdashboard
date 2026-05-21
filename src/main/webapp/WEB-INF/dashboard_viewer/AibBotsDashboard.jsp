@@ -600,7 +600,7 @@
         <div>
           <span class="bot-field">EdTech &middot; Career Advisory &middot; Education</span>
           <h2 class="bot-name">Smart Grad</h2>
-          <p class="bot-desc">Agentic university scouting, financial roadmapping, visa navigation and cultural landing — built for any students pursuing global education.</p>
+          <p class="bot-desc">Agentic university scouting, financial roadmapping, visaa navigation and cultural landing — built for any students pursuing global education.</p>
           <p class="bot-scale">Scalable &rarr; Global Student Advisory Platform</p>
         </div>
         <div class="bot-footer">
