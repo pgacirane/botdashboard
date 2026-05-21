@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+
+    <!-- ══════════════════════════════════════════════════════
+         FILTERS
+         Each filter class is declared once here.
+         ══════════════════════════════════════════════════════ -->
+    <filter>
+        <filter-name>home_dashboard</filter-name>
+        <filter-class>templates.AiBotsDashboardTemplate</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>BotViewerFilter</filter-name>
+        <filter-class>templates.BotViewerTemplate</filter-class>
+    </filter>
+
+
+    <!-- ══════════════════════════════════════════════════════
+         FILTER MAPPINGS
+         Each url-pattern here MUST have a matching servlet
+         url-pattern below, otherwise the chain finds nothing.
+
+         FIX 1: Removed /arch from BotViewerFilter mapping.
+           - /arch is served directly by LoadArchitectureDiagram
+             (standalone access, no template wrapper needed).
+           - /arch-diagram is also served directly and is used
+             as the iframe src by BotViewerTemplate — it must
+             NOT be intercepted by the filter or it would be
+             double-wrapped.
+           - Template wrapping happens via /BotViewer?bot=arch
+             which IS covered by the /BotViewer mapping below.
+         ══════════════════════════════════════════════════════ -->
+    <filter-mapping>
+        <filter-name>home_dashboard</filter-name>
+        <url-pattern>/AiBotsDashboard</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>BotViewerFilter</filter-name>
+        <url-pattern>/BotViewer</url-pattern>
+        <!-- FIX 1: /arch removed — see note above -->
+    </filter-mapping>
+
+
+    <!-- ══════════════════════════════════════════════════════
+         SERVLETS
+         Declare servlet name → implementation here.
+
+         FIX 2 + 4: LoadArchitectureDiagram removed from
+         web.xml entirely.
+           - It uses @WebServlet(urlPatterns={"/arch","/arch-diagram"})
+             in the Java file — that is sufficient.
+           - Declaring it BOTH in @WebServlet AND in web.xml
+             causes double-registration and a deployment error.
+           - Rule: use @WebServlet annotation OR web.xml, not both.
+
+         FIX 3: The wrong url-pattern /LoadArchitectureDiagram
+         is also gone — /arch and /arch-diagram are handled by
+         the @WebServlet annotation in the Java class.
+         ══════════════════════════════════════════════════════ -->
+    <servlet>
+        <servlet-name>AiBotsDashboard</servlet-name>
+        <jsp-file>/WEB-INF/dashboard_viewer/AibBotsDashboard.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>BotViewerServlet</servlet-name>
+        <jsp-file>/WEB-INF/bot_viewer/Botviewer.jsp</jsp-file>
+    </servlet>
+
+    <!--
+        LoadArchitectureDiagram is NOT declared here.
+        It registers itself via @WebServlet in LoadArchitectureDiagram.java:
+
+            @WebServlet(name = "LoadArchitectureDiagram",
+                        urlPatterns = {"/arch", "/arch-diagram"})
+
+        That gives you:
+          GET /arch          → standalone architecture page
+          GET /arch-diagram  → iframe content used by BotViewerTemplate
+    -->
+
+
+    <!-- ══════════════════════════════════════════════════════
+         SERVLET MAPPINGS
+         FIX 4: <servlet> blocks are no longer mixed in here.
+         All <servlet> declarations are in the section above.
+         ══════════════════════════════════════════════════════ -->
+    <servlet-mapping>
+        <servlet-name>AiBotsDashboard</servlet-name>
+        <url-pattern>/AiBotsDashboard</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>BotViewerServlet</servlet-name>
+        <url-pattern>/BotViewer</url-pattern>
+    </servlet-mapping>
+
+    <!--
+        No mapping needed for LoadArchitectureDiagram here —
+        @WebServlet handles /arch and /arch-diagram directly.
+    -->
+
+
+    <!-- ══════════════════════════════════════════════════════
+         SESSION
+         ══════════════════════════════════════════════════════ -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>

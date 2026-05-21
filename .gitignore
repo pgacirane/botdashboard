@@ -1,0 +1,19 @@
+# Build output
+target/
+
+# Compiled files
+*.class
+*.war
+
+# NetBeans project files
+nb-configuration.xml
+nbactions.xml
+.nb-gradle/
+
+# Environment / secrets - NEVER commit these
+.env
+**/.env
+*.env
+
+# NetBeans boilerplate auto-generated files
+src/main/java/com/mycompany/
