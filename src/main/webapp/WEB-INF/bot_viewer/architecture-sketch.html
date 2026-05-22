@@ -221,6 +221,10 @@
     .ib .sub2 { font-size: 8.5px; font-weight: 400; text-transform: none; opacity: .85; }
     .ib-sql    { border: 2.5px dashed #C47F00; background: #FFF0CC; color: #4A2800; box-shadow: 2px 2px 0 #C47F00; }
     .ib-serper { border: 2.5px dashed #C43030; background: #FDEAEA; color: #5A1010; box-shadow: 2px 2px 0 #C43030; }
+    /* Stacked cell — for columns with TWO tools/stores */
+    .stack-cell { display: flex; flex-direction: column; gap: 8px; width: 143px; align-items: stretch; }
+    .stack-cell .sb,
+    .stack-cell .sql-box { width: 100%; }
     .notes { display: flex; gap: 10px; margin-top: 18px; padding-top: 14px;
       border-top: 2.5px dashed #bbb; flex-wrap: wrap; justify-content: space-between; }
     .note { display: flex; align-items: flex-start; gap: 8px; font-size: 10px;
@@ -350,7 +354,11 @@
                 <span class="lbl">Serper Tool</span>
                 <span class="sub">Live web search</span>
               </div>
-              <div class="sb c3"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">Bank Tariffs</span></div>
+              <!-- Bank CRM uses BOTH Customer Charter AND Bank Tariffs MCP RAG servers -->
+              <div class="stack-cell">
+                <div class="sb c3"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">Customer Charter</span></div>
+                <div class="sb c3"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">Bank Tariffs</span></div>
+              </div>
               <div class="sb c4"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">HIV Guidelines PDF</span></div>
               <div class="sb c5"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">My CV Docs</span></div>
             </div>
@@ -370,11 +378,15 @@
             <div class="cols" style="align-items:center">
               <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
               <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
-              <div class="sql-box">
-                <span class="sql-badge">SQL · Relational</span>
-                <i class="ti ti-table"></i>
-                <span class="lbl">CRM Relational DB</span>
-                <span class="sub">Neon PostgreSQL · 14 tables</span>
+              <!-- Bank CRM has SQL relational DB + Chroma Vector DB for Charter -->
+              <div class="stack-cell">
+                <div class="sql-box">
+                  <span class="sql-badge">SQL · Relational</span>
+                  <i class="ti ti-table"></i>
+                  <span class="lbl">CRM Relational DB</span>
+                  <span class="sub">Neon PostgreSQL · 14 tables</span>
+                </div>
+                <div class="sb c3"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">Charter PDF Chunks</span></div>
               </div>
               <div class="sb c4"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">HIV PDF Chunks</span></div>
               <div class="sb c5"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">CV PDF Chunks</span></div>
