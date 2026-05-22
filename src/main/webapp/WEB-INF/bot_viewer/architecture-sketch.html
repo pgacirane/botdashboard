@@ -1,18 +1,13 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% String ctx = request.getContextPath(); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Platform Architecture — AIoniser AI Suite</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
-
   <style>
-    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
@@ -32,7 +27,8 @@
       flex-shrink: 0;
       background: rgba(13,17,23,0.97);
       border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 20px; height: 52px;
+      padding: 0 20px;
+      height: 52px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
       z-index: 10;
     }
@@ -48,22 +44,21 @@
     }
     @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
     .subtitle { font-size: 0.74rem; color: #6b7a99; font-weight: 300; }
-
     .toolbar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .tb-btn {
       height: 34px; min-width: 34px; padding: 0 10px;
       border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.05); color: #c9d1e0;
       font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
-      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
       user-select: none; transition: background .16s, border-color .16s, color .16s;
       white-space: nowrap;
     }
-    .tb-btn:hover  { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: #f0f4ff; }
+    .tb-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: #f0f4ff; }
     .tb-btn:active { transform: scale(0.94); }
-    .tb-btn.large  { font-size: 18px; font-weight: 300; padding: 0; width: 34px; }
-    .tb-btn.green  { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); color: #4ade80; }
+    .tb-btn.large { font-size: 18px; font-weight: 300; padding: 0; width: 34px; }
+    .tb-btn.green { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); color: #4ade80; }
     .tb-btn.green:hover { background: rgba(74,222,128,0.16); border-color: rgba(74,222,128,0.5); }
     .z-pct {
       font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
@@ -91,9 +86,7 @@
 
     /* ── Viewport ── */
     .viewport {
-      flex: 1;
-      overflow: auto;
-      position: relative;
+      flex: 1; overflow: auto; position: relative;
       background-image:
         radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
         radial-gradient(ellipse 70% 50% at 10% 10%, rgba(74,222,128,0.03) 0%, transparent 55%);
@@ -101,19 +94,13 @@
       background-color: #0d1117;
     }
 
-    /*
-     * img-wrap — JS controls its width/height to exactly match
-     * the scaled diagram size so scrollbars behave correctly.
-     * The diagram margin is set by JS to keep it centered.
-     */
+    /* Outer wrapper — sized by JS to match scaled content so scrollbars work */
     .img-wrap {
       position: relative;
-      /* start at full viewport so diagram is centerable before JS runs */
-      min-width: 100%;
-      min-height: 100%;
+      padding: 20px;
     }
 
-    /* ── Fixed corner badges ── */
+    /* ── Corner badges ── */
     .badge-zoom {
       position: fixed; bottom: 20px; right: 20px;
       background: rgba(13,17,23,0.9); border: 1px solid rgba(255,255,255,0.09);
@@ -132,7 +119,6 @@
       opacity: 0; transition: opacity .3s;
     }
     .badge-scroll.visible { opacity: 1; }
-
     .corner-btns {
       position: fixed; bottom: 56px; left: 20px;
       display: flex; gap: 8px; z-index: 20;
@@ -147,147 +133,107 @@
     .corner-btn:hover { color: #4ade80; border-color: rgba(74,222,128,0.4); }
     .corner-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* ═══════════════════════════════════════════════════
-       SKETCH DIAGRAM
-    ═══════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════
+       SKETCH DIAGRAM STYLES
+    ════════════════════════════════════════ */
     .root {
       background: #FFFEF2;
       padding: 20px 16px 16px;
       font-family: 'Sora', 'Segoe UI', sans-serif;
-      display: inline-block;        /* shrink-wrap to content         */
-      position: absolute;           /* JS positions it with margin    */
-      transform-origin: top left;   /* JS scales from top-left corner */
+      display: inline-block; /* shrink-wrap to content width */
+      transform-origin: top left;
       border-radius: 8px;
       box-shadow: 0 4px 32px rgba(0,0,0,0.5);
       cursor: default;
     }
-
-    /* Title */
-    .d-ttl { text-align: center; margin-bottom: 18px; }
-    .d-ttl h1 { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #111; line-height: 1.2; }
-    .d-ttl h1 i { vertical-align: middle; margin-right: 6px; font-size: 26px; }
-    .d-ttl p { font-size: 12px; color: #555; margin-top: 5px; font-style: italic; letter-spacing: .5px; }
-
-    /* Legend */
-    .d-legend { display: flex; gap: 12px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
-    .d-leg-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; color: #555; }
-    .d-leg-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
-    .d-leg-dot.serper { border: 2px dashed #C43030; background: #FDEAEA; }
-    .d-leg-dot.sql    { border: 2px dashed #C47F00; background: #FFF0CC; }
-    .d-leg-dot.vec    { border: 2px solid #555;     background: #DDD9FC; }
-    .d-leg-dot.none   { border: 2px dashed #ccc;    background: #F7F6F0; }
-
-    /* Layout */
-    .d-diag     { min-width: 820px; }
-    .d-hdr-wrap { display: flex; justify-content: center; padding-left: 108px; margin-bottom: 2px; }
-    .d-hdr {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: #101828; color: #fff;
+    .ttl { text-align: center; margin-bottom: 18px; }
+    .ttl h1 { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #111; line-height: 1.2; }
+    .ttl h1 i { vertical-align: middle; margin-right: 6px; font-size: 26px; }
+    .ttl p { font-size: 12px; color: #555; margin-top: 5px; font-style: italic; letter-spacing: .5px; }
+    .diag { min-width: 820px; }
+    .hdr-wrap { display: flex; justify-content: center; padding-left: 108px; margin-bottom: 2px; }
+    .hdr { display: inline-flex; align-items: center; gap: 10px; background: #101828; color: #fff;
       border: 2.5px solid #111; border-radius: 10px; box-shadow: 3px 3px 0 #111;
-      padding: 9px 22px; font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .d-hdr i { font-size: 20px; }
-    .d-hdr .d-sub { font-size: 10px; opacity: .6; font-weight: 400; text-transform: none; letter-spacing: 0; }
-
-    .d-arr-row { display: flex; gap: 10px; padding-left: 108px; margin: 3px 0; }
-    .d-arc     { width: 143px; text-align: center; font-size: 16px; color: #aaa; line-height: 1; }
-
-    .d-lrow { display: flex; align-items: stretch; gap: 10px; margin-bottom: 8px; }
-    .d-llbl {
-      width: 98px; min-width: 98px; color: #fff; padding: 8px 5px; border-radius: 8px;
+      padding: 9px 22px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .hdr i { font-size: 20px; }
+    .hdr span.sub { font-size: 10px; opacity: .6; font-weight: 400; text-transform: none; letter-spacing: 0; }
+    .arr-row { display: flex; gap: 10px; padding-left: 108px; margin: 3px 0; }
+    .arc { width: 143px; text-align: center; font-size: 16px; color: #aaa; line-height: 1; }
+    .lrow { display: flex; align-items: stretch; gap: 10px; margin-bottom: 8px; }
+    .llbl { width: 98px; min-width: 98px; color: #fff; padding: 8px 5px; border-radius: 8px;
       text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .4px; line-height: 1.4;
-      border: 2px solid #111; box-shadow: 2px 2px 0 #111;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    }
-    .d-llbl i { font-size: 17px; }
-    .d-cols   { display: flex; gap: 10px; }
-
-    .sb {
-      border: 2.5px solid #1a1a1a; border-radius: 8px; padding: 7px 5px; text-align: center;
+      letter-spacing: .4px; line-height: 1.4; border: 2px solid #111; box-shadow: 2px 2px 0 #111;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+    .llbl i { font-size: 17px; }
+    .cols { display: flex; gap: 10px; }
+    .sb { border: 2.5px solid #1a1a1a; border-radius: 8px; padding: 7px 5px; text-align: center;
       box-shadow: 3px 3px 0 rgba(0,0,0,.22); min-height: 62px; width: 143px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-      transition: transform .1s, box-shadow .1s; cursor: default;
-    }
+      transition: transform .1s, box-shadow .1s; cursor: default; }
     .sb:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 rgba(0,0,0,.28); }
-    .sb i   { font-size: 18px; }
+    .sb i { font-size: 18px; }
     .sb .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .sb .sub { font-size: 9px;  font-weight: 400; line-height: 1.2; opacity: .8; }
-
+    .sb .sub { font-size: 9px; font-weight: 400; line-height: 1.2; opacity: .8; }
     .c1 { background: #C8EDE0; color: #04342C; }
     .c2 { background: #F3C8DA; color: #4B1528; }
     .c3 { background: #FAE2BA; color: #412402; }
     .c4 { background: #D0EABC; color: #173404; }
     .c5 { background: #DDD9FC; color: #26215C; }
-
-    .serper-box {
-      background: #FDEAEA; color: #5A1010; border: 2.5px dashed #C43030;
+    .serper-box { background: #FDEAEA; color: #5A1010; border: 2.5px dashed #C43030;
       border-radius: 8px; padding: 7px 5px; text-align: center;
       box-shadow: 3px 3px 0 #C43030; min-height: 72px; width: 143px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-      transition: transform .1s, box-shadow .1s; cursor: default; position: relative;
-    }
+      transition: transform .1s, box-shadow .1s; cursor: default; position: relative; }
     .serper-box:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #C43030; }
-    .serper-box i   { font-size: 18px; color: #C43030; }
+    .serper-box i { font-size: 18px; color: #C43030; }
     .serper-box .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .serper-box .sub { font-size: 9px;  font-weight: 400; line-height: 1.2; opacity: .85; }
-    .serper-badge {
-      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    .serper-box .sub { font-size: 9px; font-weight: 400; line-height: 1.2; opacity: .85; }
+    .serper-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
       background: #C43030; color: #fff; font-size: 8px; font-weight: 700; letter-spacing: .5px;
-      padding: 2px 7px; border-radius: 20px; border: 1.5px solid #1a1a1a; white-space: nowrap;
-    }
-
-    .sql-box {
-      background: #FFF0CC; color: #4A2800; border: 2.5px dashed #C47F00;
+      padding: 2px 7px; border-radius: 20px; border: 1.5px solid #1a1a1a; white-space: nowrap; }
+    .sql-box { background: #FFF0CC; color: #4A2800; border: 2.5px dashed #C47F00;
       border-radius: 8px; padding: 7px 5px; text-align: center;
       box-shadow: 3px 3px 0 #C47F00; min-height: 72px; width: 143px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-      transition: transform .1s, box-shadow .1s; cursor: default; position: relative;
-    }
+      transition: transform .1s, box-shadow .1s; cursor: default; position: relative; }
     .sql-box:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #C47F00; }
-    .sql-box i   { font-size: 20px; color: #B36B00; }
+    .sql-box i { font-size: 20px; color: #B36B00; }
     .sql-box .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .sql-box .sub { font-size: 9px;  font-weight: 400; line-height: 1.2; opacity: .85; }
-    .sql-badge {
-      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    .sql-box .sub { font-size: 9px; font-weight: 400; line-height: 1.2; opacity: .85; }
+    .sql-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
       background: #C47F00; color: #fff; font-size: 8px; font-weight: 700; letter-spacing: .5px;
-      padding: 2px 7px; border-radius: 20px; border: 1.5px solid #1a1a1a; white-space: nowrap;
-    }
-
-    .no-db {
-      border: 2px dashed #ccc; border-radius: 8px; padding: 7px 5px; text-align: center;
+      padding: 2px 7px; border-radius: 20px; border: 1.5px solid #1a1a1a; white-space: nowrap; }
+    .no-db { border: 2px dashed #ccc; border-radius: 8px; padding: 7px 5px; text-align: center;
       background: #F7F6F0; color: #aaa; min-height: 62px; width: 143px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-    }
-    .no-db i    { font-size: 16px; }
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+    .no-db i { font-size: 16px; }
     .no-db .lbl { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
     .no-db .sub { font-size: 8.5px; font-weight: 400; line-height: 1.2; }
-
     .lp { background: #185FA5; } .la { background: #534AB7; } .lm { background: #BA7517; }
     .ld { background: #3B6D11; } .li { background: #8C2424; }
-
     .infra-wrap { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
-    .ib {
-      border: 2.5px solid #1a1a1a; border-radius: 8px; padding: 7px 9px; text-align: center;
-      box-shadow: 2px 2px 0 rgba(0,0,0,.18); font-size: 9.5px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .3px; line-height: 1.4; min-width: 92px;
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      cursor: default; transition: transform .1s;
-    }
-    .ib:hover  { transform: translate(-1px,-1px); }
-    .ib i      { font-size: 17px; }
-    .ib .sub2  { font-size: 8.5px; font-weight: 400; text-transform: none; opacity: .85; }
+    .ib { border: 2.5px solid #1a1a1a; border-radius: 8px; padding: 7px 9px; text-align: center;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.18); font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .3px; line-height: 1.4; min-width: 92px; display: flex; flex-direction: column;
+      align-items: center; gap: 4px; cursor: default; transition: transform .1s; }
+    .ib:hover { transform: translate(-1px,-1px); }
+    .ib i { font-size: 17px; }
+    .ib .sub2 { font-size: 8.5px; font-weight: 400; text-transform: none; opacity: .85; }
     .ib-sql    { border: 2.5px dashed #C47F00; background: #FFF0CC; color: #4A2800; box-shadow: 2px 2px 0 #C47F00; }
     .ib-serper { border: 2.5px dashed #C43030; background: #FDEAEA; color: #5A1010; box-shadow: 2px 2px 0 #C43030; }
-
-    .d-notes {
-      display: flex; gap: 10px; margin-top: 18px; padding-top: 14px;
-      border-top: 2.5px dashed #bbb; flex-wrap: wrap; justify-content: space-between;
-    }
-    .d-note { display: flex; align-items: flex-start; gap: 8px; font-size: 10px; color: #555; max-width: 185px; flex: 1; min-width: 140px; }
-    .d-note i      { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-    .d-note strong { color: #222; display: block; font-size: 10.5px; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+    .notes { display: flex; gap: 10px; margin-top: 18px; padding-top: 14px;
+      border-top: 2.5px dashed #bbb; flex-wrap: wrap; justify-content: space-between; }
+    .note { display: flex; align-items: flex-start; gap: 8px; font-size: 10px;
+      color: #555; max-width: 185px; flex: 1; min-width: 140px; }
+    .note i { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .note strong { color: #222; display: block; font-size: 10.5px; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+    .legend { display: flex; gap: 12px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .leg-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; color: #555; }
+    .leg-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+    .leg-dot.sql    { border: 2px dashed #C47F00; background: #FFF0CC; }
+    .leg-dot.vec    { border: 2px solid #555;     background: #DDD9FC; }
+    .leg-dot.serper { border: 2px dashed #C43030; background: #FDEAEA; }
+    .leg-dot.none   { border: 2px dashed #ccc;    background: #F7F6F0; }
   </style>
 </head>
 <body>
@@ -305,9 +251,8 @@
       <button class="tb-btn large" id="btnIn"  title="Zoom in (+)">+</button>
       <div class="sep"></div>
       <button class="tb-btn" id="btn50"  title="50%">50%</button>
-      <button class="tb-btn" id="btn100" title="100%">100%</button>
+      <button class="tb-btn" id="btn100" title="Actual size">100%</button>
       <button class="tb-btn" id="btn150" title="150%">150%</button>
-      <button class="tb-btn" id="btn200" title="200%">200%</button>
       <div class="sep"></div>
       <button class="tb-btn green" id="btnFit" title="Fit to window (F)">Fit</button>
     </div>
@@ -319,7 +264,7 @@
     <span class="hint"><span class="hk">Shift + Scroll</span> pan horizontally</span>
     <span class="hint"><span class="hk">Ctrl + Scroll</span> zoom</span>
     <span class="hint"><span class="hk">+</span><span class="hk">−</span> zoom</span>
-    <span class="hint"><span class="hk">F</span> fit</span>
+    <span class="hint"><span class="hk">F</span> fit to window</span>
     <span class="hint"><span class="hk">1</span> 100%</span>
     <span class="hint"><span class="hk">Pinch</span> mobile zoom</span>
   </div>
@@ -328,41 +273,39 @@
   <div class="viewport" id="vp">
     <div class="img-wrap" id="wrap">
 
-      <!-- ══════════════════════════════════════════
-           SKETCH DIAGRAM  — id="diagram" is the zoom target
-      ══════════════════════════════════════════ -->
+      <!-- ════ SKETCH DIAGRAM ════ -->
       <div class="root" id="diagram">
 
-        <div class="d-ttl">
+        <div class="ttl">
           <h1><i class="ti ti-robot"></i>AIoniser Suite</h1>
           <p>→ Multi-Layer · Multi-Agent · Multi-Domain Platform Architecture →</p>
         </div>
 
-        <div class="d-legend">
-          <div class="d-leg-item"><div class="d-leg-dot serper"></div><span>Serper Web Scraper Tool</span></div>
-          <div class="d-leg-item"><div class="d-leg-dot sql"></div><span>Relational SQL DB (Neon PostgreSQL)</span></div>
-          <div class="d-leg-item"><div class="d-leg-dot vec"></div><span>Vector DB (ChromaDB)</span></div>
-          <div class="d-leg-item"><div class="d-leg-dot none"></div><span>No dedicated data store</span></div>
+        <div class="legend">
+          <div class="leg-item"><div class="leg-dot serper"></div><span>Serper Web Scraper Tool</span></div>
+          <div class="leg-item"><div class="leg-dot sql"></div><span>Relational SQL DB (Neon PostgreSQL)</span></div>
+          <div class="leg-item"><div class="leg-dot vec"></div><span>Vector DB (ChromaDB)</span></div>
+          <div class="leg-item"><div class="leg-dot none"></div><span>No dedicated data store</span></div>
         </div>
 
-        <div class="d-diag">
+        <div class="diag">
 
-          <div class="d-hdr-wrap">
-            <div class="d-hdr">
+          <div class="hdr-wrap">
+            <div class="hdr">
               <i class="ti ti-layout-dashboard"></i>
               <span>AIoniser UI</span>
-              <span class="d-sub">Main Portal</span>
+              <span class="sub">Main Portal</span>
             </div>
           </div>
 
-          <div class="d-arr-row">
-            <div class="d-arc">↙</div><div class="d-arc">↙</div><div class="d-arc">↓</div><div class="d-arc">↘</div><div class="d-arc">↘</div>
+          <div class="arr-row">
+            <div class="arc">↙</div><div class="arc">↙</div><div class="arc">↓</div><div class="arc">↘</div><div class="arc">↘</div>
           </div>
 
           <!-- Presentation Layer -->
-          <div class="d-lrow">
-            <div class="d-llbl lp"><i class="ti ti-device-desktop"></i>Presen-<br>tation<br>Layer</div>
-            <div class="d-cols">
+          <div class="lrow">
+            <div class="llbl lp"><i class="ti ti-device-desktop"></i>Presen-<br>tation<br>Layer</div>
+            <div class="cols">
               <div class="sb c1"><i class="ti ti-school"></i><span class="lbl">Smart Grad UI</span><span class="sub">Academic Advisory</span></div>
               <div class="sb c2"><i class="ti ti-scale"></i><span class="lbl">Smart Attorney UI</span><span class="sub">Legal Advisory</span></div>
               <div class="sb c3"><i class="ti ti-building-bank"></i><span class="lbl">Bank CRM UI</span><span class="sub">CRM Advisory</span></div>
@@ -371,14 +314,14 @@
             </div>
           </div>
 
-          <div class="d-arr-row">
-            <div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div>
+          <div class="arr-row">
+            <div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div>
           </div>
 
           <!-- Agent Layer -->
-          <div class="d-lrow">
-            <div class="d-llbl la"><i class="ti ti-robot"></i>Agent /<br>Service<br>Layer</div>
-            <div class="d-cols">
+          <div class="lrow">
+            <div class="llbl la"><i class="ti ti-robot"></i>Agent /<br>Service<br>Layer</div>
+            <div class="cols">
               <div class="sb c1"><i class="ti ti-brain"></i><span class="lbl">Smart Grad Agents</span><span class="sub">CrewAI Pipeline</span></div>
               <div class="sb c2"><i class="ti ti-brain"></i><span class="lbl">Attorney Agents</span><span class="sub">CrewAI Pipeline</span></div>
               <div class="sb c3"><i class="ti ti-brain"></i><span class="lbl">Bank CRM Agents</span><span class="sub">9-Agent + MegaCrew</span></div>
@@ -387,14 +330,14 @@
             </div>
           </div>
 
-          <div class="d-arr-row">
-            <div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div>
+          <div class="arr-row">
+            <div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div>
           </div>
 
           <!-- Tool / Pipeline Layer -->
-          <div class="d-lrow" style="align-items:center">
-            <div class="d-llbl lm"><i class="ti ti-tools"></i>Tool /<br>Pipeline<br>Layer</div>
-            <div class="d-cols" style="align-items:center">
+          <div class="lrow" style="align-items:center">
+            <div class="llbl lm"><i class="ti ti-tools"></i>Tool /<br>Pipeline<br>Layer</div>
+            <div class="cols" style="align-items:center">
               <div class="serper-box">
                 <span class="serper-badge">Web Scraper</span>
                 <i class="ti ti-world-search"></i>
@@ -413,18 +356,18 @@
             </div>
           </div>
 
-          <div class="d-arr-row">
-            <div class="d-arc" style="color:#C43030">↓</div>
-            <div class="d-arc" style="color:#C43030">↓</div>
-            <div class="d-arc">↓</div>
-            <div class="d-arc">↓</div>
-            <div class="d-arc">↓</div>
+          <div class="arr-row">
+            <div class="arc" style="color:#C43030">↓</div>
+            <div class="arc" style="color:#C43030">↓</div>
+            <div class="arc">↓</div>
+            <div class="arc">↓</div>
+            <div class="arc">↓</div>
           </div>
 
           <!-- Data Storage Layer -->
-          <div class="d-lrow" style="align-items:center">
-            <div class="d-llbl ld"><i class="ti ti-database"></i>Data<br>Storage<br>Layer</div>
-            <div class="d-cols" style="align-items:center">
+          <div class="lrow" style="align-items:center">
+            <div class="llbl ld"><i class="ti ti-database"></i>Data<br>Storage<br>Layer</div>
+            <div class="cols" style="align-items:center">
               <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
               <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
               <div class="sql-box">
@@ -438,13 +381,13 @@
             </div>
           </div>
 
-          <div class="d-arr-row" style="margin-bottom:4px">
-            <div class="d-arc"></div><div class="d-arc"></div><div class="d-arc">↓</div><div class="d-arc"></div><div class="d-arc"></div>
+          <div class="arr-row" style="margin-bottom:4px">
+            <div class="arc"></div><div class="arc"></div><div class="arc">↓</div><div class="arc"></div><div class="arc"></div>
           </div>
 
           <!-- Infrastructure Lane -->
-          <div class="d-lrow" style="align-items:flex-start">
-            <div class="d-llbl li" style="margin-top:4px"><i class="ti ti-server"></i>Infra-<br>structure<br>Lane</div>
+          <div class="lrow" style="align-items:flex-start">
+            <div class="llbl li" style="margin-top:4px"><i class="ti ti-server"></i>Infra-<br>structure<br>Lane</div>
             <div class="infra-wrap">
               <div class="ib ib-serper"><i class="ti ti-world-search" style="color:#C43030"></i>Serper API<br><span class="sub2">Web Scraping</span></div>
               <div class="ib" style="background:#DCEEFF;color:#042C53"><i class="ti ti-brand-github"></i>GitHub Actions<br><span class="sub2">CI/CD Deploy</span></div>
@@ -456,21 +399,23 @@
           </div>
 
           <!-- Bottom takeaways -->
-          <div class="d-notes">
-            <div class="d-note"><i class="ti ti-star"></i><div><strong>5 Live Assistants</strong>Each independently deployed on HuggingFace Spaces.</div></div>
-            <div class="d-note"><i class="ti ti-target"></i><div><strong>RAG + Web + SQL</strong>Three data strategies — vector, relational &amp; live web search.</div></div>
-            <div class="d-note"><i class="ti ti-refresh"></i><div><strong>Re-evaluate &amp; Iterate</strong>V2 crew configs + hybrid routing improve accuracy over time.</div></div>
-            <div class="d-note"><i class="ti ti-mood-smile"></i><div><strong>Multi-Domain Coverage</strong>Law, health, banking, education &amp; recruitment — one platform.</div></div>
+          <div class="notes">
+            <div class="note"><i class="ti ti-star"></i><div><strong>5 Live Assistants</strong>Each independently deployed on HuggingFace Spaces.</div></div>
+            <div class="note"><i class="ti ti-target"></i><div><strong>RAG + Web + SQL</strong>Three data strategies — vector, relational &amp; live web search.</div></div>
+            <div class="note"><i class="ti ti-refresh"></i><div><strong>Re-evaluate &amp; Iterate</strong>V2 crew configs + hybrid routing improve accuracy over time.</div></div>
+            <div class="note"><i class="ti ti-mood-smile"></i><div><strong>Multi-Domain Coverage</strong>Law, health, banking, education &amp; recruitment — one platform.</div></div>
           </div>
 
-        </div><%-- end .d-diag --%>
-      </div><%-- end #diagram --%>
+        </div>
+      </div>
+      <!-- ════ END SKETCH DIAGRAM ════ -->
 
-    </div><%-- end .img-wrap --%>
-  </div><%-- end .viewport --%>
+    </div>
+  </div>
 
-</div><%-- end .shell --%>
+</div>
 
+<!-- Fixed corner UI -->
 <div class="badge-zoom"   id="zBadge">100%</div>
 <div class="badge-scroll" id="scrollBadge">↕ Scroll to explore</div>
 
@@ -485,109 +430,89 @@
 (function () {
   "use strict";
 
-  var STEP    = 0.15;
-  var MIN     = 0.10;
-  var MAX     = 4.0;
-  var PRESETS = [0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0];
-  var PAD     = 40;   /* breathing room around the diagram in px */
+  const STEP = 0.15;
+  const MIN  = 0.10;
+  const MAX  = 4.0;
+  const PRESETS = [0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0];
 
-  var scale    = 1;
-  var naturalW = 0;
-  var naturalH = 0;
+  let scale = 1;
+  let naturalW = 0;
+  let naturalH = 0;
 
-  var vp          = document.getElementById('vp');
-  var wrap        = document.getElementById('wrap');
-  var diagram     = document.getElementById('diagram');
-  var zPct        = document.getElementById('zPct');
-  var zBadge      = document.getElementById('zBadge');
-  var scrollBadge = document.getElementById('scrollBadge');
-  var btnFS       = document.getElementById('btnFS');
-  var fsExp       = document.getElementById('fsExp');
-  var fsColl      = document.getElementById('fsColl');
+  const vp          = document.getElementById('vp');
+  const wrap        = document.getElementById('wrap');
+  const diagram     = document.getElementById('diagram');
+  const zPct        = document.getElementById('zPct');
+  const zBadge      = document.getElementById('zBadge');
+  const scrollBadge = document.getElementById('scrollBadge');
+  const btnIn       = document.getElementById('btnIn');
+  const btnOut      = document.getElementById('btnOut');
+  const btn50       = document.getElementById('btn50');
+  const btn100      = document.getElementById('btn100');
+  const btn150      = document.getElementById('btn150');
+  const btnFit      = document.getElementById('btnFit');
+  const btnFS       = document.getElementById('btnFS');
+  const fsExp       = document.getElementById('fsExp');
+  const fsColl      = document.getElementById('fsColl');
 
   /* ── Measure natural size after fonts load ── */
   function init() {
+    diagram.style.transform = 'scale(1)';
     diagram.style.transformOrigin = 'top left';
-    diagram.style.transform       = 'scale(1)';
-    diagram.style.left            = '0';
-    diagram.style.top             = '0';
     naturalW = diagram.scrollWidth;
     naturalH = diagram.scrollHeight;
     fit();
   }
 
+  /* ══════════════════════════════════════
+     CORE ZOOM — uses CSS transform scale.
+     The wrapper is resized to match scaled
+     dimensions so scrollbars work correctly.
+  ══════════════════════════════════════ */
+  function applyScale(newScale) {
+    scale = Math.min(MAX, Math.max(MIN, newScale));
+
+    diagram.style.transform       = 'scale(' + scale + ')';
+    diagram.style.transformOrigin = 'top left';
+
+    /* Size the wrapper to the scaled content so overflow:auto scrollbars appear */
+    var pad = 40;
+    wrap.style.width  = (naturalW * scale + pad) + 'px';
+    wrap.style.height = (naturalH * scale + pad) + 'px';
+
+    /* Update labels */
+    var pct = Math.round(scale * 100) + '%';
+    zPct.textContent   = pct;
+    zBadge.textContent = pct;
+
+    /* Scroll badge */
+    var overflows = (naturalW * scale > vp.clientWidth) ||
+                    (naturalH * scale > vp.clientHeight);
+    scrollBadge.classList.toggle('visible', overflows);
+  }
+
+  /* Fit diagram to visible viewport */
+  function fit() {
+    var availW = vp.clientWidth  - 40;
+    var availH = vp.clientHeight - 40;
+    var s = Math.min(availW / naturalW, availH / naturalH, 1);
+    vp.scrollTo(0, 0);
+    applyScale(s);
+  }
+
+  /* ── Wait for fonts then init ── */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(init);
   } else {
     window.addEventListener('load', init);
   }
 
-  /* ════════════════════════════════════════════════════
-     CORE ZOOM  — CSS transform:scale() on #diagram.
-
-     Centering logic:
-       scaledW = naturalW * scale
-       scaledH = naturalH * scale
-
-       wrapW = max(vpW, scaledW + PAD*2)   ← scrollbar appears when scaledW > vpW
-       wrapH = max(vpH, scaledH + PAD*2)   ← scrollbar appears when scaledH > vpH
-
-       leftOffset = (wrapW - scaledW) / 2  ← centres diagram horizontally
-       topOffset  = (wrapH - scaledH) / 2  ← centres diagram vertically
-
-     diagram.style.left/top move the diagram inside the wrapper.
-     transform:scale() then scales it from that top-left position.
-  ════════════════════════════════════════════════════ */
-  function applyScale(newScale) {
-    scale = Math.min(MAX, Math.max(MIN, newScale));
-
-    var scaledW = naturalW * scale;
-    var scaledH = naturalH * scale;
-    var vpW     = vp.clientWidth;
-    var vpH     = vp.clientHeight;
-
-    /* Wrapper is at least the viewport size so centering works even at small scales */
-    var wrapW = Math.max(vpW, scaledW + PAD * 2);
-    var wrapH = Math.max(vpH, scaledH + PAD * 2);
-
-    wrap.style.width  = wrapW + 'px';
-    wrap.style.height = wrapH + 'px';
-
-    /* Center the diagram inside the wrapper */
-    var leftOffset = Math.floor((wrapW - scaledW) / 2);
-    var topOffset  = Math.floor((wrapH - scaledH) / 2);
-
-    diagram.style.left      = leftOffset + 'px';
-    diagram.style.top       = topOffset  + 'px';
-    diagram.style.transform = 'scale(' + scale + ')';
-
-    /* Update zoom labels */
-    var pct = Math.round(scale * 100) + '%';
-    zPct.textContent   = pct;
-    zBadge.textContent = pct;
-
-    /* Show scroll hint when content exceeds viewport */
-    var overflows = scaledW > vpW || scaledH > vpH;
-    scrollBadge.classList.toggle('visible', overflows);
-  }
-
-  /* Fit diagram inside visible viewport */
-  function fit() {
-    if (!naturalW || !naturalH) return;
-    var s = Math.min(
-      (vp.clientWidth  - PAD * 2) / naturalW,
-      (vp.clientHeight - PAD * 2) / naturalH,
-      1.0   /* never scale up beyond 100% on fit */
-    );
-    vp.scrollTo(0, 0);
-    applyScale(s);
-  }
-
-  /* ── Ctrl + Scroll = zoom ── */
+  /* ── Ctrl + Scroll = zoom; normal scroll = pan (browser default) ── */
   vp.addEventListener('wheel', function (e) {
     if (!e.ctrlKey && !e.metaKey) return;
     e.preventDefault();
-    applyScale(scale + (e.deltaY > 0 ? -0.08 : 0.08));
+    var delta = e.deltaY > 0 ? -0.08 : 0.08;
+    applyScale(scale + delta);
   }, { passive: false });
 
   /* ── Pinch to zoom (touch) ── */
@@ -611,29 +536,28 @@
     lastPinchDist = d;
   }, { passive: false });
 
-  /* ── Toolbar buttons ── */
-  document.getElementById('btnIn') .addEventListener('click', function () { applyScale(scale + STEP); });
-  document.getElementById('btnOut').addEventListener('click', function () { applyScale(scale - STEP); });
-  document.getElementById('btn50') .addEventListener('click', function () { applyScale(0.50); });
-  document.getElementById('btn100').addEventListener('click', function () { applyScale(1.00); });
-  document.getElementById('btn150').addEventListener('click', function () { applyScale(1.50); });
-  document.getElementById('btn200').addEventListener('click', function () { applyScale(2.00); });
-  document.getElementById('btnFit').addEventListener('click', fit);
+  /* ── Button controls ── */
+  btnIn .addEventListener('click', function () { applyScale(scale + STEP); });
+  btnOut.addEventListener('click', function () { applyScale(scale - STEP); });
+  btn50 .addEventListener('click', function () { applyScale(0.5); });
+  btn100.addEventListener('click', function () { applyScale(1.0); });
+  btn150.addEventListener('click', function () { applyScale(1.5); });
+  btnFit.addEventListener('click', fit);
 
-  /* Click diagram = step through presets */
+  /* Click diagram = zoom in one preset step */
   diagram.addEventListener('click', function (e) {
     if (e.target.closest('button') || e.target.closest('a')) return;
     var next = PRESETS.find(function (p) { return p > scale + 0.01; });
-    applyScale(next !== undefined ? next : scale + STEP);
+    applyScale(next || scale + STEP);
   });
 
   /* ── Keyboard shortcuts ── */
   document.addEventListener('keydown', function (e) {
-    if (['INPUT','TEXTAREA','SELECT'].indexOf(e.target.tagName) !== -1) return;
+    if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
     switch (e.key) {
       case '+': case '=': e.preventDefault(); applyScale(scale + STEP); break;
       case '-': case '_': e.preventDefault(); applyScale(scale - STEP); break;
-      case '0': case 'f': case 'F': e.preventDefault(); fit();          break;
+      case '0': case 'f': case 'F': e.preventDefault(); fit(); break;
       case '1': e.preventDefault(); applyScale(1.0); break;
       case '2': e.preventDefault(); applyScale(2.0); break;
       case '5': e.preventDefault(); applyScale(0.5); break;
@@ -642,8 +566,11 @@
 
   /* ── Fullscreen ── */
   btnFS.addEventListener('click', function () {
-    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
-    else document.exitFullscreen().catch(function(){});
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(function(){});
+    } else {
+      document.exitFullscreen().catch(function(){});
+    }
   });
   document.addEventListener('fullscreenchange', function () {
     var fs = !!document.fullscreenElement;

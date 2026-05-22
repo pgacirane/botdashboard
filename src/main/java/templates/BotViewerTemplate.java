@@ -11,7 +11,7 @@ import io.github.cdimascio.dotenv.Dotenv;
  * Servlet Filter that renders the full bot viewer layout:
  *
  * ┌──────────────────────────────────────────────────────────┐
- * │ [logo] PagaDromeda ● HIV ● Legal ● Bank CRM ● Grad ● CV ● Architecture │
+ * │ [logo] AIoniser ● HIV ● Legal ● Bank CRM ● Grad ● CV ● Architecture │
  * ├──────────────────────────────────────────────────────────┤
  * │   <iframe src="remote-bot-url OR local /arch-diagram" /> │
  * └──────────────────────────────────────────────────────────┘
@@ -149,7 +149,7 @@ public class BotViewerTemplate implements Filter {
                 + "      style=\"width:100%;height:100%;border:none;display:block;\">\n"
                 + "    </iframe>\n";
 
-        // ── PagaDromeda inline SVG logo ───────────────────────────────────────
+        // ── AIoniser inline SVG logo ───────────────────────────────────────
         String logo
                 = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\""
                 + " width=\"26\" height=\"26\" fill=\"none\" aria-hidden=\"true\""
@@ -196,7 +196,7 @@ public class BotViewerTemplate implements Filter {
                 + "<head>\n"
                 + "  <meta charset=\"UTF-8\">\n"
                 + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                + "  <title>AI Assistant | PagaDromeda</title>\n"
+                + "  <title>AI Assistant | AIoniser</title>\n"
                 + "  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n"
                 + "  <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\" rel=\"stylesheet\">\n"
                 + "  <style>\n"
@@ -295,9 +295,9 @@ public class BotViewerTemplate implements Filter {
                 + "<div id=\"page-wrapper\">\n"
                 // ── Bot strip ────────────────────────────────────────────────
                 + "  <div class=\"bot-strip\">\n"
-                + "    <a class=\"paga-brand\" href=\"" + ctx + "/chat\" title=\"PagaDromeda Home\">\n"
+                + "    <a class=\"paga-brand\" href=\"" + ctx + "/chat\" title=\"AIoniser Home\">\n"
                 + "      " + logo
-                + "      <span class=\"paga-brand-name\">PagaDromeda</span>\n"
+                + "      <span class=\"paga-brand-name\">AIoniser</span>\n"
                 + "    </a>\n"
                 + "    <a class=\"bot-pill hiv" + kh + "\" href=\"" + ctx + "/BotViewer?bot=hiv\">\n"
                 + "      <span class=\"dot\"></span>\n"
@@ -338,7 +338,7 @@ public class BotViewerTemplate implements Filter {
                 + "  </div>\n"
                 // ── Footer ───────────────────────────────────────────────────
                 + "  <div class=\"footer\">\n"
-                + "    &copy; 2026 PagaDromeda &mdash; by Patrick &nbsp;|&nbsp;\n"
+                + "    &copy; 2026 AIoniser &mdash; by Patrick &nbsp;|&nbsp;\n"
                 + "    <a href=\"https://www.linkedin.com/in/patricus/\">Patrick Gacirane</a>\n"
                 + "  </div>\n"
                 + "</div>\n"
