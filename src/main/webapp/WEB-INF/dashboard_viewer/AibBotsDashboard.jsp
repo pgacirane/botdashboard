@@ -510,7 +510,7 @@
         AIoniser is a personal AI portfolio by GACIRANE Patrick.
         All applications are <strong>Minimum Viable Products (MVPs)</strong> built to demonstrate agentic AI engineering across real-world domains.
         They are <strong>not intended for production use</strong> in clinical, legal, financial, or any critical decision-making context.
-        You can hire Me to design and build similar agentic systems or investors or partners interested in scaling any MVP into a full product are welcome to
+        <strong>You can hire Me</strong> to design and build similar agentic systems or <strong>investors or partners</strong> interested in scaling any MVP into a full product are welcome to
         <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">reach out on LinkedIn</a>.
       </p>
     </div>
