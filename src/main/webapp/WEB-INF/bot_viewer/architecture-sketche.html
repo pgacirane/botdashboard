@@ -27,9 +27,10 @@
       flex-shrink: 0;
       background: rgba(13,17,23,0.97);
       border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 20px;
-      height: 52px;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 0 16px;
+      min-height: 52px;          /* grows instead of clipping when content wraps */
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; flex-wrap: wrap; /* wrap toolbar to next row on narrow screens   */
       z-index: 10;
     }
     .brand {
@@ -43,8 +44,12 @@
       animation: pdot 2.4s ease-in-out infinite;
     }
     @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
-    .subtitle { font-size: 0.74rem; color: #6b7a99; font-weight: 300; }
-    .toolbar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .subtitle {
+      font-size: 0.74rem; color: #6b7a99; font-weight: 300;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      min-width: 0;              /* allows flexbox shrinking + ellipsis  */
+    }
+    .toolbar { display: flex; align-items: center; gap: 4px; flex-shrink: 0; flex-wrap: wrap; }
     .tb-btn {
       height: 34px; min-width: 34px; padding: 0 10px;
       border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
@@ -94,10 +99,13 @@
       background-color: #0d1117;
     }
 
-    /* Outer wrapper — sized by JS to match scaled content so scrollbars work */
+    /* Outer wrapper — JS sets explicit width/height to match scaled content
+       so overflow:auto scrollbars appear at the right time.
+       min-width/height: 100% ensures centering works even at small scales. */
     .img-wrap {
       position: relative;
-      padding: 20px;
+      min-width:  100%;
+      min-height: 100%;
     }
 
     /* ── Corner badges ── */
@@ -140,8 +148,9 @@
       background: #FFFEF2;
       padding: 20px 16px 16px;
       font-family: 'Sora', 'Segoe UI', sans-serif;
-      display: inline-block; /* shrink-wrap to content width */
-      transform-origin: top left;
+      display: inline-block;   /* shrink-wrap to content width        */
+      position: absolute;      /* JS positions it with left/top       */
+      transform-origin: top left; /* JS scales from this corner       */
       border-radius: 8px;
       box-shadow: 0 4px 32px rgba(0,0,0,0.5);
       cursor: default;
@@ -238,6 +247,27 @@
     .leg-dot.vec    { border: 2px solid #555;     background: #DDD9FC; }
     .leg-dot.serper { border: 2px dashed #C43030; background: #FDEAEA; }
     .leg-dot.none   { border: 2px dashed #ccc;    background: #F7F6F0; }
+    /* ── Responsive top bar ─────────────────────────────────────────────
+       On narrow viewports (phones, narrow iframe) the top bar wraps:
+         Row 1:  [● AIoniser]  [Platform Architecture & Tech Stack]
+         Row 2:  [− 100% + | 50% 100% 150% | Fit]
+       Below 400 px the subtitle is hidden so the brand + toolbar still fit.
+    ──────────────────────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .top-bar { padding: 6px 12px; gap: 6px; }
+      /* Left group: let it shrink so toolbar wraps below rather than overlapping */
+      .top-bar > div:first-child { flex: 1 1 auto; min-width: 0; }
+      /* Toolbar takes full width on its own row */
+      .toolbar { width: 100%; padding-bottom: 4px; }
+      .tb-btn  { height: 30px; min-width: 30px; font-size: 0.58rem; padding: 0 8px; }
+      .tb-btn.large { width: 30px; font-size: 16px; padding: 0; }
+      .z-pct  { min-width: 38px; font-size: 0.6rem; }
+    }
+    @media (max-width: 400px) {
+      /* Below 400 px hide subtitle — brand + toolbar fit in one row again */
+      .subtitle { display: none; }
+      .toolbar  { width: auto; }
+    }
   </style>
 </head>
 <body>
@@ -245,7 +275,7 @@
 
   <!-- ── Top bar ── -->
   <div class="top-bar">
-    <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+    <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;overflow:hidden;">
       <div class="brand"><span class="brand-dot"></span>AIoniser</div>
       <div class="subtitle">Platform Architecture &amp; Tech Stack</div>
     </div>
@@ -476,30 +506,53 @@
     fit();
   }
 
-  /* ══════════════════════════════════════
-     CORE ZOOM — uses CSS transform scale.
-     The wrapper is resized to match scaled
-     dimensions so scrollbars work correctly.
-  ══════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════
+     CORE ZOOM — CSS transform:scale() on #diagram.
+
+     Centering logic:
+       scaledW = naturalW * scale
+       scaledH = naturalH * scale
+
+       wrapW = max(vpW, scaledW + PAD*2)  ← scrollbar when scaledW > vpW
+       wrapH = max(vpH, scaledH + PAD*2)  ← scrollbar when scaledH > vpH
+
+       leftOffset = (wrapW - scaledW) / 2  ← centres diagram horizontally
+       topOffset  = (wrapH - scaledH) / 2  ← centres diagram vertically
+
+       diagram.style.left/top position it; transform:scale() scales from there.
+  ══════════════════════════════════════════════════════ */
   function applyScale(newScale) {
     scale = Math.min(MAX, Math.max(MIN, newScale));
 
-    diagram.style.transform       = 'scale(' + scale + ')';
+    var PAD     = 40;
+    var scaledW = naturalW * scale;
+    var scaledH = naturalH * scale;
+    var vpW     = vp.clientWidth;
+    var vpH     = vp.clientHeight;
+
+    /* Wrapper at least viewport size so centering works even at small scales */
+    var wrapW = Math.max(vpW, scaledW + PAD * 2);
+    var wrapH = Math.max(vpH, scaledH + PAD * 2);
+
+    wrap.style.width  = wrapW + 'px';
+    wrap.style.height = wrapH + 'px';
+
+    /* Centre the diagram inside the wrapper */
+    var leftOffset = Math.floor((wrapW - scaledW) / 2);
+    var topOffset  = Math.floor((wrapH - scaledH) / 2);
+
+    diagram.style.left            = leftOffset + 'px';
+    diagram.style.top             = topOffset  + 'px';
     diagram.style.transformOrigin = 'top left';
+    diagram.style.transform       = 'scale(' + scale + ')';
 
-    /* Size the wrapper to the scaled content so overflow:auto scrollbars appear */
-    var pad = 40;
-    wrap.style.width  = (naturalW * scale + pad) + 'px';
-    wrap.style.height = (naturalH * scale + pad) + 'px';
-
-    /* Update labels */
+    /* Update zoom labels */
     var pct = Math.round(scale * 100) + '%';
     zPct.textContent   = pct;
     zBadge.textContent = pct;
 
-    /* Scroll badge */
-    var overflows = (naturalW * scale > vp.clientWidth) ||
-                    (naturalH * scale > vp.clientHeight);
+    /* Show scroll hint when content exceeds viewport */
+    var overflows = scaledW > vpW || scaledH > vpH;
     scrollBadge.classList.toggle('visible', overflows);
   }
 

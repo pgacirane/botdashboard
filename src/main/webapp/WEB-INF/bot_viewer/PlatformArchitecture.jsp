@@ -1,661 +1,79 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% String ctx = request.getContextPath(); %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Platform Architecture — AIoniser AI Suite</title>
+<%--
+  PlatformArchitecture.jsp
+  ────────────────────────────────────────────────────────────────
+  Injected into BotViewerTemplate's content area.
+  Outputs only a full-bleed iframe — no duplicate nav or toolbar.
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  /arch-diagram is served by LoadArchitectureDiagram.java which
+  streams architecture-sketche.html directly from WEB-INF.
+  That file owns the zoom toolbar, hint bar, viewport and all JS.
 
-  <style>
-    /* ── Reset ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  Centering: once the iframe finishes loading we dispatch a resize
+  event inside it so the HTML's fit() function recalculates against
+  the correct iframe dimensions and re-centers the diagram.
+  ────────────────────────────────────────────────────────────────
+--%>
+<style>
+  /* Strip any margin/padding the template may inject */
+  html, body {
+    margin:  0;
+    padding: 0;
+    overflow: hidden;
+    background: #0d1117;
+  }
 
-    html, body {
-      height: 100%;
-      background: #0d1117;
-      color: #f0f4ff;
-      font-family: 'Sora', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-    }
+  /* Wrapper centres the iframe both axes */
+  .arch-wrap {
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    width:  100%;
+    height: calc(100vh - 52px); /* subtract BotViewerTemplate nav height */
+    overflow: hidden;
+    background: #0d1117;
+  }
 
-    /* ── Shell ── */
-    .shell { display: flex; flex-direction: column; height: 100vh; }
+  .arch-frame {
+    display: block;
+    width:   100%;
+    height:  100%;
+    border:  none;
+    background: #0d1117;
+  }
+</style>
 
-    /* ── Top bar ── */
-    .top-bar {
-      flex-shrink: 0;
-      background: rgba(13,17,23,0.97);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 20px; height: 52px;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      z-index: 10;
-    }
-    .brand {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: #4ade80; display: flex; align-items: center; gap: 8px; flex-shrink: 0;
-    }
-    .brand-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #4ade80; box-shadow: 0 0 6px #4ade80;
-      animation: pdot 2.4s ease-in-out infinite;
-    }
-    @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
-    .subtitle { font-size: 0.74rem; color: #6b7a99; font-weight: 300; }
-
-    .toolbar { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-    .tb-btn {
-      height: 34px; min-width: 34px; padding: 0 10px;
-      border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05); color: #c9d1e0;
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
-      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      user-select: none; transition: background .16s, border-color .16s, color .16s;
-      white-space: nowrap;
-    }
-    .tb-btn:hover  { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: #f0f4ff; }
-    .tb-btn:active { transform: scale(0.94); }
-    .tb-btn.large  { font-size: 18px; font-weight: 300; padding: 0; width: 34px; }
-    .tb-btn.green  { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); color: #4ade80; }
-    .tb-btn.green:hover { background: rgba(74,222,128,0.16); border-color: rgba(74,222,128,0.5); }
-    .z-pct {
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
-      color: #6b7a99; min-width: 48px; text-align: center; letter-spacing: 0.05em;
-    }
-    .sep { width: 1px; height: 22px; background: rgba(255,255,255,0.1); margin: 0 4px; }
-
-    /* ── Hint bar ── */
-    .hint-bar {
-      flex-shrink: 0;
-      background: rgba(10,14,20,0.8);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      padding: 4px 20px;
-      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
-    }
-    .hint {
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.56rem;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: rgba(255,255,255,0.2); display: flex; align-items: center; gap: 5px;
-    }
-    .hk {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 3px; padding: 0 4px; font-size: 0.53rem; color: rgba(255,255,255,0.28);
-    }
-
-    /* ── Viewport ── */
-    .viewport {
-      flex: 1;
-      overflow: auto;
-      position: relative;
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px),
-        radial-gradient(ellipse 70% 50% at 10% 10%, rgba(74,222,128,0.03) 0%, transparent 55%);
-      background-size: 26px 26px, 100% 100%;
-      background-color: #0d1117;
-    }
-
-    /*
-     * img-wrap — JS controls its width/height to exactly match
-     * the scaled diagram size so scrollbars behave correctly.
-     * The diagram margin is set by JS to keep it centered.
-     */
-    .img-wrap {
-      position: relative;
-      /* start at full viewport so diagram is centerable before JS runs */
-      min-width: 100%;
-      min-height: 100%;
-    }
-
-    /* ── Fixed corner badges ── */
-    .badge-zoom {
-      position: fixed; bottom: 20px; right: 20px;
-      background: rgba(13,17,23,0.9); border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 7px; padding: 5px 11px;
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem;
-      letter-spacing: 0.07em; color: #6b7a99;
-      backdrop-filter: blur(8px); z-index: 20; pointer-events: none;
-    }
-    .badge-scroll {
-      position: fixed; bottom: 20px; left: 20px;
-      background: rgba(13,17,23,0.9); border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 7px; padding: 5px 11px;
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
-      letter-spacing: 0.07em; color: rgba(74,222,128,0.6);
-      backdrop-filter: blur(8px); z-index: 20; pointer-events: none;
-      opacity: 0; transition: opacity .3s;
-    }
-    .badge-scroll.visible { opacity: 1; }
-
-    .corner-btns {
-      position: fixed; bottom: 56px; left: 20px;
-      display: flex; gap: 8px; z-index: 20;
-    }
-    .corner-btn {
-      width: 36px; height: 36px; border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(13,17,23,0.88); color: #6b7a99; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: color .2s, border-color .2s; backdrop-filter: blur(8px);
-    }
-    .corner-btn:hover { color: #4ade80; border-color: rgba(74,222,128,0.4); }
-    .corner-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    /* ═══════════════════════════════════════════════════
-       SKETCH DIAGRAM
-    ═══════════════════════════════════════════════════ */
-    .root {
-      background: #FFFEF2;
-      padding: 20px 16px 16px;
-      font-family: 'Sora', 'Segoe UI', sans-serif;
-      display: inline-block;        /* shrink-wrap to content         */
-      position: absolute;           /* JS positions it with margin    */
-      transform-origin: top left;   /* JS scales from top-left corner */
-      border-radius: 8px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.5);
-      cursor: default;
-    }
-
-    /* Title */
-    .d-ttl { text-align: center; margin-bottom: 18px; }
-    .d-ttl h1 { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #111; line-height: 1.2; }
-    .d-ttl h1 i { vertical-align: middle; margin-right: 6px; font-size: 26px; }
-    .d-ttl p { font-size: 12px; color: #555; margin-top: 5px; font-style: italic; letter-spacing: .5px; }
-
-    /* Legend */
-    .d-legend { display: flex; gap: 12px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
-    .d-leg-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; color: #555; }
-    .d-leg-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
-    .d-leg-dot.serper { border: 2px dashed #C43030; background: #FDEAEA; }
-    .d-leg-dot.sql    { border: 2px dashed #C47F00; background: #FFF0CC; }
-    .d-leg-dot.vec    { border: 2px solid #555;     background: #DDD9FC; }
-    .d-leg-dot.none   { border: 2px dashed #ccc;    background: #F7F6F0; }
-
-    /* Layout */
-    .d-diag     { min-width: 820px; }
-    .d-hdr-wrap { display: flex; justify-content: center; padding-left: 108px; margin-bottom: 2px; }
-    .d-hdr {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: #101828; color: #fff;
-      border: 2.5px solid #111; border-radius: 10px; box-shadow: 3px 3px 0 #111;
-      padding: 9px 22px; font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .d-hdr i { font-size: 20px; }
-    .d-hdr .d-sub { font-size: 10px; opacity: .6; font-weight: 400; text-transform: none; letter-spacing: 0; }
-
-    .d-arr-row { display: flex; gap: 10px; padding-left: 108px; margin: 3px 0; }
-    .d-arc     { width: 143px; text-align: center; font-size: 16px; color: #aaa; line-height: 1; }
-
-    .d-lrow { display: flex; align-items: stretch; gap: 10px; margin-bottom: 8px; }
-    .d-llbl {
-      width: 98px; min-width: 98px; color: #fff; padding: 8px 5px; border-radius: 8px;
-      text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .4px; line-height: 1.4;
-      border: 2px solid #111; box-shadow: 2px 2px 0 #111;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    }
-    .d-llbl i { font-size: 17px; }
-    .d-cols   { display: flex; gap: 10px; }
-
-    .sb {
-      border: 2.5px solid #1a1a1a; border-radius: 8px; padding: 7px 5px; text-align: center;
-      box-shadow: 3px 3px 0 rgba(0,0,0,.22); min-height: 62px; width: 143px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-      transition: transform .1s, box-shadow .1s; cursor: default;
-    }
-    .sb:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 rgba(0,0,0,.28); }
-    .sb i   { font-size: 18px; }
-    .sb .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .sb .sub { font-size: 9px;  font-weight: 400; line-height: 1.2; opacity: .8; }
-
-    .c1 { background: #C8EDE0; color: #04342C; }
-    .c2 { background: #F3C8DA; color: #4B1528; }
-    .c3 { background: #FAE2BA; color: #412402; }
-    .c4 { background: #D0EABC; color: #173404; }
-    .c5 { background: #DDD9FC; color: #26215C; }
-
-    .serper-box {
-      background: #FDEAEA; color: #5A1010; border: 2.5px dashed #C43030;
-      border-radius: 8px; padding: 7px 5px; text-align: center;
-      box-shadow: 3px 3px 0 #C43030; min-height: 72px; width: 143px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-      transition: transform .1s, box-shadow .1s; cursor: default; position: relative;
-    }
-    .serper-box:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #C43030; }
-    .serper-box i   { font-size: 18px; color: #C43030; }
-    .serper-box .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .serper-box .sub { font-size: 9px;  font-weight: 400; line-height: 1.2; opacity: .85; }
-    .serper-badge {
-      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-      background: #C43030; color: #fff; font-size: 8px; font-weight: 700; letter-spacing: .5px;
-      padding: 2px 7px; border-radius: 20px; border: 1.5px solid #1a1a1a; white-space: nowrap;
-    }
-
-    .sql-box {
-      background: #FFF0CC; color: #4A2800; border: 2.5px dashed #C47F00;
-      border-radius: 8px; padding: 7px 5px; text-align: center;
-      box-shadow: 3px 3px 0 #C47F00; min-height: 72px; width: 143px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-      transition: transform .1s, box-shadow .1s; cursor: default; position: relative;
-    }
-    .sql-box:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #C47F00; }
-    .sql-box i   { font-size: 20px; color: #B36B00; }
-    .sql-box .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .sql-box .sub { font-size: 9px;  font-weight: 400; line-height: 1.2; opacity: .85; }
-    .sql-badge {
-      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-      background: #C47F00; color: #fff; font-size: 8px; font-weight: 700; letter-spacing: .5px;
-      padding: 2px 7px; border-radius: 20px; border: 1.5px solid #1a1a1a; white-space: nowrap;
-    }
-
-    .no-db {
-      border: 2px dashed #ccc; border-radius: 8px; padding: 7px 5px; text-align: center;
-      background: #F7F6F0; color: #aaa; min-height: 62px; width: 143px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-    }
-    .no-db i    { font-size: 16px; }
-    .no-db .lbl { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; line-height: 1.2; }
-    .no-db .sub { font-size: 8.5px; font-weight: 400; line-height: 1.2; }
-
-    .lp { background: #185FA5; } .la { background: #534AB7; } .lm { background: #BA7517; }
-    .ld { background: #3B6D11; } .li { background: #8C2424; }
-
-    .infra-wrap { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
-    .ib {
-      border: 2.5px solid #1a1a1a; border-radius: 8px; padding: 7px 9px; text-align: center;
-      box-shadow: 2px 2px 0 rgba(0,0,0,.18); font-size: 9.5px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .3px; line-height: 1.4; min-width: 92px;
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      cursor: default; transition: transform .1s;
-    }
-    .ib:hover  { transform: translate(-1px,-1px); }
-    .ib i      { font-size: 17px; }
-    .ib .sub2  { font-size: 8.5px; font-weight: 400; text-transform: none; opacity: .85; }
-    .ib-sql    { border: 2.5px dashed #C47F00; background: #FFF0CC; color: #4A2800; box-shadow: 2px 2px 0 #C47F00; }
-    .ib-serper { border: 2.5px dashed #C43030; background: #FDEAEA; color: #5A1010; box-shadow: 2px 2px 0 #C43030; }
-
-    .d-notes {
-      display: flex; gap: 10px; margin-top: 18px; padding-top: 14px;
-      border-top: 2.5px dashed #bbb; flex-wrap: wrap; justify-content: space-between;
-    }
-    .d-note { display: flex; align-items: flex-start; gap: 8px; font-size: 10px; color: #555; max-width: 185px; flex: 1; min-width: 140px; }
-    .d-note i      { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-    .d-note strong { color: #222; display: block; font-size: 10.5px; margin-bottom: 2px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
-  </style>
-</head>
-<body>
-<div class="shell">
-
-  <!-- ── Top bar ── -->
-  <div class="top-bar">
-    <div style="display:flex;align-items:center;gap:16px;min-width:0;">
-      <div class="brand"><span class="brand-dot"></span>AIoniser</div>
-      <div class="subtitle">Platform Architecture &amp; Tech Stack</div>
-    </div>
-    <div class="toolbar">
-      <button class="tb-btn large" id="btnOut" title="Zoom out (-)">−</button>
-      <span   class="z-pct"       id="zPct">100%</span>
-      <button class="tb-btn large" id="btnIn"  title="Zoom in (+)">+</button>
-      <div class="sep"></div>
-      <button class="tb-btn" id="btn50"  title="50%">50%</button>
-      <button class="tb-btn" id="btn100" title="100%">100%</button>
-      <button class="tb-btn" id="btn150" title="150%">150%</button>
-      <button class="tb-btn" id="btn200" title="200%">200%</button>
-      <div class="sep"></div>
-      <button class="tb-btn green" id="btnFit" title="Fit to window (F)">Fit</button>
-    </div>
-  </div>
-
-  <!-- ── Hint bar ── -->
-  <div class="hint-bar">
-    <span class="hint"><span class="hk">Scroll</span> pan vertically</span>
-    <span class="hint"><span class="hk">Shift + Scroll</span> pan horizontally</span>
-    <span class="hint"><span class="hk">Ctrl + Scroll</span> zoom</span>
-    <span class="hint"><span class="hk">+</span><span class="hk">−</span> zoom</span>
-    <span class="hint"><span class="hk">F</span> fit</span>
-    <span class="hint"><span class="hk">1</span> 100%</span>
-    <span class="hint"><span class="hk">Pinch</span> mobile zoom</span>
-  </div>
-
-  <!-- ── Viewport ── -->
-  <div class="viewport" id="vp">
-    <div class="img-wrap" id="wrap">
-
-      <!-- ══════════════════════════════════════════
-           SKETCH DIAGRAM  — id="diagram" is the zoom target
-      ══════════════════════════════════════════ -->
-      <div class="root" id="diagram">
-
-        <div class="d-ttl">
-          <h1><i class="ti ti-robot"></i>AIoniser Suite</h1>
-          <p>→ Multi-Layer · Multi-Agent · Multi-Domain Platform Architecture →</p>
-        </div>
-
-        <div class="d-legend">
-          <div class="d-leg-item"><div class="d-leg-dot serper"></div><span>Serper Web Scraper Tool</span></div>
-          <div class="d-leg-item"><div class="d-leg-dot sql"></div><span>Relational SQL DB (Neon PostgreSQL)</span></div>
-          <div class="d-leg-item"><div class="d-leg-dot vec"></div><span>Vector DB (ChromaDB)</span></div>
-          <div class="d-leg-item"><div class="d-leg-dot none"></div><span>No dedicated data store</span></div>
-        </div>
-
-        <div class="d-diag">
-
-          <div class="d-hdr-wrap">
-            <div class="d-hdr">
-              <i class="ti ti-layout-dashboard"></i>
-              <span>AIoniser UI</span>
-              <span class="d-sub">Main Portal</span>
-            </div>
-          </div>
-
-          <div class="d-arr-row">
-            <div class="d-arc">↙</div><div class="d-arc">↙</div><div class="d-arc">↓</div><div class="d-arc">↘</div><div class="d-arc">↘</div>
-          </div>
-
-          <!-- Presentation Layer -->
-          <div class="d-lrow">
-            <div class="d-llbl lp"><i class="ti ti-device-desktop"></i>Presen-<br>tation<br>Layer</div>
-            <div class="d-cols">
-              <div class="sb c1"><i class="ti ti-school"></i><span class="lbl">Smart Grad UI</span><span class="sub">Academic Advisory</span></div>
-              <div class="sb c2"><i class="ti ti-scale"></i><span class="lbl">Smart Attorney UI</span><span class="sub">Legal Advisory</span></div>
-              <div class="sb c3"><i class="ti ti-building-bank"></i><span class="lbl">Bank CRM UI</span><span class="sub">CRM Advisory</span></div>
-              <div class="sb c4"><i class="ti ti-activity"></i><span class="lbl">HIV Guideline UI</span><span class="sub">Clinical Guidelines</span></div>
-              <div class="sb c5"><i class="ti ti-user-circle"></i><span class="lbl">MyCv Assistant UI</span><span class="sub">CV &amp; Recruitment</span></div>
-            </div>
-          </div>
-
-          <div class="d-arr-row">
-            <div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div>
-          </div>
-
-          <!-- Agent Layer -->
-          <div class="d-lrow">
-            <div class="d-llbl la"><i class="ti ti-robot"></i>Agent /<br>Service<br>Layer</div>
-            <div class="d-cols">
-              <div class="sb c1"><i class="ti ti-brain"></i><span class="lbl">Smart Grad Agents</span><span class="sub">CrewAI Pipeline</span></div>
-              <div class="sb c2"><i class="ti ti-brain"></i><span class="lbl">Attorney Agents</span><span class="sub">CrewAI Pipeline</span></div>
-              <div class="sb c3"><i class="ti ti-brain"></i><span class="lbl">Bank CRM Agents</span><span class="sub">9-Agent + MegaCrew</span></div>
-              <div class="sb c4"><i class="ti ti-brain"></i><span class="lbl">HIV Guideline Agents</span><span class="sub">CrewAI Pipeline</span></div>
-              <div class="sb c5"><i class="ti ti-brain"></i><span class="lbl">MyCv Agents</span><span class="sub">CrewAI Pipeline</span></div>
-            </div>
-          </div>
-
-          <div class="d-arr-row">
-            <div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div><div class="d-arc">↓</div>
-          </div>
-
-          <!-- Tool / Pipeline Layer -->
-          <div class="d-lrow" style="align-items:center">
-            <div class="d-llbl lm"><i class="ti ti-tools"></i>Tool /<br>Pipeline<br>Layer</div>
-            <div class="d-cols" style="align-items:center">
-              <div class="serper-box">
-                <span class="serper-badge">Web Scraper</span>
-                <i class="ti ti-world-search"></i>
-                <span class="lbl">Serper Tool</span>
-                <span class="sub">Live web search</span>
-              </div>
-              <div class="serper-box">
-                <span class="serper-badge">Web Scraper</span>
-                <i class="ti ti-world-search"></i>
-                <span class="lbl">Serper Tool</span>
-                <span class="sub">Live web search</span>
-              </div>
-              <div class="sb c3"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">Bank Tariffs</span></div>
-              <div class="sb c4"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">HIV Guidelines PDF</span></div>
-              <div class="sb c5"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">My CV Docs</span></div>
-            </div>
-          </div>
-
-          <div class="d-arr-row">
-            <div class="d-arc" style="color:#C43030">↓</div>
-            <div class="d-arc" style="color:#C43030">↓</div>
-            <div class="d-arc">↓</div>
-            <div class="d-arc">↓</div>
-            <div class="d-arc">↓</div>
-          </div>
-
-          <!-- Data Storage Layer -->
-          <div class="d-lrow" style="align-items:center">
-            <div class="d-llbl ld"><i class="ti ti-database"></i>Data<br>Storage<br>Layer</div>
-            <div class="d-cols" style="align-items:center">
-              <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
-              <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
-              <div class="sql-box">
-                <span class="sql-badge">SQL · Relational</span>
-                <i class="ti ti-table"></i>
-                <span class="lbl">CRM Relational DB</span>
-                <span class="sub">Neon PostgreSQL · 14 tables</span>
-              </div>
-              <div class="sb c4"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">HIV PDF Chunks</span></div>
-              <div class="sb c5"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">CV PDF Chunks</span></div>
-            </div>
-          </div>
-
-          <div class="d-arr-row" style="margin-bottom:4px">
-            <div class="d-arc"></div><div class="d-arc"></div><div class="d-arc">↓</div><div class="d-arc"></div><div class="d-arc"></div>
-          </div>
-
-          <!-- Infrastructure Lane -->
-          <div class="d-lrow" style="align-items:flex-start">
-            <div class="d-llbl li" style="margin-top:4px"><i class="ti ti-server"></i>Infra-<br>structure<br>Lane</div>
-            <div class="infra-wrap">
-              <div class="ib ib-serper"><i class="ti ti-world-search" style="color:#C43030"></i>Serper API<br><span class="sub2">Web Scraping</span></div>
-              <div class="ib" style="background:#DCEEFF;color:#042C53"><i class="ti ti-brand-github"></i>GitHub Actions<br><span class="sub2">CI/CD Deploy</span></div>
-              <div class="ib ib-sql"><i class="ti ti-database" style="color:#B36B00"></i>Neon Postgres SQL<br><span class="sub2">Relational Database</span></div>
-              <div class="ib" style="background:#FEF0DA;color:#412402"><i class="ti ti-server-2"></i>HuggingFace<br><span class="sub2">Space Hosting</span></div>
-              <div class="ib" style="background:#EDE9FE;color:#26215C"><i class="ti ti-brain"></i>OpenAI API<br><span class="sub2">LLM Backbone</span></div>
-              <div class="ib" style="background:#F0EEE7;color:#2C2C2A"><i class="ti ti-code"></i>Dev Environment<br><span class="sub2">VS Code · Netbeans · Git</span></div>
-            </div>
-          </div>
-
-          <!-- Bottom takeaways -->
-          <div class="d-notes">
-            <div class="d-note"><i class="ti ti-star"></i><div><strong>5 Live Assistants</strong>Each independently deployed on HuggingFace Spaces.</div></div>
-            <div class="d-note"><i class="ti ti-target"></i><div><strong>RAG + Web + SQL</strong>Three data strategies — vector, relational &amp; live web search.</div></div>
-            <div class="d-note"><i class="ti ti-refresh"></i><div><strong>Re-evaluate &amp; Iterate</strong>V2 crew configs + hybrid routing improve accuracy over time.</div></div>
-            <div class="d-note"><i class="ti ti-mood-smile"></i><div><strong>Multi-Domain Coverage</strong>Law, health, banking, education &amp; recruitment — one platform.</div></div>
-          </div>
-
-        </div><%-- end .d-diag --%>
-      </div><%-- end #diagram --%>
-
-    </div><%-- end .img-wrap --%>
-  </div><%-- end .viewport --%>
-
-</div><%-- end .shell --%>
-
-<div class="badge-zoom"   id="zBadge">100%</div>
-<div class="badge-scroll" id="scrollBadge">↕ Scroll to explore</div>
-
-<div class="corner-btns">
-  <button class="corner-btn" id="btnFS" title="Fullscreen">
-    <svg id="fsExp"  viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-    <svg id="fsColl" viewBox="0 0 24 24" style="display:none"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 0 2-2h3M3 16h3a2 2 0 0 0 2 2v3"/></svg>
-  </button>
+<div class="arch-wrap">
+  <iframe
+    class="arch-frame"
+    id="archFrame"
+    src="<%= ctx %>/arch-diagram"
+    title="AIoniser Platform Architecture Diagram"
+    allowfullscreen>
+  </iframe>
 </div>
 
 <script>
 (function () {
   "use strict";
+  var frame = document.getElementById('archFrame');
 
-  var STEP    = 0.15;
-  var MIN     = 0.10;
-  var MAX     = 4.0;
-  var PRESETS = [0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0];
-  var PAD     = 40;   /* breathing room around the diagram in px */
-
-  var scale    = 1;
-  var naturalW = 0;
-  var naturalH = 0;
-
-  var vp          = document.getElementById('vp');
-  var wrap        = document.getElementById('wrap');
-  var diagram     = document.getElementById('diagram');
-  var zPct        = document.getElementById('zPct');
-  var zBadge      = document.getElementById('zBadge');
-  var scrollBadge = document.getElementById('scrollBadge');
-  var btnFS       = document.getElementById('btnFS');
-  var fsExp       = document.getElementById('fsExp');
-  var fsColl      = document.getElementById('fsColl');
-
-  /* ── Measure natural size after fonts load ── */
-  function init() {
-    diagram.style.transformOrigin = 'top left';
-    diagram.style.transform       = 'scale(1)';
-    diagram.style.left            = '0';
-    diagram.style.top             = '0';
-    naturalW = diagram.scrollWidth;
-    naturalH = diagram.scrollHeight;
-    fit();
-  }
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(init);
-  } else {
-    window.addEventListener('load', init);
-  }
-
-  /* ════════════════════════════════════════════════════
-     CORE ZOOM  — CSS transform:scale() on #diagram.
-
-     Centering logic:
-       scaledW = naturalW * scale
-       scaledH = naturalH * scale
-
-       wrapW = max(vpW, scaledW + PAD*2)   ← scrollbar appears when scaledW > vpW
-       wrapH = max(vpH, scaledH + PAD*2)   ← scrollbar appears when scaledH > vpH
-
-       leftOffset = (wrapW - scaledW) / 2  ← centres diagram horizontally
-       topOffset  = (wrapH - scaledH) / 2  ← centres diagram vertically
-
-     diagram.style.left/top move the diagram inside the wrapper.
-     transform:scale() then scales it from that top-left position.
-  ════════════════════════════════════════════════════ */
-  function applyScale(newScale) {
-    scale = Math.min(MAX, Math.max(MIN, newScale));
-
-    var scaledW = naturalW * scale;
-    var scaledH = naturalH * scale;
-    var vpW     = vp.clientWidth;
-    var vpH     = vp.clientHeight;
-
-    /* Wrapper is at least the viewport size so centering works even at small scales */
-    var wrapW = Math.max(vpW, scaledW + PAD * 2);
-    var wrapH = Math.max(vpH, scaledH + PAD * 2);
-
-    wrap.style.width  = wrapW + 'px';
-    wrap.style.height = wrapH + 'px';
-
-    /* Center the diagram inside the wrapper */
-    var leftOffset = Math.floor((wrapW - scaledW) / 2);
-    var topOffset  = Math.floor((wrapH - scaledH) / 2);
-
-    diagram.style.left      = leftOffset + 'px';
-    diagram.style.top       = topOffset  + 'px';
-    diagram.style.transform = 'scale(' + scale + ')';
-
-    /* Update zoom labels */
-    var pct = Math.round(scale * 100) + '%';
-    zPct.textContent   = pct;
-    zBadge.textContent = pct;
-
-    /* Show scroll hint when content exceeds viewport */
-    var overflows = scaledW > vpW || scaledH > vpH;
-    scrollBadge.classList.toggle('visible', overflows);
-  }
-
-  /* Fit diagram inside visible viewport */
-  function fit() {
-    if (!naturalW || !naturalH) return;
-    var s = Math.min(
-      (vp.clientWidth  - PAD * 2) / naturalW,
-      (vp.clientHeight - PAD * 2) / naturalH,
-      1.0   /* never scale up beyond 100% on fit */
-    );
-    vp.scrollTo(0, 0);
-    applyScale(s);
-  }
-
-  /* ── Ctrl + Scroll = zoom ── */
-  vp.addEventListener('wheel', function (e) {
-    if (!e.ctrlKey && !e.metaKey) return;
-    e.preventDefault();
-    applyScale(scale + (e.deltaY > 0 ? -0.08 : 0.08));
-  }, { passive: false });
-
-  /* ── Pinch to zoom (touch) ── */
-  var lastPinchDist = 0;
-  vp.addEventListener('touchstart', function (e) {
-    if (e.touches.length === 2) {
-      lastPinchDist = Math.hypot(
-        e.touches[1].clientX - e.touches[0].clientX,
-        e.touches[1].clientY - e.touches[0].clientY
-      );
-    }
-  }, { passive: true });
-  vp.addEventListener('touchmove', function (e) {
-    if (e.touches.length !== 2) return;
-    e.preventDefault();
-    var d = Math.hypot(
-      e.touches[1].clientX - e.touches[0].clientX,
-      e.touches[1].clientY - e.touches[0].clientY
-    );
-    applyScale(scale * (d / lastPinchDist));
-    lastPinchDist = d;
-  }, { passive: false });
-
-  /* ── Toolbar buttons ── */
-  document.getElementById('btnIn') .addEventListener('click', function () { applyScale(scale + STEP); });
-  document.getElementById('btnOut').addEventListener('click', function () { applyScale(scale - STEP); });
-  document.getElementById('btn50') .addEventListener('click', function () { applyScale(0.50); });
-  document.getElementById('btn100').addEventListener('click', function () { applyScale(1.00); });
-  document.getElementById('btn150').addEventListener('click', function () { applyScale(1.50); });
-  document.getElementById('btn200').addEventListener('click', function () { applyScale(2.00); });
-  document.getElementById('btnFit').addEventListener('click', fit);
-
-  /* Click diagram = step through presets */
-  diagram.addEventListener('click', function (e) {
-    if (e.target.closest('button') || e.target.closest('a')) return;
-    var next = PRESETS.find(function (p) { return p > scale + 0.01; });
-    applyScale(next !== undefined ? next : scale + STEP);
-  });
-
-  /* ── Keyboard shortcuts ── */
-  document.addEventListener('keydown', function (e) {
-    if (['INPUT','TEXTAREA','SELECT'].indexOf(e.target.tagName) !== -1) return;
-    switch (e.key) {
-      case '+': case '=': e.preventDefault(); applyScale(scale + STEP); break;
-      case '-': case '_': e.preventDefault(); applyScale(scale - STEP); break;
-      case '0': case 'f': case 'F': e.preventDefault(); fit();          break;
-      case '1': e.preventDefault(); applyScale(1.0); break;
-      case '2': e.preventDefault(); applyScale(2.0); break;
-      case '5': e.preventDefault(); applyScale(0.5); break;
+  /*
+   * Once the iframe document is ready, dispatch a resize event inside it.
+   * This causes the HTML's fit() function to recalculate the diagram scale
+   * against the actual rendered iframe dimensions, centering the diagram
+   * correctly regardless of when the template finishes painting.
+   */
+  frame.addEventListener('load', function () {
+    try {
+      var iwin = frame.contentWindow;
+      if (iwin) {
+        iwin.dispatchEvent(new Event('resize'));
+      }
+    } catch (e) {
+      /* cross-origin guard — safe to ignore if origin differs */
     }
   });
-
-  /* ── Fullscreen ── */
-  btnFS.addEventListener('click', function () {
-    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
-    else document.exitFullscreen().catch(function(){});
-  });
-  document.addEventListener('fullscreenchange', function () {
-    var fs = !!document.fullscreenElement;
-    fsExp .style.display = fs ? 'none' : '';
-    fsColl.style.display = fs ? ''     : 'none';
-    setTimeout(fit, 200);
-  });
-
-  /* ── Resize → refit ── */
-  window.addEventListener('resize', fit);
-
 })();
 </script>
-</body>
-</html>
