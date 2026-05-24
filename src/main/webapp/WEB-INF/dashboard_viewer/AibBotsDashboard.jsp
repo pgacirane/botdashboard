@@ -267,58 +267,69 @@
     }
     @media (max-width: 480px) { .bots-grid { grid-template-columns: 1fr; } }
 
-    /* ── Coming-soon card ── */
+    /* ══════════════════════════════════════════════════════════════════
+       COMING-SOON CARDS — green palette, same as live cards.
+       Visual distinction:
+         • Dashed border (vs solid on live cards)
+         • Green top accent stripe
+         • Slightly dimmed background
+         • "Upcoming MVP" badge with pulsing dot
+         • No hover lift — not clickable
+         • Fit into the normal 3-column grid row (no full-width span)
+    ══════════════════════════════════════════════════════════════════ */
+
     .bot-card.coming-soon {
-      grid-column: 1 / -1;
-      flex-direction: row;
-      align-items: center;
-      gap: clamp(20px, 3vw, 36px);
+      /* sits in the normal 3-col grid — no grid-column override */
+      flex-direction: column;   /* same column layout as live cards  */
       cursor: default;
       border-style: dashed;
-      border-color: rgba(74,222,128,0.22);
-      background: rgba(19,25,41,0.6);
-      opacity: 0.88;
+      border-color: rgba(74,222,128,0.28);
+      border-top: 3px solid rgba(74,222,128,0.55); /* top accent stripe */
+      background: rgba(13,17,28,0.7);
+      opacity: 0.9;
     }
     .bot-card.coming-soon:hover {
-      transform: none; box-shadow: none;
-      border-color: rgba(74,222,128,0.35);
+      transform: none;
+      box-shadow: none;
+      border-color: rgba(74,222,128,0.42);
     }
-    .bot-card.coming-soon:hover::before { opacity: 0.5; }
+    .bot-card.coming-soon:hover::before { opacity: 0.3; }
+
+    /* icon same size as live cards */
     .bot-card.coming-soon .bot-icon {
-      width: clamp(56px,8vw,72px); height: clamp(56px,8vw,72px); flex-shrink: 0;
+      width: clamp(44px,6vw,54px);
+      height: clamp(44px,6vw,54px);
     }
-    .bot-card.coming-soon .bot-icon svg { width: clamp(28px,4vw,36px); height: clamp(28px,4vw,36px); }
-    .bot-card.coming-soon .cs-body { flex: 1; min-width: 0; }
+
+    /* "Upcoming MVP" badge — green */
     .soon-badge {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: "IBM Plex Mono", monospace;
       font-size: clamp(0.54rem, 0.9vw, 0.62rem);
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--green); opacity: .65;
-      border: 1px dashed rgba(74,222,128,0.4);
+      color: var(--green);
+      border: 1px dashed rgba(74,222,128,0.45);
+      background: rgba(74,222,128,0.06);
       padding: 3px 10px; border-radius: 20px;
-      margin-bottom: 10px; width: fit-content;
+      margin-bottom: 8px; width: fit-content;
     }
     .soon-badge::before {
       content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green); opacity: .7;
+      background: var(--green); opacity: .75;
       animation: blink 1.8s ease-in-out infinite;
     }
-    .bot-card.coming-soon .bot-name { margin-bottom: 6px; }
-    .bot-card.coming-soon .bot-desc { max-width: 680px; }
-    .cs-right {
-      flex-shrink: 0; display: flex; flex-direction: column;
-      align-items: flex-end; gap: 8px;
+
+    /* footer row inside coming-soon: label + eta stacked */
+    .cs-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: auto; padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.05);
     }
     .cs-eta {
       font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(0.55rem, 0.85vw, 0.62rem);
-      letter-spacing: 0.14em; text-transform: uppercase;
+      font-size: clamp(0.52rem, 0.85vw, 0.60rem);
+      letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--muted); opacity: .6; white-space: nowrap;
-    }
-    @media (max-width: 600px) {
-      .bot-card.coming-soon { flex-direction: column; align-items: flex-start; }
-      .cs-right { align-items: flex-start; }
     }
 
     /* ── Card ── */
@@ -498,7 +509,8 @@
 
     <!-- Subtitle -->
     <p class="hero-sub">
-      Six applied AI systems spanning <strong>Healthcare, Legal, Banking, Education, Talent,</strong> and <strong>Infrastructure</strong> —
+      Six applied AI systems spanning <strong>Healthcare, Legal, Banking, Education, Talent,and Human Resource,</strong> and <strong>Infrastructure</strong> —
+      plus <strong>3 AI applications in development</strong> (FundTech &amp; Voice AI &amp; RegTech) —
       each a <strong>Minimum Viable Product</strong> built and designed to scale into enterprise-grade products.
     </p>
 
@@ -646,20 +658,70 @@
             <circle cx="12" cy="7" r="1.2" fill="#4ade80" stroke="none"/>
           </svg>
         </div>
-        <div class="cs-body">
+        <div>
           <div class="soon-badge">Upcoming MVP</div>
           <span class="bot-field">Voice AI &middot; Career Intelligence &middot; Digital Twin</span>
           <h2 class="bot-name">AI Voice Avatar</h2>
-          <p class="bot-desc">
-            A voice-first chatbot powered by a cloned voice of GACIRANE Patrick — letting visitors
-            have a natural spoken conversation about his professional career, projects, skills, and
-            experience. Built on voice synthesis, RAG over career data, and real-time audio streaming.
-          </p>
+          <p class="bot-desc">A voice-first chatbot powered by a cloned voice of GACIRANE Patrick — letting visitors have a natural spoken conversation about his professional career, projects, skills, and experience. Built on voice synthesis, RAG over career data, and real-time audio streaming.</p>
           <p class="bot-scale">Scalable &rarr; AI-Powered Professional Digital Twin</p>
         </div>
-        <div class="cs-right">
-          <span class="cs-eta">&#128336;&nbsp; In Development</span>
+        <div class="cs-footer">
           <span class="launch-label" style="opacity:.4;">Coming soon</span>
+          <span class="cs-eta">&#128336;&nbsp; In Development</span>
+        </div>
+      </div>
+
+      <!-- ══ REGULATORY NAVIGATOR AI — Coming Soon ══ -->
+      <div class="bot-card coming-soon" role="article" aria-label="Regulatory Navigator AI — Coming Soon">
+        <div class="corner-glow"></div>
+        <div class="bot-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="2"  y="3"  width="5" height="4" rx="1"/>
+            <rect x="17" y="3"  width="5" height="4" rx="1"/>
+            <rect x="9"  y="17" width="6" height="4" rx="1"/>
+            <line x1="4.5"  y1="7"  x2="4.5"  y2="14"/>
+            <line x1="19.5" y1="7"  x2="19.5" y2="14"/>
+            <line x1="4.5"  y1="14" x2="12"   y2="19"/>
+            <line x1="19.5" y1="14" x2="12"   y2="19"/>
+            <circle cx="4.5"  cy="14" r="1.2" fill="#4ade80" stroke="none"/>
+            <circle cx="19.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/>
+          </svg>
+        </div>
+        <div>
+          <div class="soon-badge">Upcoming MVP</div>
+          <span class="bot-field">RegTech &middot; Compliance Intelligence &middot; Business Licensing</span>
+          <h2 class="bot-name">Regulatory Navigator AI</h2>
+          <p class="bot-desc">Navigate fragmented multi-regulator compliance landscapes with ease. A 6-agent CrewAI system that classifies your business activity, maps cross-regulatory obligations across multiple government institutions, sequences the correct order of approvals, and generates a structured <strong>Regulatory License Proposal</strong> — all grounded in official regulatory texts via a RAG knowledge base.</p>
+          <p class="bot-scale">Scalable &rarr; National Smart Regulation (RegTech) Platform</p>
+        </div>
+        <div class="cs-footer">
+          <span class="launch-label" style="opacity:.4;">Coming soon</span>
+          <span class="cs-eta">&#128336;&nbsp; In Development</span>
+        </div>
+      </div>
+
+      <!-- ══ GLOBAL FUNDING SCOUT AI — Coming Soon ══ -->
+      <div class="bot-card coming-soon" role="article" aria-label="Global Funding Scout AI — Coming Soon">
+        <div class="corner-glow"></div>
+        <div class="bot-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"/>
+            <line  x1="16.5" y1="16.5" x2="21" y2="21"/>
+            <line  x1="8"    y1="11"   x2="14"  y2="11"/>
+            <line  x1="11"   y1="8"    x2="11"  y2="14"/>
+            <circle cx="11" cy="11" r="2.5" fill="#4ade80" stroke="none" opacity="0.35"/>
+          </svg>
+        </div>
+        <div>
+          <div class="soon-badge">Upcoming MVP</div>
+          <span class="bot-field">FundTech &middot; Grant Intelligence &middot; International Finance</span>
+          <h2 class="bot-name">Global Funding Scout AI</h2>
+          <p class="bot-desc">A 4-agent CrewAI system that autonomously searches international funding databases, scrapes full eligibility criteria and deadlines, verifies geographic eligibility for your target country, and generates <strong>sector-specific outreach messaging templates</strong> — delivering a compiled funding intelligence report with an interactive dashboard covering grants, investments, and sponsorships across Education, Youth, Women Empowerment, and Climate Resilience sectors.</p>
+          <p class="bot-scale">Scalable &rarr; International Development Finance Intelligence Platform</p>
+        </div>
+        <div class="cs-footer">
+          <span class="launch-label" style="opacity:.4;">Coming soon</span>
+          <span class="cs-eta">&#128336;&nbsp; In Development</span>
         </div>
       </div>
 
