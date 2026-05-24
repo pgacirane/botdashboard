@@ -509,7 +509,7 @@
 
     <!-- Subtitle -->
     <p class="hero-sub">
-      Six applied AI systems spanning <strong>Healthcare, Legal, Banking, Education, Talent,and Human Resource,</strong> and <strong>Infrastructure</strong> —
+      Six applied AI systems spanning <strong>Healthcare, Legal, Banking, Education, Talent,Human Resource,</strong> and <strong>Infrastructure</strong> —
       plus <strong>3 AI applications in development</strong> (FundTech &amp; Voice AI &amp; RegTech) —
       each a <strong>Minimum Viable Product</strong> built and designed to scale into enterprise-grade products.
     </p>
