@@ -206,7 +206,7 @@ public class AiBotsDashboardTemplate implements Filter {
           + "    </div>\n"
           + "  </div>\n"
           + "  <div class=\"footer\">\n"
-          + "    &copy; 2026 AIoniser &mdash; by Patrick &nbsp;|&nbsp;\n"
+          + "    &copy; 2026 AIonifier &mdash; by Patrick &nbsp;|&nbsp;\n"
           + "    <a href=\"https://www.linkedin.com/in/patricus/\">Patrick</a>\n"
           + "  </div>\n"
           + "</div>\n"

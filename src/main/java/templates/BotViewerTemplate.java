@@ -145,7 +145,7 @@ public class BotViewerTemplate implements Filter {
              + "    </iframe>\n";
     }
 
-    // ── AIoniser SVG logo ─────────────────────────────────────────────────────
+    // ── AIonifier SVG logo ─────────────────────────────────────────────────────
     private static String logo() {
         return "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\""
              + " width=\"26\" height=\"26\" fill=\"none\" aria-hidden=\"true\""
@@ -205,7 +205,7 @@ public class BotViewerTemplate implements Filter {
              + "<head>\n"
              + "  <meta charset=\"UTF-8\">\n"
              + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-             + "  <title>AI Assistant | AIoniser</title>\n"
+             + "  <title>AI Assistant | AIonifier</title>\n"
              + "  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\""
              +       " rel=\"stylesheet\">\n"
              + "  <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\""
@@ -220,9 +220,9 @@ public class BotViewerTemplate implements Filter {
              // ── Strip ──
              + "  <div class=\"bot-strip\">\n"
              + "    <div class=\"strip-left\">\n"
-             + "      <a class=\"brand\" href=\"" + ctx + "/chat\" title=\"AIoniser Home\">\n"
+             + "      <a class=\"brand\" href=\"" + ctx + "/chat\" title=\"AIonifier Home\">\n"
              + "        " + logo()
-             + "        <span class=\"brand-name\">AIoniser</span>\n"
+             + "        <span class=\"brand-name\">AIonifier</span>\n"
              + "      </a>\n"
              + "      <span class=\"strip-div\"></span>\n"
              + "    </div>\n"
@@ -248,7 +248,7 @@ public class BotViewerTemplate implements Filter {
 
              // ── Footer ──
              + "  <div class=\"footer\">\n"
-             + "    &copy; 2026 AIoniser &mdash; by Patrick &nbsp;|&nbsp;\n"
+             + "    &copy; 2026 AIonifier &mdash; by Patrick &nbsp;|&nbsp;\n"
              + "    <a href=\"https://www.linkedin.com/in/patricus/\">Patrick Gacirane</a>\n"
              + "  </div>\n"
              + "</div>\n"
