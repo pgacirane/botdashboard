@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIoniser — AI MVP Showcase</title>
+  <title>AIonifier — AI MVP Showcase</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -443,7 +443,7 @@
   <!-- NAV -->
   <nav class="site-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
-      <a class="nav-brand" href="#top"><span class="nav-dot"></span>AIoniser</a>
+      <a class="nav-brand" href="#top"><span class="nav-dot"></span>AIonifier</a>
       <ul class="nav-links" role="list">
         <li><a href="#top">Home</a></li>
         <li><span class="nav-pip"></span></li>
@@ -501,7 +501,7 @@
       <!-- Row 2: Title -->
       <div class="hero-title-wrap">
         <h1 class="hero-title">
-          <span class="hl">AIoniser</span> &mdash; AI&nbsp;MVP&nbsp;Portfolio
+          <span class="hl">AIonifier</span> &mdash; AI&nbsp;MVP&nbsp;Portfolio
         </h1>
       </div>
 
@@ -519,7 +519,7 @@
       <span class="disclaimer-icon">&#9888;</span>
       <p>
         <strong>Showcase &amp; Demo Platform Only.</strong>
-        AIoniser is a personal AI portfolio by GACIRANE Patrick.
+        AIonifier is a personal AI portfolio by GACIRANE Patrick.
         All applications are <strong>Minimum Viable Products (MVPs)</strong> built to demonstrate agentic AI engineering across real-world domains.
         They are <strong>not intended for production use</strong> in clinical, legal, financial, or any critical decision-making context.
         <strong>You can hire Me</strong> to design and build similar agentic systems or <strong>investors or partners</strong> interested in scaling any MVP into a full product are welcome to
@@ -731,7 +731,7 @@
       <p>
         &copy; 2025
         <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a>
-        &mdash; AIoniser AI Suite &mdash; MVP Showcase Portfolio &mdash; Not for production use.
+        &mdash; AIonifier AI Suite &mdash; MVP Showcase Portfolio &mdash; Not for production use.
       </p>
     </footer>
   </div><!-- /page-wrap -->

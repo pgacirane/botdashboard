@@ -49,7 +49,7 @@
     class="arch-frame"
     id="archFrame"
     src="<%= ctx %>/arch-diagram"
-    title="AIoniser Platform Architecture Diagram"
+    title="AIonifier Platform Architecture Diagram"
     allowfullscreen>
   </iframe>
 </div>
