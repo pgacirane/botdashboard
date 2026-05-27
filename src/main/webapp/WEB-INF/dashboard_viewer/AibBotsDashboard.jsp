@@ -139,32 +139,21 @@
       border-bottom: 1px solid rgba(74,222,128,0.1);
       margin-bottom: 0;
     }
-
-    /* Photo — spans both rows on left, ALL screen sizes */
     .hero-photo-wrap {
-      grid-row: 1 / 3;
-      grid-column: 1;
-      flex-shrink: 0;
-      align-self: stretch;
+      grid-row: 1 / 3; grid-column: 1;
+      flex-shrink: 0; align-self: stretch;
       display: flex; align-items: center;
     }
     .hero-photo {
-      width: clamp(68px, 9vw, 118px); /* clamp keeps photo proportional on all widths */
-      height: auto;
-      border-radius: 10px;
-      display: block;
+      width: clamp(68px, 9vw, 118px);
+      height: auto; border-radius: 10px; display: block;
       border: 2px solid rgba(74,222,128,0.50);
-      box-shadow:
-        0 0 0 4px rgba(74,222,128,0.07),
-        0 8px 28px rgba(0,0,0,0.55);
+      box-shadow: 0 0 0 4px rgba(74,222,128,0.07), 0 8px 28px rgba(0,0,0,0.55);
     }
-
-    /* Top row: identity line */
     .hero-identity {
       grid-row: 1; grid-column: 2;
-      display: flex; align-items: baseline; gap: clamp(6px, 1.5vw, 16px);
-      flex-wrap: wrap;
-      padding-top: 6px;
+      display: flex; align-items: baseline; gap: clamp(6px,1.5vw,16px);
+      flex-wrap: wrap; padding-top: 6px;
     }
     .hero-name {
       font-size: clamp(0.78rem, 1.5vw, 1rem);
@@ -180,8 +169,6 @@
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--muted);
     }
-
-    /* Bottom row: big title */
     .hero-title-wrap {
       grid-row: 2; grid-column: 2;
       padding-bottom: clamp(14px, 2vw, 22px);
@@ -189,57 +176,120 @@
     .hero-title {
       font-size: clamp(1.3rem, 4.5vw, 3.2rem);
       font-weight: 800; line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      width: 100%;
-      /* Always wrap — never force single line at small sizes */
-      white-space: normal;
+      letter-spacing: -0.03em; color: var(--text);
+      width: 100%; white-space: normal;
     }
     .hero-title .hl {
       background: linear-gradient(110deg, var(--green) 0%, #86efac 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-
-    /*
-     * ── MOBILE HERO — photo ALWAYS stays beside text ──────────────────
-     * We deliberately do NOT switch to a single-column grid on small
-     * screens. Instead we only shrink the photo and tighten the gap.
-     * The grid stays: [photo col] [text col] at every viewport width.
-     * ─────────────────────────────────────────────────────────────────
-     */
     @media (max-width: 560px) {
       .hero { column-gap: clamp(10px, 3vw, 16px); }
       .hero-photo { width: clamp(58px, 18vw, 82px); }
       .hero-title { font-size: clamp(1.05rem, 6vw, 1.5rem); }
     }
 
-    /* ── Subtitle ── */
-    .hero-sub {
-      font-size: clamp(0.78rem, 1.4vw, 0.9rem);
-      color: var(--muted); line-height: 1.7; font-weight: 300;
-      width: 100%; max-width: 860px;
-      padding: 14px 0 0;
+    /* ══ INFO STRIP ══ */
+    /*
+     * Layout: 4-column grid on wide screens, 2×2 on tablet/mobile.
+     * No horizontal scroll — every card is always fully visible.
+     * Col sizing:
+     *   col 1 (Platform)    flex ~1.4  — more prose
+     *   col 2 (Disclaimer)  flex ~1.4  — more prose
+     *   col 3 (Apps count)  flex ~0.7  — just a number
+     *   col 4 (Skills+Stack) flex ~1.5 — pills need width
+     */
+    .info-strip {
+      display: grid;
+      grid-template-columns: 1.4fr 1.4fr 0.7fr 1.5fr;
+      gap: 10px;
+      width: 100%;
+      margin: 18px 0 0;
     }
-    .hero-sub strong { color: var(--text); font-weight: 600; }
 
-    /* ── Disclaimer bar ── */
-    .disclaimer {
-      display: flex; align-items: flex-start; gap: 10px;
-      background: rgba(74,222,128,0.04);
-      border: 1px solid rgba(74,222,128,0.16);
-      border-left: 3px solid rgba(74,222,128,0.5);
-      border-radius: 8px; padding: 11px 16px;
-      margin: 16px 0 0; width: 100%;
+    /* ── 2-col wrap at ≤ 860 px ── */
+    @media (max-width: 860px) {
+      .info-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+      /* stat card spans only 1 col — sits naturally in row 2 */
     }
-    .disclaimer-icon { font-size: 0.8rem; flex-shrink: 0; margin-top: 2px; }
-    .disclaimer p {
+
+    /* ── 2-col wrap at very small screens ── */
+    @media (max-width: 420px) {
+      .info-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .icard {
+      background: rgba(19,25,41,0.85);
+      border: 1px solid rgba(74,222,128,0.15);
+      border-radius: 11px;
+      padding: 14px 15px 13px;
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative; overflow: hidden;
+    }
+    .icard::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, rgba(74,222,128,0.55), rgba(74,222,128,0.12));
+    }
+    .icard-label {
       font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(0.54rem, 0.9vw, 0.62rem);
-      letter-spacing: 0.09em; text-transform: uppercase;
-      color: var(--muted); line-height: 1.75;
+      font-size: 0.50rem; letter-spacing: .20em; text-transform: uppercase;
+      color: rgba(74,222,128,0.65);
     }
-    .disclaimer p strong { color: var(--green); font-weight: 500; }
-    .disclaimer a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.28); }
+    .icard-body { flex: 1; }
+    .icard-body p {
+      font-size: 0.68rem; color: var(--muted);
+      line-height: 1.65; margin: 0;
+    }
+    .icard-body p strong { color: #c8d4e8; font-weight: 600; }
+    .icard-body a {
+      color: var(--green); text-decoration: none;
+      border-bottom: 1px solid rgba(74,222,128,0.30);
+    }
+    .icard-body a:hover { color: #86efac; }
+
+    /* stat card — centered number */
+    .icard.stat-card {
+      align-items: center; text-align: center; justify-content: center;
+    }
+    .stat-num {
+      font-size: 2rem; font-weight: 800;
+      color: var(--green); line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-sub {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.56rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* pill rows */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+    .pill {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.47rem; letter-spacing: .10em; text-transform: uppercase;
+      color: rgba(74,222,128,0.72);
+      border: 1px solid rgba(74,222,128,0.22);
+      background: rgba(74,222,128,0.05);
+      padding: 2px 7px; border-radius: 20px;
+    }
+
+    /* section divider inside combined card */
+    .pill-section-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.44rem; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(74,222,128,0.40); margin-top: 9px; margin-bottom: 1px;
+    }
+    .pill-section-label:first-child { margin-top: 2px; }
+
+    /* warn row inside disclaimer card */
+    .warn-row { display: flex; align-items: flex-start; gap: 6px; }
+    .warn-icon { font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; opacity: .85; }
 
     /* ══ SECTION DIVIDER ══ */
     .divider {
@@ -267,41 +317,21 @@
     }
     @media (max-width: 480px) { .bots-grid { grid-template-columns: 1fr; } }
 
-    /* ══════════════════════════════════════════════════════════════════
-       COMING-SOON CARDS — green palette, same as live cards.
-       Visual distinction:
-         • Dashed border (vs solid on live cards)
-         • Green top accent stripe
-         • Slightly dimmed background
-         • "Upcoming MVP" badge with pulsing dot
-         • No hover lift — not clickable
-         • Fit into the normal 3-column grid row (no full-width span)
-    ══════════════════════════════════════════════════════════════════ */
-
+    /* ══ COMING-SOON CARDS ══ */
     .bot-card.coming-soon {
-      /* sits in the normal 3-col grid — no grid-column override */
-      flex-direction: column;   /* same column layout as live cards  */
-      cursor: default;
-      border-style: dashed;
-      border-color: rgba(74,222,128,0.28);
-      border-top: 3px solid rgba(74,222,128,0.55); /* top accent stripe */
-      background: rgba(13,17,28,0.7);
-      opacity: 0.9;
+      flex-direction: column; cursor: default;
+      border-style: dashed; border-color: rgba(74,222,128,0.28);
+      border-top: 3px solid rgba(74,222,128,0.55);
+      background: rgba(13,17,28,0.7); opacity: 0.9;
     }
     .bot-card.coming-soon:hover {
-      transform: none;
-      box-shadow: none;
+      transform: none; box-shadow: none;
       border-color: rgba(74,222,128,0.42);
     }
     .bot-card.coming-soon:hover::before { opacity: 0.3; }
-
-    /* icon same size as live cards */
     .bot-card.coming-soon .bot-icon {
-      width: clamp(44px,6vw,54px);
-      height: clamp(44px,6vw,54px);
+      width: clamp(44px,6vw,54px); height: clamp(44px,6vw,54px);
     }
-
-    /* "Upcoming MVP" badge — green */
     .soon-badge {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: "IBM Plex Mono", monospace;
@@ -318,8 +348,6 @@
       background: var(--green); opacity: .75;
       animation: blink 1.8s ease-in-out infinite;
     }
-
-    /* footer row inside coming-soon: label + eta stacked */
     .cs-footer {
       display: flex; align-items: center; justify-content: space-between;
       margin-top: auto; padding-top: 12px;
@@ -332,7 +360,7 @@
       color: var(--muted); opacity: .6; white-space: nowrap;
     }
 
-    /* ── Card ── */
+    /* ══ CARD ══ */
     .bot-card {
       position: relative; border-radius: 16px;
       padding: clamp(18px,2.5vw,26px) clamp(16px,2vw,22px) clamp(16px,2vw,22px);
@@ -480,10 +508,10 @@
   <!-- PAGE -->
   <div id="top" class="page-wrap">
 
-    <!-- ══ FULL-WIDTH HERO ══ -->
+    <!-- ══ HERO ══ -->
     <section class="hero">
 
-      <!-- Photo (spans both rows — all screen sizes) -->
+      <!-- Photo (spans both rows) -->
       <div class="hero-photo-wrap">
         <img class="hero-photo"
              src="<%= ctx %>/images/20250424_170544.png"
@@ -507,25 +535,62 @@
 
     </section>
 
-    <!-- Subtitle -->
-    <p class="hero-sub">
-      Six applied AI systems spanning <strong>Healthcare, Legal, Banking, Education, Talent,Human Resource,</strong> and <strong>Infrastructure</strong> —
-      plus <strong>3 AI applications in development</strong> (FundTech &amp; Voice AI &amp; RegTech) —
-      each a <strong>Minimum Viable Product</strong> built and designed to scale into enterprise-grade products.
-    </p>
+    <!-- ══ INFO STRIP — 4 cards, always fully visible ══ -->
+    <div class="info-strip" role="region" aria-label="Platform overview">
 
-    <!-- Disclaimer -->
-    <div class="disclaimer" role="note">
-      <span class="disclaimer-icon">&#9888;</span>
-      <p>
-        <strong>Showcase &amp; Demo Platform Only.</strong>
-        AIonifier is a personal AI portfolio by GACIRANE Patrick.
-        All applications are <strong>Minimum Viable Products (MVPs)</strong> built to demonstrate agentic AI engineering across real-world domains.
-        They are <strong>not intended for production use</strong> in clinical, legal, financial, or any critical decision-making context.
-        <strong>You can hire Me</strong> to design and build similar agentic systems or <strong>investors or partners</strong> interested in scaling any MVP into a full product are welcome to
-        <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">reach out on LinkedIn</a>.
-      </p>
-    </div>
+      <!-- 1. Platform intro -->
+      <div class="icard">
+        <div class="icard-label">Platform</div>
+        <div class="icard-body">
+          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 6 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
+        </div>
+      </div>
+
+      <!-- 2. Disclaimer -->
+      <div class="icard">
+        <div class="icard-label">Disclaimer</div>
+        <div class="icard-body">
+          <div class="warn-row">
+            <span class="warn-icon">&#9888;</span>
+            <p><strong>Demo only.</strong> All apps are MVPs — not for clinical, legal, or financial decision-making. <strong>Open to hire</strong> or <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">investors &amp; partners</a> interested in scaling any MVP are welcome to reach out.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. AI Apps stat -->
+      <div class="icard stat-card">
+        <div class="icard-label">AI Apps</div>
+        <div class="stat-num">9+</div>
+        <div class="stat-sub">6 Live &middot; 3 In Dev</div>
+      </div>
+
+      <!-- 4. Skills + Tech Stack combined -->
+      <div class="icard">
+        <div class="icard-label">Technology Stack</div>
+        <div class="icard-body">
+          <div class="pill-row">
+            <span class="pill">CrewAI Agents</span>
+            <span class="pill">RAG Pipelines</span>
+            <span class="pill">MCP Servers</span>
+            <span class="pill">Hybrid Search</span>
+            <span class="pill">Symantic Search</span>
+            <span class="pill">Key word search</span>
+            <span class="pill">ChromaDB / FAISS</span>
+            <span class="pill">Deep Learning</span>
+            <span class="pill">Retrieval Augmented Generation(RAG)</span>
+            <span class="pill">Python</span>
+            <span class="pill">Java EE / JSP</span>
+            <span class="pill">FastAPI</span>
+            <span class="pill">HuggingFace</span>
+            <span class="pill">Heroku</span>
+            <span class="pill">PostgreSQL</span>
+            <span class="pill">Git</span>
+            <span class="pill">SSE Streaming</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /info-strip -->
 
     <!-- Divider -->
     <div class="divider" id="apps">
@@ -534,7 +599,7 @@
       <div class="dlr"></div>
     </div>
 
-    <!-- GRID -->
+    <!-- ══ GRID ══ -->
     <div class="bots-grid">
 
       <a class="bot-card" href="<%= ctx %>/BotViewer?bot=legal">
