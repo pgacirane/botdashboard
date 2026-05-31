@@ -342,7 +342,6 @@ body::before {
     <span class="vbadge">Version 1.0</span>
     <span class="vbadge">Effective: 2026</span>
     <span class="vbadge">Prepared by: Gacirane Patrick</span>
-    <span class="vbadge">Evolve Ltd — Kigali, Rwanda</span>
   </div>
 
   <!-- ── PRINCIPLES GRID ── -->
