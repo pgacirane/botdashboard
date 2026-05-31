@@ -91,7 +91,8 @@ public class BotViewerTemplate implements Filter {
             case "hiv":   botUrl = URL_HIV;                          break;
             case "arch":  botUrl = ctx + "/arch-diagram";            break;
             // ── NEW: Social Impact Assessment page ──
-            case "sia":   botUrl = ctx + "/SocialImpactAssessment";  break;
+            case "sia":    botUrl = ctx + "/SocialImpact";   break;
+            case "ethics": botUrl = ctx + "/AIEthics";             break;
             default:      botUrl = "";                               break;
         }
 
@@ -106,11 +107,12 @@ public class BotViewerTemplate implements Filter {
         String ka  = active(botKey, "arch");
         // ── NEW active state for sia pill ──
         String ks  = active(botKey, "sia");
+        String ke  = active(botKey, "ethics");
 
         String iframeBlock = botUrl.isEmpty() ? emptyState(ctx) : iframe(botUrl);
 
         PrintWriter out = response.getWriter();
-        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks));
+        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks, ke));
         out.close();
     }
 
@@ -204,7 +206,7 @@ public class BotViewerTemplate implements Filter {
     private static String page(String ctx, String iframeBlock,
                                 String kl, String kb, String kg,
                                 String kc, String kh, String ka,
-                                String ks) {
+                                String ks, String ke) {
         return "<!DOCTYPE html>\n"
              + "<html lang=\"en\">\n"
              + "<head>\n"
@@ -242,6 +244,8 @@ public class BotViewerTemplate implements Filter {
              // ── NEW: Social Impact Assessment pill — separated by a divider ──
              + "      <span class=\"strip-div\"></span>\n"
              + pill(ctx, "sia",   ks, "fa-chart-pie",        "Social Impact")
+             + "      <span class=\"strip-div\"></span>\n"
+             + pill(ctx, "ethics", ke, "fa-shield-halved",    "AI Ethics")
              + "    </div>\n"
              + "  </div>\n"
 
@@ -364,6 +368,17 @@ public class BotViewerTemplate implements Filter {
           + "    a.bot-pill[href*='bot=sia']:hover {\n"
           + "      color:#fbbf24; background:rgba(251,191,36,0.08);\n"
           + "      border-color:rgba(251,191,36,0.35);\n"
+          + "    }\n"
+
+          // ── AI Ethics pill — violet/purple accent when active ───────────
+          + "    a.bot-pill[href*='bot=ethics'].active {\n"
+          + "      color:#a78bfa; background:rgba(167,139,250,0.14);\n"
+          + "      border-color:rgba(167,139,250,0.40);\n"
+          + "      box-shadow:0 0 0 2px rgba(167,139,250,0.22);\n"
+          + "    }\n"
+          + "    a.bot-pill[href*='bot=ethics']:hover {\n"
+          + "      color:#a78bfa; background:rgba(167,139,250,0.08);\n"
+          + "      border-color:rgba(167,139,250,0.35);\n"
           + "    }\n"
 
           + "    .dot {\n"

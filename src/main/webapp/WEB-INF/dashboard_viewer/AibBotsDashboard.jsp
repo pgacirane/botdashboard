@@ -429,37 +429,15 @@
     .bot-card:hover .arrow-circle { background: var(--green); transform: translateX(3px); }
     .bot-card:hover .arrow-circle svg { stroke: var(--bg); }
 
-    /* ── Social Impact card accent — amber/gold to distinguish from MVP green ── */
-    .bot-card.sia-card {
-      border-top: 3px solid rgba(251,191,36,0.7);
-    }
-    .bot-card.sia-card .bot-icon {
-      background: rgba(251,191,36,0.09);
-      border-color: rgba(251,191,36,0.25);
-    }
-    .bot-card.sia-card .bot-icon svg { stroke: #fbbf24; }
-    .bot-card.sia-card .bot-field    { color: #fbbf24; }
-    .bot-card.sia-card .bot-scale    { color: #fbbf24; }
-    .bot-card.sia-card .launch-label { color: #fbbf24; }
-    .bot-card.sia-card .arrow-circle { border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
-    .bot-card.sia-card .arrow-circle svg { stroke: #fbbf24; }
-    .bot-card.sia-card:hover {
-      border-color: rgba(251,191,36,0.45);
-      box-shadow: 0 18px 40px rgba(251,191,36,0.09);
-    }
-    .bot-card.sia-card:hover .arrow-circle { background: #fbbf24; }
-    .bot-card.sia-card:hover .arrow-circle svg { stroke: var(--bg); }
-    .bot-card.sia-card::before {
-      background: radial-gradient(ellipse at top left, rgba(251,191,36,0.08) 0%, transparent 65%);
-    }
+    /* ── sia-tag — same green style as mvp-tag ── */
     .sia-tag {
       position: absolute; top: 11px; right: 0;
       font-family: "IBM Plex Mono", monospace;
       font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase;
       padding: 3px 8px 3px 6px; border-radius: 4px 0 0 4px;
-      background: rgba(251,191,36,0.08);
-      border: 1px solid rgba(251,191,36,0.22); border-right: none;
-      color: rgba(251,191,36,0.7);
+      background: rgba(74,222,128,0.07);
+      border: 1px solid rgba(74,222,128,0.16); border-right: none;
+      color: rgba(74,222,128,0.6);
     }
 
     /* ══ FOOTER ══ */
@@ -473,6 +451,17 @@
     }
     .page-footer a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.26); }
     .page-footer a:hover { color: #86efac; }
+
+    /* ── ethics-tag — same green style as mvp-tag ── */
+    .ethics-tag {
+      position: absolute; top: 11px; right: 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 3px 8px 3px 6px; border-radius: 4px 0 0 4px;
+      background: rgba(74,222,128,0.07);
+      border: 1px solid rgba(74,222,128,0.16); border-right: none;
+      color: rgba(74,222,128,0.6);
+    }
   </style>
 </head>
 <body>
@@ -487,7 +476,7 @@
         <li><a href="#apps">AI MVPs</a></li>
         <li><span class="nav-pip"></span></li>
         <!-- ── NEW: Social Impact link ── -->
-        <li><a href="#impact">Social Impact</a></li>
+        <li><a href="#impact">Social Impact &amp; Ethics</a></li>
         <li><span class="nav-pip"></span></li>
         <li><a href="<%= ctx %>/BotViewer?bot=arch">Architecture</a></li>
       </ul>
@@ -512,7 +501,7 @@
     <a href="#top" role="menuitem">Home</a>
     <a href="#apps" role="menuitem">AI MVPs</a>
     <!-- ── NEW: Social Impact in mobile drawer ── -->
-    <a href="#impact" role="menuitem">Social Impact</a>
+    <a href="#impact" role="menuitem">Social Impact &amp; Ethics</a>
     <div class="drawer-sep"></div>
     <a href="<%= ctx %>/BotViewer?bot=arch" role="menuitem">Architecture</a>
     <div class="drawer-sep"></div>
@@ -797,7 +786,7 @@
     ════════════════════════════════════════════════════════════ -->
     <div class="divider" id="impact">
       <div class="dl"></div>
-      <span>Social Impact Assessments &mdash; AI Responsibility &amp; Ethics</span>
+      <span>Social Impact Assessments &mdash; AIonifier AI Ethics</span>
       <div class="dlr"></div>
     </div>
 
@@ -839,7 +828,37 @@
         </div>
       </a>
 
-    </div><!-- /sia grid -->
+      <!-- AI Ethics card — same row as Social Impact -->
+      <a class="bot-card ethics-card" href="<%= ctx %>/BotViewer?bot=ethics">
+        <div class="corner-glow"></div>
+        <span class="ethics-tag">ETHICS</span>
+        <div class="bot-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <div>
+          <span class="bot-field">AI Ethics &middot; Responsible AI &middot; Platform Principles</span>
+          <h2 class="bot-name">AIonifier AI Ethics</h2>
+          <p class="bot-desc">
+            The ethical framework governing every AI application on this platform.
+            We do not collect personal data, we do not use cookies or tracking,
+            we warn that AI can generate incorrect information, and we clearly state
+            that this platform is not for real production use.
+            Six principles covering privacy, transparency, human oversight,
+            accuracy, scope, and accountability — essential reading for
+            users, partners, and regulators.
+          </p>
+          <p class="bot-scale">Framework &rarr; Responsible AI &amp; Ethical Deployment Principles</p>
+        </div>
+        <div class="bot-footer">
+          <span class="launch-label">Read AI Ethics</span>
+          <span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </a>
+
+    </div><!-- /impact grid -->
 
     <footer class="page-footer">
       <p>
