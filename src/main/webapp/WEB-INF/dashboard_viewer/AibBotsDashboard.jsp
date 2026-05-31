@@ -190,15 +190,6 @@
     }
 
     /* ══ INFO STRIP ══ */
-    /*
-     * Layout: 4-column grid on wide screens, 2×2 on tablet/mobile.
-     * No horizontal scroll — every card is always fully visible.
-     * Col sizing:
-     *   col 1 (Platform)    flex ~1.4  — more prose
-     *   col 2 (Disclaimer)  flex ~1.4  — more prose
-     *   col 3 (Apps count)  flex ~0.7  — just a number
-     *   col 4 (Skills+Stack) flex ~1.5 — pills need width
-     */
     .info-strip {
       display: grid;
       grid-template-columns: 1.4fr 1.4fr 0.7fr 1.5fr;
@@ -206,20 +197,11 @@
       width: 100%;
       margin: 18px 0 0;
     }
-
-    /* ── 2-col wrap at ≤ 860 px ── */
     @media (max-width: 860px) {
-      .info-strip {
-        grid-template-columns: 1fr 1fr;
-      }
-      /* stat card spans only 1 col — sits naturally in row 2 */
+      .info-strip { grid-template-columns: 1fr 1fr; }
     }
-
-    /* ── 2-col wrap at very small screens ── */
     @media (max-width: 420px) {
-      .info-strip {
-        grid-template-columns: 1fr 1fr;
-      }
+      .info-strip { grid-template-columns: 1fr 1fr; }
     }
 
     .icard {
@@ -252,7 +234,6 @@
     }
     .icard-body a:hover { color: #86efac; }
 
-    /* stat card — centered number */
     .icard.stat-card {
       align-items: center; text-align: center; justify-content: center;
     }
@@ -268,7 +249,6 @@
       margin-top: 5px;
     }
 
-    /* pill rows */
     .pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
     .pill {
       font-family: "IBM Plex Mono", monospace;
@@ -278,16 +258,12 @@
       background: rgba(74,222,128,0.05);
       padding: 2px 7px; border-radius: 20px;
     }
-
-    /* section divider inside combined card */
     .pill-section-label {
       font-family: "IBM Plex Mono", monospace;
       font-size: 0.44rem; letter-spacing: .18em; text-transform: uppercase;
       color: rgba(74,222,128,0.40); margin-top: 9px; margin-bottom: 1px;
     }
     .pill-section-label:first-child { margin-top: 2px; }
-
-    /* warn row inside disclaimer card */
     .warn-row { display: flex; align-items: flex-start; gap: 6px; }
     .warn-icon { font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; opacity: .85; }
 
@@ -453,6 +429,39 @@
     .bot-card:hover .arrow-circle { background: var(--green); transform: translateX(3px); }
     .bot-card:hover .arrow-circle svg { stroke: var(--bg); }
 
+    /* ── Social Impact card accent — amber/gold to distinguish from MVP green ── */
+    .bot-card.sia-card {
+      border-top: 3px solid rgba(251,191,36,0.7);
+    }
+    .bot-card.sia-card .bot-icon {
+      background: rgba(251,191,36,0.09);
+      border-color: rgba(251,191,36,0.25);
+    }
+    .bot-card.sia-card .bot-icon svg { stroke: #fbbf24; }
+    .bot-card.sia-card .bot-field    { color: #fbbf24; }
+    .bot-card.sia-card .bot-scale    { color: #fbbf24; }
+    .bot-card.sia-card .launch-label { color: #fbbf24; }
+    .bot-card.sia-card .arrow-circle { border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
+    .bot-card.sia-card .arrow-circle svg { stroke: #fbbf24; }
+    .bot-card.sia-card:hover {
+      border-color: rgba(251,191,36,0.45);
+      box-shadow: 0 18px 40px rgba(251,191,36,0.09);
+    }
+    .bot-card.sia-card:hover .arrow-circle { background: #fbbf24; }
+    .bot-card.sia-card:hover .arrow-circle svg { stroke: var(--bg); }
+    .bot-card.sia-card::before {
+      background: radial-gradient(ellipse at top left, rgba(251,191,36,0.08) 0%, transparent 65%);
+    }
+    .sia-tag {
+      position: absolute; top: 11px; right: 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 3px 8px 3px 6px; border-radius: 4px 0 0 4px;
+      background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.22); border-right: none;
+      color: rgba(251,191,36,0.7);
+    }
+
     /* ══ FOOTER ══ */
     .page-footer {
       text-align: center; margin-top: clamp(36px,5vw,56px);
@@ -477,6 +486,9 @@
         <li><span class="nav-pip"></span></li>
         <li><a href="#apps">AI MVPs</a></li>
         <li><span class="nav-pip"></span></li>
+        <!-- ── NEW: Social Impact link ── -->
+        <li><a href="#impact">Social Impact</a></li>
+        <li><span class="nav-pip"></span></li>
         <li><a href="<%= ctx %>/BotViewer?bot=arch">Architecture</a></li>
       </ul>
       <div class="nav-ctas">
@@ -495,9 +507,12 @@
     </div>
   </nav>
 
+  <!-- Mobile drawer -->
   <div class="nav-drawer" id="drawer" role="menu">
     <a href="#top" role="menuitem">Home</a>
     <a href="#apps" role="menuitem">AI MVPs</a>
+    <!-- ── NEW: Social Impact in mobile drawer ── -->
+    <a href="#impact" role="menuitem">Social Impact</a>
     <div class="drawer-sep"></div>
     <a href="<%= ctx %>/BotViewer?bot=arch" role="menuitem">Architecture</a>
     <div class="drawer-sep"></div>
@@ -510,43 +525,32 @@
 
     <!-- ══ HERO ══ -->
     <section class="hero">
-
-      <!-- Photo (spans both rows) -->
       <div class="hero-photo-wrap">
         <img class="hero-photo"
              src="<%= ctx %>/images/20250424_170544.png"
              alt="GACIRANE Patrick — AI Solutions Architect" />
       </div>
-
-      <!-- Row 1: Name + Role -->
       <div class="hero-identity">
         <a class="hero-name"
            href="https://www.linkedin.com/in/patricus/"
            target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a>
         <span class="hero-role">AI Solutions Architect</span>
       </div>
-
-      <!-- Row 2: Title -->
       <div class="hero-title-wrap">
         <h1 class="hero-title">
           <span class="hl">AIonifier</span> &mdash; AI&nbsp;MVP&nbsp;Portfolio
         </h1>
       </div>
-
     </section>
 
-    <!-- ══ INFO STRIP — 4 cards, always fully visible ══ -->
+    <!-- ══ INFO STRIP ══ -->
     <div class="info-strip" role="region" aria-label="Platform overview">
-
-      <!-- 1. Platform intro -->
       <div class="icard">
         <div class="icard-label">Platform</div>
         <div class="icard-body">
           <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 6 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
         </div>
       </div>
-
-      <!-- 2. Disclaimer -->
       <div class="icard">
         <div class="icard-label">Disclaimer</div>
         <div class="icard-body">
@@ -556,15 +560,11 @@
           </div>
         </div>
       </div>
-
-      <!-- 3. AI Apps stat -->
       <div class="icard stat-card">
         <div class="icard-label">AI Apps</div>
         <div class="stat-num">9+</div>
         <div class="stat-sub">6 Live &middot; 3 In Dev</div>
       </div>
-
-      <!-- 4. Skills + Tech Stack combined -->
       <div class="icard">
         <div class="icard-label">Technology Stack</div>
         <div class="icard-body">
@@ -589,10 +589,9 @@
           </div>
         </div>
       </div>
-
     </div><!-- /info-strip -->
 
-    <!-- Divider -->
+    <!-- Divider — AI MVPs -->
     <div class="divider" id="apps">
       <div class="dl"></div>
       <span>AI MVP Applications &mdash; Select a Specialist</span>
@@ -792,6 +791,56 @@
 
     </div><!-- /bots-grid -->
 
+    <!-- ════════════════════════════════════════════════════════════
+         ══ SOCIAL IMPACT ASSESSMENTS SECTION ══
+         Anchor #impact — reached from nav "Social Impact" link
+    ════════════════════════════════════════════════════════════ -->
+    <div class="divider" id="impact">
+      <div class="dl"></div>
+      <span>Social Impact Assessments &mdash; AI Responsibility &amp; Ethics</span>
+      <div class="dlr"></div>
+    </div>
+
+    <div class="bots-grid">
+
+      <!-- Social Impact Assessment card -->
+      <a class="bot-card sia-card" href="<%= ctx %>/BotViewer?bot=sia">
+        <div class="corner-glow"></div>
+        <span class="sia-tag">REPORT</span>
+        <div class="bot-icon">
+          <!-- Balance / impact icon -->
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M8 12 Q10 8 12 12 Q14 16 16 12"/>
+            <line x1="12" y1="3"  x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21"/>
+            <line x1="3"  y1="12" x2="5"  y2="12"/>
+            <line x1="19" y1="12" x2="21" y2="12"/>
+          </svg>
+        </div>
+        <div>
+          <span class="bot-field">AI Ethics &middot; Responsible AI &middot; Policy</span>
+          <h2 class="bot-name">Social Impact Assessment</h2>
+          <p class="bot-desc">
+            A structured Social Impact Matrix evaluation of two AIonifier MVPs —
+            <strong style="color:#c8d4e8;">SmartAttorney AI</strong> and the
+            <strong style="color:#c8d4e8;">Rwanda HIV Guidelines Assistant</strong>.
+            Each is assessed across Individual, Collective, and Societal dimensions
+            for both <em>harms</em> (Type, Source, Measure, Mitigation) and
+            <em>benefits</em> (Type, Source, Measure, Amplification) — following
+            the Social Impact Matrix methodology adopted across East Africa.
+            Essential reading for investors, regulators, and implementation partners.
+          </p>
+          <p class="bot-scale">Framework &rarr; Social Impact Matrix (Assessing Harms &amp; Amplifying Benefits)</p>
+        </div>
+        <div class="bot-footer">
+          <span class="launch-label">View full assessment</span>
+          <span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </a>
+
+    </div><!-- /sia grid -->
+
     <footer class="page-footer">
       <p>
         &copy; 2025
@@ -824,7 +873,7 @@
         }
       });
     }, { rootMargin: "-40% 0px -55% 0px" });
-    ["top","apps"].forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    ["top","apps","impact"].forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
   </script>
 </body>
 </html>

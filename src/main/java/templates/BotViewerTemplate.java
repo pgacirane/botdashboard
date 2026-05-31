@@ -84,29 +84,33 @@ public class BotViewerTemplate implements Filter {
 
         String botUrl;
         switch (botKey.toLowerCase()) {
-            case "legal": botUrl = URL_LEGAL;              break;
-            case "bank":  botUrl = URL_BANK;               break;
-            case "grad":  botUrl = URL_GRAD;               break;
-            case "cv":    botUrl = URL_CV;                 break;
-            case "hiv":   botUrl = URL_HIV;                break;
-            case "arch":  botUrl = ctx + "/arch-diagram";  break;
-            default:      botUrl = "";                     break;
+            case "legal": botUrl = URL_LEGAL;                        break;
+            case "bank":  botUrl = URL_BANK;                         break;
+            case "grad":  botUrl = URL_GRAD;                         break;
+            case "cv":    botUrl = URL_CV;                           break;
+            case "hiv":   botUrl = URL_HIV;                          break;
+            case "arch":  botUrl = ctx + "/arch-diagram";            break;
+            // ── NEW: Social Impact Assessment page ──
+            case "sia":   botUrl = ctx + "/SocialImpactAssessment";  break;
+            default:      botUrl = "";                               break;
         }
 
         CharResponseWrapper wrapper = new CharResponseWrapper(response);
         chain.doFilter(request, wrapper);
 
-        String kl = active(botKey, "legal");
-        String kb = active(botKey, "bank");
-        String kg = active(botKey, "grad");
-        String kc = active(botKey, "cv");
-        String kh = active(botKey, "hiv");
-        String ka = active(botKey, "arch");
+        String kl  = active(botKey, "legal");
+        String kb  = active(botKey, "bank");
+        String kg  = active(botKey, "grad");
+        String kc  = active(botKey, "cv");
+        String kh  = active(botKey, "hiv");
+        String ka  = active(botKey, "arch");
+        // ── NEW active state for sia pill ──
+        String ks  = active(botKey, "sia");
 
         String iframeBlock = botUrl.isEmpty() ? emptyState(ctx) : iframe(botUrl);
 
         PrintWriter out = response.getWriter();
-        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka));
+        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks));
         out.close();
     }
 
@@ -196,10 +200,11 @@ public class BotViewerTemplate implements Filter {
              + "    </a>\n";
     }
 
-    // ── Full page assembly ────────────────────────────────────────────────────
+    // ── Full page assembly — added ks parameter for sia pill ─────────────────
     private static String page(String ctx, String iframeBlock,
                                 String kl, String kb, String kg,
-                                String kc, String kh, String ka) {
+                                String kc, String kh, String ka,
+                                String ks) {
         return "<!DOCTYPE html>\n"
              + "<html lang=\"en\">\n"
              + "<head>\n"
@@ -234,6 +239,9 @@ public class BotViewerTemplate implements Filter {
              + pill(ctx, "cv",    kc, "fa-id-card-clip",     "Talk to My CV")
              + "      <span class=\"strip-div arch-div\"></span>\n"
              + pill(ctx, "arch",  ka, "fa-sitemap",          "Architecture")
+             // ── NEW: Social Impact Assessment pill — separated by a divider ──
+             + "      <span class=\"strip-div\"></span>\n"
+             + pill(ctx, "sia",   ks, "fa-chart-pie",        "Social Impact")
              + "    </div>\n"
              + "  </div>\n"
 
@@ -281,35 +289,31 @@ public class BotViewerTemplate implements Filter {
           + "    html, body { height:100%; background:var(--bg); overflow:hidden; }\n"
           + "    #page-wrapper { height:100%; display:flex; flex-direction:column; }\n"
 
-            // ── Bot strip — min-height so it can grow when it wraps ───────────
           + "    .bot-strip {\n"
           + "      background:var(--surface);\n"
           + "      border-bottom:1px solid var(--border);\n"
           + "      display:flex;\n"
           + "      align-items:center;\n"
-          + "      flex-wrap:wrap;          /* wrap pills to second row on narrow screens */\n"
+          + "      flex-wrap:wrap;\n"
           + "      gap:4px;\n"
           + "      padding:6px 16px;\n"
-          + "      min-height:50px;         /* grows instead of clipping when wrapped    */\n"
+          + "      min-height:50px;\n"
           + "      flex-shrink:0;\n"
           + "    }\n"
 
-            // ── Strip left section (brand + divider) — stays on first row ─────
           + "    .strip-left {\n"
           + "      display:flex; align-items:center; gap:6px;\n"
           + "      flex-shrink:0;\n"
           + "    }\n"
 
-            // ── Pills section — wraps under brand on narrow screens ────────────
           + "    .strip-pills {\n"
           + "      display:flex;\n"
           + "      align-items:center;\n"
           + "      flex-wrap:wrap;\n"
           + "      gap:4px;\n"
-          + "      flex:1 1 auto;           /* fills remaining row, wraps to next row */\n"
+          + "      flex:1 1 auto;\n"
           + "    }\n"
 
-            // ── Brand ─────────────────────────────────────────────────────────
           + "    .brand {\n"
           + "      display:inline-flex; align-items:center; gap:8px;\n"
           + "      text-decoration:none; flex-shrink:0;\n"
@@ -323,14 +327,12 @@ public class BotViewerTemplate implements Filter {
           + "    }\n"
           + "    .brand:hover .brand-name { opacity:0.82; }\n"
 
-            // ── Strip divider ─────────────────────────────────────────────────
           + "    .strip-div {\n"
           + "      width:1px; height:22px;\n"
           + "      background:var(--border);\n"
           + "      flex-shrink:0; margin:0 4px;\n"
           + "    }\n"
 
-            // ── Pills ─────────────────────────────────────────────────────────
           + "    .bot-pill {\n"
           + "      display:inline-flex; align-items:center; gap:5px;\n"
           + "      padding:5px 12px; border-radius:999px;\n"
@@ -352,7 +354,18 @@ public class BotViewerTemplate implements Filter {
           + "      box-shadow:0 0 0 2px rgba(74,222,128,0.30);\n"
           + "    }\n"
 
-            // ── Pulse dot ─────────────────────────────────────────────────────
+          // ── Social Impact pill — amber accent when active ─────────────────
+          + "    .bot-pill.sia-active,\n"
+          + "    a.bot-pill[href*='bot=sia'].active {\n"
+          + "      color:#fbbf24; background:rgba(251,191,36,0.12);\n"
+          + "      border-color:rgba(251,191,36,0.40);\n"
+          + "      box-shadow:0 0 0 2px rgba(251,191,36,0.22);\n"
+          + "    }\n"
+          + "    a.bot-pill[href*='bot=sia']:hover {\n"
+          + "      color:#fbbf24; background:rgba(251,191,36,0.08);\n"
+          + "      border-color:rgba(251,191,36,0.35);\n"
+          + "    }\n"
+
           + "    .dot {\n"
           + "      display:none; width:6px; height:6px; border-radius:50%;\n"
           + "      background:var(--green);\n"
@@ -361,10 +374,8 @@ public class BotViewerTemplate implements Filter {
           + "    .active .dot { display:inline-block; }\n"
           + "    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.6)} }\n"
 
-            // ── Frame area ────────────────────────────────────────────────────
           + "    .frame-area { flex:1 1 auto; overflow:hidden; position:relative; min-height:0; }\n"
 
-            // ── Loading overlay ───────────────────────────────────────────────
           + "    .loading-overlay {\n"
           + "      position:absolute; inset:0; background:var(--bg);\n"
           + "      display:flex; flex-direction:column; align-items:center;\n"
@@ -381,7 +392,6 @@ public class BotViewerTemplate implements Filter {
           + "    }\n"
           + "    @keyframes spin { to { transform:rotate(360deg); } }\n"
 
-            // ── Footer ────────────────────────────────────────────────────────
           + "    .footer {\n"
           + "      background:var(--bg); border-top:1px solid var(--border);\n"
           + "      color:var(--muted); text-align:center;\n"
@@ -393,13 +403,6 @@ public class BotViewerTemplate implements Filter {
           + "    }\n"
           + "    .footer a:hover { opacity:0.82; }\n"
 
-            // ════════════════════════════════════════════════════════
-            //  RESPONSIVE BREAKPOINTS
-            //  All pills stay visible — they shrink and/or wrap,
-            //  never overflow or get hidden.
-            // ════════════════════════════════════════════════════════
-
-            // ── 860 px — medium tablets / landscape phones ────────────────────
           + "    @media (max-width:860px) {\n"
           + "      .bot-strip  { padding:5px 12px; gap:3px; }\n"
           + "      .strip-pills{ gap:3px; }\n"
@@ -408,31 +411,27 @@ public class BotViewerTemplate implements Filter {
           + "      .brand-name { font-size:0.86rem; }\n"
           + "    }\n"
 
-            // ── 600 px — portrait tablets / large phones ──────────────────────
-            //  Strip wraps: brand row first, all pills on second row.
-            //  Dividers are hidden (they look odd across a wrapped row).
           + "    @media (max-width:600px) {\n"
           + "      .bot-strip {\n"
           + "        padding:5px 10px;\n"
-          + "        row-gap:5px;          /* breathing room between rows */\n"
+          + "        row-gap:5px;\n"
           + "      }\n"
           + "      .strip-left  { width:100%; justify-content:flex-start; }\n"
           + "      .strip-pills { width:100%; flex-wrap:wrap; }\n"
-          + "      .strip-div   { display:none; }\n"  // hide vertical dividers when wrapped
+          + "      .strip-div   { display:none; }\n"
           + "      .bot-pill    { padding:4px 8px; font-size:0.68rem; gap:3px; }\n"
           + "      .bot-pill i  { font-size:0.63rem; }\n"
           + "      .brand-name  { font-size:0.82rem; }\n"
           + "      .footer      { font-size:0.70rem; padding:5px 12px; }\n"
           + "    }\n"
 
-            // ── 400 px — small phones ────────────────────────────────────────
           + "    @media (max-width:400px) {\n"
           + "      .bot-pill    { padding:3px 6px; font-size:0.62rem; gap:2px; border-radius:6px; }\n"
           + "      .bot-pill i  { font-size:0.58rem; }\n"
           + "      .pill-label  { font-size:0.60rem; }\n"
           + "      .dot         { width:4px; height:4px; }\n"
           + "      .brand-name  { font-size:0.76rem; }\n"
-          + "      .footer      { display:none; }\n"  // reclaim max space for iframe on tiny screens
+          + "      .footer      { display:none; }\n"
           + "    }\n";
     }
 
