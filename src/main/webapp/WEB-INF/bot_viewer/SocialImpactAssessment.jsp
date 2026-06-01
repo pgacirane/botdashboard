@@ -12,41 +12,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Social Impact Assessment — AIoniser Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --ink:        #0f1520;
-  --ink2:       #2d3a4e;
-  --ink3:       #5a6a80;
-  --rule:       #c8d4e0;
-  --rule-light: #e4ecf4;
-  --page:       #f7f9fc;
-  --white:      #ffffff;
-  --sa-hdr:     #0a2463;
-  --sa-hdr2:    #1a4a9e;
-  --sa-hdr-txt: #ffffff;
-  --sa-row-a:   #0a2463;
-  --sa-row-b:   #1a4a9e;
-  --sa-row-txt: #ffffff;
-  --sa-stripe:  #eef4fb;
-  --sa-accent:  #1a4a9e;
-  --hv-hdr:     #00443a;
-  --hv-hdr2:    #006b5a;
-  --hv-hdr-txt: #ffffff;
-  --hv-row-a:   #00443a;
-  --hv-row-b:   #006b5a;
-  --hv-row-txt: #ffffff;
-  --hv-stripe:  #e8f7f4;
-  --hv-accent:  #006b5a;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Source Sans 3', 'Segoe UI', sans-serif;
+  /* ── Dashboard-matched dark tokens ── */
+  --bg:         #0b0f1a;
+  --surface:    #131929;
+  --surface2:   #0d1117;
+  --border:     rgba(255,255,255,0.07);
+  --border2:    rgba(255,255,255,0.10);
+  --text:       #eef2ff;
+  --text2:      #8892a4;
+  --text3:      #545d75;
+  --green:      #4ade80;
+
+  /* page / white → surface */
+  --page:       #0b0f1a;
+  --white:      #131929;
+  --rule:       rgba(255,255,255,0.10);
+  --rule-light: rgba(255,255,255,0.06);
+  --ink:        #eef2ff;
+  --ink2:       #8892a4;
+  --ink3:       #545d75;
+
+  /* SmartAttorney table — cobalt → green-tinted dark */
+  --sa-hdr:     #0d2a1a;
+  --sa-hdr2:    #173d24;
+  --sa-hdr-txt: #4ade80;
+  --sa-row-a:   #0d2a1a;
+  --sa-row-b:   #112d1e;
+  --sa-row-txt: #c6f6d5;
+  --sa-stripe:  rgba(74,222,128,0.04);
+  --sa-accent:  #4ade80;
+
+  /* HIV Guidelines table — teal → green-tinted dark */
+  --hv-hdr:     #0a2218;
+  --hv-hdr2:    #0f2e20;
+  --hv-hdr-txt: #4ade80;
+  --hv-row-a:   #0a2218;
+  --hv-row-b:   #0d2a1d;
+  --hv-row-txt: #c6f6d5;
+  --hv-stripe:  rgba(74,222,128,0.04);
+  --hv-accent:  #4ade80;
+
+  --font-display: 'Sora', sans-serif;
+  --font-body:    'Sora', sans-serif;
   --page-max:   1280px;
   --pad:        40px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--page);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 14px;
@@ -56,49 +73,42 @@ body {
 
 /* ── Page header ── */
 .page-header {
-  background: linear-gradient(135deg, #0a1628 0%, #0a2463 55%, #1a4a9e 100%);
-  color: #fff;
-  padding: 48px var(--pad) 44px;
-  position: relative;
-  overflow: hidden;
-}
-.page-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,.06) 0%, transparent 60%),
-    radial-gradient(circle at 10% 80%, rgba(255,255,255,.04) 0%, transparent 50%);
-  pointer-events: none;
+  background: linear-gradient(135deg, #0a1628 0%, #0a2463 60%, #1a4a9e 100%);
+  color: #eef2ff;
+  padding: 14px var(--pad) 12px;
+  position: relative; overflow: hidden; width: 100%;
 }
 .page-header::after {
   content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
-  background: linear-gradient(90deg, #f0b429, #e05252, #3b82f6, #22c55e);
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #4ade80, rgba(74,222,128,0.15), transparent);
 }
 .ph-inner {
-  max-width: var(--page-max); margin: 0 auto;
-  display: flex; align-items: flex-start;
-  justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  width: 100%; max-width: var(--page-max); margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0 clamp(16px,3vw,40px);
 }
-.ph-left { flex: 1; min-width: 280px; }
+.ph-left { display: contents; }
 .ph-kicker {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: rgba(255,255,255,.55); margin-bottom: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(74,222,128,0.7);
+  white-space: nowrap; flex-shrink: 0;
 }
 .ph-title {
-  font-family: var(--font-display);
-  font-size: clamp(22px,4vw,36px);
-  font-weight: 800; line-height: 1.15; color: #fff; margin-bottom: 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(14px,2vw,20px);
+  font-weight: 700; line-height: 1.2; color: #eef2ff;
+  white-space: nowrap;
 }
-.ph-subtitle { font-size: 14px; color: rgba(255,255,255,.72); max-width: 560px; line-height: 1.6; }
-.ph-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
-.ph-meta-badge {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
-  border-radius: 6px; padding: 5px 12px;
-  font-size: 11px; color: rgba(255,255,255,.8); white-space: nowrap;
+.ph-subtitle {
+  font-size: clamp(10px,1.2vw,12px);
+  color: rgba(255,255,255,.60);
+  line-height: 1.5; flex: 1;
 }
-.ph-meta-badge strong { color: #fff; }
 
 /* ── Sticky nav tabs ── */
 .nav-tabs {
@@ -156,10 +166,10 @@ body {
 .ml-badge {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 12px; border-radius: 20px;
-  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #131929;
 }
-.ml-badge.harms    { background: #c41e3a; }
-.ml-badge.benefits { background: #1a7a3e; }
+.ml-badge.harms    { background: #e05252; }
+.ml-badge.benefits { background: #22c55e; }
 .ml-sub { font-size: 12px; color: var(--ink3); font-style: italic; }
 
 /* ── Matrix table ── */
@@ -226,10 +236,10 @@ body {
   font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
   padding: 2px 8px; border-radius: 10px; margin-bottom: 6px;
 }
-.sev-high   { background: #fde8e8; color: #b91c1c; }
-.sev-medium { background: #fef3cd; color: #92400e; }
-.sev-low    { background: #d1fae5; color: #065f46; }
-.sev-pos    { background: #dbeafe; color: #1d4ed8; }
+.sev-high   { background: rgba(248,113,113,0.12); color: #dc2626; }
+.sev-medium { background: rgba(251,191,36,0.10); color: #92400e; }
+.sev-low    { background: rgba(74,222,128,0.10); color: #059669; }
+.sev-pos    { background: rgba(96,165,250,0.10); color: #4ade80; }
 
 /* ── Divider ── */
 .section-divider { border: none; border-top: 1px solid var(--rule); margin: 0; }
@@ -238,7 +248,7 @@ body {
 .print-btn-wrap { display: flex; justify-content: flex-end; max-width: var(--page-max); margin: 0 auto; padding: 12px var(--pad) 0; }
 .print-btn {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 9px 20px; border-radius: 8px; background: var(--ink2); color: #fff;
+  padding: 9px 20px; border-radius: 8px; background: var(--ink2); color: #131929;
   border: none; cursor: pointer; font-family: var(--font-body); font-size: 12px; font-weight: 600;
   letter-spacing: .03em; text-transform: uppercase; transition: background .15s, transform .1s;
 }
@@ -247,16 +257,26 @@ body {
 
 /* ── Page footer ── */
 .page-footer {
-  background: var(--ink); color: rgba(255,255,255,.5);
-  text-align: center; padding: 24px var(--pad);
-  font-size: 11px; letter-spacing: .04em;
+  background: #0d1117;
+  border-top: 1px solid rgba(74,222,128,0.2);
+  color: #8892a4;
+  text-align: center;
+  padding: 20px var(--pad);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .06em;
+  line-height: 1.9;
 }
-.page-footer strong { color: rgba(255,255,255,.8); }
+.page-footer strong {
+  color: #4ade80;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
 
 /* ── Responsive ── */
 @media print {
   .nav-tabs, .print-btn-wrap { display: none !important; }
-  body { background: #fff; font-size: 11px; }
+  body { background: var(--bg); font-size: 11px; }
   .main-content { padding: 10px 0; gap: 32px; }
   .page-header { padding: 20px 16px; }
   .matrix-wrap { box-shadow: none; }
@@ -282,23 +302,13 @@ body {
 <!-- ── PAGE HEADER ── -->
 <div class="page-header">
   <div class="ph-inner">
-    <div class="ph-left">
-      <div class="ph-kicker">AIoniser Platform &nbsp;·&nbsp; Global Deployment</div>
-      <h1 class="ph-title">Social Impact Assessment<br>Matrix Report</h1>
-      <p class="ph-subtitle">
-        A structured evaluation of social harms and benefits arising from two AI-powered
-        public-service platforms: <strong>SmartAttorney AI</strong> and the
-        <strong>AI Clinical Guidelines Assistant</strong>.
-        Methodology follows the Social Impact Matrix framework
-        (Assessing Harms &amp; Amplifying Benefits) applicable across any jurisdiction.
-      </p>
-    </div>
-    <div class="ph-meta">
-      <div class="ph-meta-badge">Prepared by <strong>Gacirane Patrick</strong></div>
-      <div class="ph-meta-badge">Framework: <strong>Social Impact Matrix</strong></div>
-      <div class="ph-meta-badge">Year: <strong>2026</strong></div>
-      <div class="ph-meta-badge">Scope: <strong>Global / Any Jurisdiction</strong></div>
-    </div>
+    <div class="ph-kicker">Social Impact &nbsp;·&nbsp; 2026</div>
+    <h1 class="ph-title">Social Impact Assessment Matrix Report</h1>
+    <p class="ph-subtitle">
+      Evaluation of social harms &amp; benefits for
+      <strong>SmartAttorney AI</strong> and the <strong>AI Clinical Guidelines Assistant</strong>
+      — Social Impact Matrix methodology.
+    </p>
   </div>
 </div>
 
@@ -887,11 +897,18 @@ body {
 </main>
 
 <footer class="page-footer">
-  <strong>AIoniser Platform — Social Impact Assessment Report</strong> &nbsp;|&nbsp;
-  Prepared by Gacirane Patrick &nbsp;|&nbsp;
-  &copy; 2026 &nbsp;|&nbsp;
-  Methodology: Social Impact Matrix (Assessing Harms &amp; Amplifying Benefits) &nbsp;|&nbsp;
-  Scope: Global / Any Jurisdiction
+  <div style="color:#4ade80; font-weight:600; font-size:12px; letter-spacing:.06em; margin-bottom:6px;">
+    AIoniser Platform &mdash; Social Impact Assessment Report
+  </div>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px 18px; color:#8892a4;">
+    <span>Prepared by <span style="color:#eef2ff; font-weight:500;">Gacirane Patrick</span></span>
+    <span style="color:rgba(74,222,128,0.3);">|</span>
+    <span>&copy; 2026</span>
+    <span style="color:rgba(74,222,128,0.3);">|</span>
+    <span>Methodology: <span style="color:#eef2ff;">Social Impact Matrix</span> (Assessing Harms &amp; Amplifying Benefits)</span>
+    <span style="color:rgba(74,222,128,0.3);">|</span>
+    <span>Scope: <span style="color:#eef2ff;">Global / Any Jurisdiction</span></span>
+  </div>
 </footer>
 
 </body>

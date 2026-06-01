@@ -264,8 +264,11 @@ public class BotViewerTemplate implements Filter {
 
              // ── Footer ──
              + "  <div class=\"footer\">\n"
-             + "    &copy; 2026 AIonifier &mdash; by Patrick &nbsp;|&nbsp;\n"
-             + "    <a href=\"https://www.linkedin.com/in/patricus/\">Patrick Gacirane</a>\n"
+             + "          <p>\n" +
+"        &copy; 2026\n" +
+"        <a href=\"https://www.linkedin.com/in/patricus/\" target=\"_blank\" rel=\"noopener noreferrer\">GACIRANE Patrick</a>\n" +
+"        &mdash; AIonifier AI Suite &mdash; MVP Showcase Portfolio &mdash; Not for production use.\n" +
+"      </p>\n"
              + "  </div>\n"
              + "</div>\n"
              + "<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>\n"

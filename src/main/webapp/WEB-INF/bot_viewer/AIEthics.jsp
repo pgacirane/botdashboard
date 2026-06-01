@@ -12,35 +12,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AI Ethics — AIoniser Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 /* ── Tokens ── */
 :root {
-  --bg:        #0a0d14;
-  --bg2:       #0f1420;
-  --bg3:       #141926;
-  --surface:   #161c2d;
-  --border:    rgba(255,255,255,0.06);
-  --border2:   rgba(255,255,255,0.10);
-  --text:      #e8eaf2;
-  --text2:     #8b92a8;
-  --text3:     #545d75;
-  --green:     #4ade80;
-  --green2:    rgba(74,222,128,0.12);
-  --green3:    rgba(74,222,128,0.06);
-  --amber:     #fbbf24;
-  --amber2:    rgba(251,191,36,0.12);
-  --red:       #f87171;
-  --red2:      rgba(248,113,113,0.10);
-  --blue:      #60a5fa;
-  --blue2:     rgba(96,165,250,0.10);
-  --violet:    #a78bfa;
-  --violet2:   rgba(167,139,250,0.10);
-  --font-d:    'DM Serif Display', Georgia, serif;
-  --font-b:    'DM Sans', sans-serif;
-  --font-m:    'DM Mono', monospace;
-  --max:       1100px;
-  --pad:       clamp(20px,5vw,60px);
+  --bg:      #0b0f1a;
+  --bg2:     #0d1117;
+  --bg3:     #131929;
+  --surface: #131929;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.10);
+  --text:    #eef2ff;
+  --text2:   #8892a4;
+  --text3:   #545d75;
+  --green:   #4ade80;
+  --green2:  rgba(74,222,128,0.12);
+  --green3:  rgba(74,222,128,0.06);
+  --green4:  rgba(74,222,128,0.18);
+  --font-d:  'Sora', sans-serif;
+  --font-b:  'Sora', sans-serif;
+  --font-m:  'IBM Plex Mono', monospace;
+  --max:     1100px;
+  --pad:     clamp(20px,5vw,60px);
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -89,16 +82,7 @@ body::before {
   display: flex; flex-direction: column; gap: 20px;
 }
 
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-m); font-size: 11px; font-weight: 500;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--green);
-  background: var(--green3);
-  border: 1px solid rgba(74,222,128,0.2);
-  border-radius: 999px; padding: 5px 14px;
-  width: fit-content;
-}
+.hero-eyebrow { display: none; }
 .hero-eyebrow::before {
   content:'';
   width:6px; height:6px; border-radius:50%;
@@ -110,10 +94,11 @@ body::before {
 
 .hero-title {
   font-family: var(--font-d);
-  font-size: clamp(36px,6vw,72px);
-  font-weight: 400; line-height: 1.05;
+  font-size: clamp(20px,3vw,34px);
+  font-weight: 700; line-height: 1.1;
   color: var(--text);
   letter-spacing: -.02em;
+  white-space: nowrap;
 }
 .hero-title em {
   font-style: italic;
@@ -121,22 +106,16 @@ body::before {
 }
 
 .hero-sub {
-  font-size: clamp(14px,2vw,17px);
+  font-size: clamp(11px,1.2vw,13px);
   color: var(--text2);
-  max-width: 560px; line-height: 1.7;
+  line-height: 1.5;
+  flex: 1;
 }
 
-.hero-divider {
-  width: 100%; height: 1px;
-  background: linear-gradient(90deg, rgba(74,222,128,0.3), rgba(74,222,128,0.05), transparent);
-  margin-top: 8px;
-}
+.hero-divider { display: none; }
 
 /* ── Version badge ── */
-.version-row {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  padding: 0 var(--pad); max-width: var(--max); margin: 0 auto 48px;
-}
+.version-row { display: none; }
 .vbadge {
   font-family: var(--font-m); font-size: 10px; letter-spacing: .12em;
   text-transform: uppercase; color: var(--text3);
@@ -172,11 +151,11 @@ body::before {
   position:absolute; top:0; left:0; right:0; height:2px;
 }
 .card.privacy::before  { background: linear-gradient(90deg, var(--green), transparent); }
-.card.cookies::before  { background: linear-gradient(90deg, var(--blue), transparent); }
-.card.accuracy::before { background: linear-gradient(90deg, var(--amber), transparent); }
-.card.scope::before    { background: linear-gradient(90deg, var(--red), transparent); }
-.card.purpose::before  { background: linear-gradient(90deg, var(--violet), transparent); }
-.card.open::before     { background: linear-gradient(90deg, var(--green), var(--blue), transparent); }
+.card.cookies::before  { background: linear-gradient(90deg, var(--green), transparent); }
+.card.accuracy::before { background: linear-gradient(90deg, var(--green), transparent); }
+.card.scope::before    { background: linear-gradient(90deg, var(--green), transparent); }
+.card.purpose::before  { background: linear-gradient(90deg, var(--green), transparent); }
+.card.open::before     { background: linear-gradient(90deg, var(--green), transparent); }
 
 /* Icon column */
 .card-icon {
@@ -185,12 +164,12 @@ body::before {
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; flex-shrink: 0; margin-top: 2px;
 }
-.card.privacy  .card-icon { background: var(--green2); }
-.card.cookies  .card-icon { background: var(--blue2);  }
-.card.accuracy .card-icon { background: var(--amber2); }
-.card.scope    .card-icon { background: var(--red2);   }
-.card.purpose  .card-icon { background: var(--violet2);}
-.card.open     .card-icon { background: var(--green2); }
+.card.privacy  .card-icon { background: var(--green3); }
+.card.cookies  .card-icon { background: var(--green3); }
+.card.accuracy .card-icon { background: var(--green3); }
+.card.scope    .card-icon { background: var(--green3); }
+.card.purpose  .card-icon { background: var(--green3); }
+.card.open     .card-icon { background: var(--green3); }
 
 /* Card text */
 .card-num {
@@ -199,10 +178,10 @@ body::before {
   margin-bottom: 5px; display: block;
 }
 .card.privacy  .card-num { color: var(--green); }
-.card.cookies  .card-num { color: var(--blue);  }
-.card.accuracy .card-num { color: var(--amber); }
-.card.scope    .card-num { color: var(--red);   }
-.card.purpose  .card-num { color: var(--violet);}
+.card.cookies  .card-num { color: var(--green); }
+.card.accuracy .card-num { color: var(--green); }
+.card.scope    .card-num { color: var(--green); }
+.card.purpose  .card-num { color: var(--green); }
 .card.open     .card-num { color: var(--green); }
 
 .card-title {
@@ -229,20 +208,20 @@ body::before {
   border: 1px solid; display: inline-flex; align-items: center; gap: 5px;
 }
 .chip::before { content:'✓'; font-size: 9px; }
-.chip.g { color:var(--green); border-color:rgba(74,222,128,.25);  background:var(--green3);  }
-.chip.b { color:var(--blue);  border-color:rgba(96,165,250,.25);  background:var(--blue2);   }
-.chip.a { color:var(--amber); border-color:rgba(251,191,36,.25);  background:var(--amber2);  }
-.chip.r { color:var(--red);   border-color:rgba(248,113,113,.25); background:var(--red2);    }
-.chip.v { color:var(--violet);border-color:rgba(167,139,250,.25); background:var(--violet2); }
+.chip.g, .chip.b, .chip.a, .chip.r, .chip.v {
+  color: var(--green);
+  border-color: rgba(74,222,128,0.25);
+  background: var(--green3);
+}
 
 /* Warning banner inside accuracy card */
 .warn-banner {
   margin-top: 14px;
   display: flex; align-items: flex-start; gap: 10px;
-  background: rgba(251,191,36,0.07);
-  border: 1px solid rgba(251,191,36,0.22);
+  background: rgba(74,222,128,0.05);
+  border: 1px solid rgba(74,222,128,0.18);
   border-radius: 8px; padding: 12px 14px;
-  font-size: 13px; line-height: 1.6; color: #d4a520;
+  font-size: 13px; line-height: 1.6; color: var(--green);
 }
 .warn-banner .wi { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 
@@ -250,10 +229,10 @@ body::before {
 .prod-banner {
   margin-top: 14px;
   display: flex; align-items: flex-start; gap: 10px;
-  background: rgba(248,113,113,0.07);
-  border: 1px solid rgba(248,113,113,0.22);
+  background: rgba(74,222,128,0.05);
+  border: 1px solid rgba(74,222,128,0.18);
   border-radius: 8px; padding: 12px 14px;
-  font-size: 13px; line-height: 1.6; color: #e07070;
+  font-size: 13px; line-height: 1.6; color: var(--green);
 }
 .prod-banner .wi { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 
@@ -311,9 +290,9 @@ body::before {
   .summary-inner { padding: 24px 20px; }
 }
 @media print {
-  body { background: #fff; color: #111; }
+  body { background: var(--bg); color: var(--text); }
   .glow-orb, body::before { display: none; }
-  .card { border-color: #ddd; background: #fff; break-inside: avoid; }
+  .card { border-color: var(--border); background: var(--surface); break-inside: avoid; }
 }
 </style>
 </head>
@@ -326,15 +305,11 @@ body::before {
 
   <!-- ── HERO ── -->
   <header class="hero">
-    <div class="hero-eyebrow">AIoniser Platform &nbsp;·&nbsp; Ethical Framework</div>
-    <h1 class="hero-title">AI Ethics &amp;<br><em>Responsible Use</em></h1>
+    <h1 class="hero-title">AI Ethics &amp; <em>Responsible Use</em></h1>
     <p class="hero-sub">
-      AIoniser is built on a clear set of ethical commitments. These principles govern
-      how every AI application on this platform is designed, deployed, and presented
-      to users — prioritising transparency, privacy, and honest communication about
-      the limits of artificial intelligence.
+      Six ethical principles governing every AI application on this platform —
+      privacy, accuracy, scope, oversight, transparency, and responsible deployment.
     </p>
-    <div class="hero-divider"></div>
   </header>
 
   <!-- ── VERSION ── -->
@@ -541,7 +516,7 @@ body::before {
   <!-- ── FOOTER ── -->
   <footer class="ethics-footer">
     <div class="footer-left">
-      <strong>AIoniser Platform</strong> &nbsp;·&nbsp; AI Ethics &amp; Responsible Use &nbsp;;·&nbsp; Prepared by Gacirane Patrick &nbsp;·&nbsp; © 2026
+      <strong>AIoniser Platform</strong> &nbsp;·&nbsp; AI Ethics &amp; Responsible Use &nbsp;·&nbsp; Prepared by Gacirane Patrick &nbsp;·&nbsp; © 2026
     </div>
     <div class="footer-right">Version 1.0 &nbsp;·&nbsp; Effective 2026</div>
   </footer>

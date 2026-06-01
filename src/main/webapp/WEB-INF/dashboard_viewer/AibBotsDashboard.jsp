@@ -535,7 +535,7 @@
       <div class="hero-identity">
         <a class="hero-name"
            href="https://www.linkedin.com/in/patricus/"
-           target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a>
+           target="_blank" rel="noopener noreferrer">GACIRANE Patrickai</a>
         <span class="hero-role">AI Solutions Architect</span>
       </div>
       <div class="hero-title-wrap">
