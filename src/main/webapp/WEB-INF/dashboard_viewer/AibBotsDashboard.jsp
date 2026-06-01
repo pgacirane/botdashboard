@@ -596,7 +596,7 @@
         <div class="icard-body">
           <div class="warn-row">
             <span class="warn-icon">&#9888;</span>
-            <p><strong>Demo only.</strong> All apps are MVPs — not for clinical, legal, or financial decision-making. <strong>Open to hire</strong> or <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">investors &amp; partners</a> interested in scaling any MVP are welcome to reach out.</p>
+            <p><strong>Demo only.</strong> All apps are MVPs — not for clinical, legal, or financial decision-making. <strong>Open to hire(Consultancy)</strong> or <strong>investors &amp; partners</strong> interested in scaling any MVP are welcome to reach out.</p>
           </div>
         </div>
       </div>
