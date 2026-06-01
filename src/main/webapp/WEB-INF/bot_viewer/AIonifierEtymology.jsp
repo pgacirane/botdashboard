@@ -291,16 +291,6 @@ body::before {
 }
 .creator-desc strong { color: var(--text); }
 
-/* ── Footer ── */
-.page-footer {
-  text-align: center; margin-top: clamp(32px,4vw,56px);
-  padding-top: clamp(14px,2vw,20px);
-  border-top: 1px solid var(--border);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: clamp(0.48rem,1vw,0.58rem);
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-}
-.page-footer a { color: var(--green); text-decoration: none; }
 
 /* ── Part of speech line ── */
 .pos-line {
@@ -488,10 +478,6 @@ body::before {
       </div>
     </div>
   </div>
-
-  <footer class="page-footer">
-    <p>&copy; 2026 &nbsp;&mdash;&nbsp; AIonifier Etymology &nbsp;&mdash;&nbsp; First conceived 2026</p>
-  </footer>
 
 </div>
 </body>

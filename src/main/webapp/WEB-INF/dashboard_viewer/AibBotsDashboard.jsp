@@ -5,7 +5,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIonifier — AI MVP Showcase</title>
+  <title>AIonifier.ai — AI MVP Portfolio</title>
+
+  <!-- ── Social / Open Graph preview ── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="AIonifier.ai" />
+  <meta property="og:title"       content="AIonifier.ai — AI MVP Portfolio" />
+  <meta property="og:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, HR and procurement — built end-to-end by GACIRANE Patrick." />
+  <meta property="og:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url"         content="https://aionifier.ai" />
+
+  <!-- ── Twitter / X card ── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="AIonifier.ai — AI MVP Portfolio" />
+  <meta name="twitter:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, HR and procurement — built end-to-end by GACIRANE Patrick." />
+  <meta name="twitter:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
+
+  <!-- ── Standard SEO ── -->
+  <meta name="description" content="AIonifier.ai — 6 live AI agentic applications spanning legal, clinical, banking, education, HR and procurement — built end-to-end by GACIRANE Patrick." />
+  <meta name="author"      content="GACIRANE Patrick" />
+  <meta name="robots"      content="index, follow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -51,11 +72,6 @@
       font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
       color: var(--green); text-decoration: none;
       display: flex; align-items: center; gap: 7px; flex-shrink: 0;
-    }
-    .nav-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 7px var(--green);
-      animation: blink 2.4s ease-in-out infinite;
     }
     @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.65)} }
     .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
@@ -480,7 +496,29 @@
   <!-- NAV -->
   <nav class="site-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
-      <a class="nav-brand" href="#top"><span class="nav-dot"></span>AIonifier</a>
+      <a class="nav-brand" href="#top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="22" height="22"
+             fill="none" aria-hidden="true" style="flex-shrink:0;display:block;">
+          <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="rgba(74,222,128,0.22)"
+                   stroke-width="1" transform="rotate(-30 16 16)"/>
+          <line x1="16" y1="16" x2="8"  y2="9"  stroke="rgba(74,222,128,0.35)" stroke-width="0.9"/>
+          <line x1="16" y1="16" x2="24" y2="9"  stroke="rgba(74,222,128,0.35)" stroke-width="0.9"/>
+          <line x1="16" y1="16" x2="26" y2="19" stroke="rgba(74,222,128,0.35)" stroke-width="0.9"/>
+          <line x1="16" y1="16" x2="10" y2="24" stroke="rgba(74,222,128,0.35)" stroke-width="0.9"/>
+          <line x1="16" y1="16" x2="22" y2="25" stroke="rgba(74,222,128,0.35)" stroke-width="0.9"/>
+          <line x1="8"  y1="9"  x2="24" y2="9"  stroke="rgba(74,222,128,0.18)" stroke-width="0.7"/>
+          <line x1="10" y1="24" x2="22" y2="25" stroke="rgba(74,222,128,0.18)" stroke-width="0.7"/>
+          <line x1="24" y1="9"  x2="26" y2="19" stroke="rgba(74,222,128,0.18)" stroke-width="0.7"/>
+          <circle cx="16" cy="16" r="5" fill="#4ade80"/>
+          <circle cx="8"  cy="9"  r="2.2" fill="#86efac" opacity="0.9"/>
+          <circle cx="24" cy="9"  r="1.8" fill="#86efac" opacity="0.8"/>
+          <circle cx="26" cy="19" r="2"   fill="#86efac" opacity="0.85"/>
+          <circle cx="10" cy="24" r="1.8" fill="#86efac" opacity="0.8"/>
+          <circle cx="22" cy="25" r="2.2" fill="#86efac" opacity="0.9"/>
+          <circle cx="16" cy="16" r="1.5" fill="#d1fae5" opacity="0.75"/>
+        </svg>
+        AIonifier
+      </a>
       <ul class="nav-links" role="list">
         <li><a href="#top">Home</a></li>
         <li><span class="nav-pip"></span></li>
@@ -535,7 +573,7 @@
       <div class="hero-identity">
         <a class="hero-name"
            href="https://www.linkedin.com/in/patricus/"
-           target="_blank" rel="noopener noreferrer">GACIRANE Patrickai</a>
+           target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a>
         <span class="hero-role">AI Solutions Architect</span>
       </div>
       <div class="hero-title-wrap">

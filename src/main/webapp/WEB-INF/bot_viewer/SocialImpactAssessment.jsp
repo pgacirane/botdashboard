@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Social Impact Assessment — AIoniser Platform</title>
+<title>Social Impact Assessment — AIonifier Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -255,23 +255,6 @@ body {
 .print-btn:hover  { background: var(--ink); }
 .print-btn:active { transform: scale(.97); }
 
-/* ── Page footer ── */
-.page-footer {
-  background: #0d1117;
-  border-top: 1px solid rgba(74,222,128,0.2);
-  color: #8892a4;
-  text-align: center;
-  padding: 20px var(--pad);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .06em;
-  line-height: 1.9;
-}
-.page-footer strong {
-  color: #4ade80;
-  font-weight: 600;
-  letter-spacing: .04em;
-}
 
 /* ── Responsive ── */
 @media print {
@@ -896,20 +879,24 @@ body {
 
 </main>
 
-<footer class="page-footer">
-  <div style="color:#4ade80; font-weight:600; font-size:12px; letter-spacing:.06em; margin-bottom:6px;">
-    AIoniser Platform &mdash; Social Impact Assessment Report
-  </div>
-  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px 18px; color:#8892a4;">
-    <span>Prepared by <span style="color:#eef2ff; font-weight:500;">Gacirane Patrick</span></span>
-    <span style="color:rgba(74,222,128,0.3);">|</span>
-    <span>&copy; 2026</span>
-    <span style="color:rgba(74,222,128,0.3);">|</span>
-    <span>Methodology: <span style="color:#eef2ff;">Social Impact Matrix</span> (Assessing Harms &amp; Amplifying Benefits)</span>
-    <span style="color:rgba(74,222,128,0.3);">|</span>
-    <span>Scope: <span style="color:#eef2ff;">Global / Any Jurisdiction</span></span>
-  </div>
-</footer>
+
+<!-- ── METHODOLOGY ATTRIBUTION ── -->
+<div style="
+  text-align: center;
+  padding: 14px var(--pad) 20px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: #545d75;
+  line-height: 1.8;
+">
+  <span style="text-transform: uppercase; letter-spacing: 0.14em;">Social Impact Matrix Methodology:</span>
+  &nbsp;
+  <span style="color: #8892a4;">Human Sciences Research Council (HSRC)</span>
+  &nbsp;&mdash;&nbsp;
+  <span style="color: #8892a4;">Fair Forward GIZ, 2022</span>
+</div>
 
 </body>
 </html>
