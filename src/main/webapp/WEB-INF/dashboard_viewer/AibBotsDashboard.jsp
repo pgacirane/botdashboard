@@ -440,6 +440,17 @@
       color: rgba(74,222,128,0.6);
     }
 
+    /* ── ety-tag — same green style as mvp-tag ── */
+    .ety-tag {
+      position: absolute; top: 11px; right: 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 3px 8px 3px 6px; border-radius: 4px 0 0 4px;
+      background: rgba(74,222,128,0.07);
+      border: 1px solid rgba(74,222,128,0.16); border-right: none;
+      color: rgba(74,222,128,0.6);
+    }
+
     /* ══ FOOTER ══ */
     .page-footer {
       text-align: center; margin-top: clamp(36px,5vw,56px);
@@ -479,6 +490,8 @@
         <li><a href="#impact">Social Impact &amp; Ethics</a></li>
         <li><span class="nav-pip"></span></li>
         <li><a href="<%= ctx %>/BotViewer?bot=arch">Architecture</a></li>
+        <li><span class="nav-pip"></span></li>
+        <li><a href="#etymology">AIonifier Etymology</a></li>
       </ul>
       <div class="nav-ctas">
         <a class="nav-cta" href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">
@@ -860,6 +873,48 @@
 
     </div><!-- /impact grid -->
 
+    <!-- ════ ETYMOLOGY SECTION ════ -->
+    <div class="divider" id="etymology">
+      <div class="dl"></div>
+      <span>AIonifier Etymology &mdash; Origin of the Word</span>
+      <div class="dlr"></div>
+    </div>
+
+    <div class="bots-grid">
+
+      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=etymology">
+        <div class="corner-glow"></div>
+        <span class="ety-tag">LEXICON</span>
+        <div class="bot-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 19V5a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v13"/>
+            <path d="M4 19a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1v-1"/>
+            <line x1="8" y1="7" x2="14" y2="7"/>
+            <line x1="8" y1="11" x2="16" y2="11"/>
+            <line x1="8" y1="15" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div>
+          <span class="bot-field">Linguistics &middot; Word Origin &middot; Lexicology</span>
+          <h2 class="bot-name">AIonifier &mdash; Etymology</h2>
+          <p class="bot-desc">
+            An AI-generated exploration of the word <strong style="color:#86efac;">AIonifier</strong>,
+            first thought of by Gacirane Patrick in 2026. Traces the morphological roots of
+            <em>AI</em> + <em>-on-</em> + <em>-ify</em> + <em>-er</em> back to Latin, Greek,
+            and Old French sources. Includes IPA pronunciation, word forms, and definitions.
+            <em>Note: this word is not recognised by any official linguistic authority and is
+            used solely on this platform.</em>
+          </p>
+          <p class="bot-scale">AI-generated etymology &rarr; For platform use only &middot; 2026</p>
+        </div>
+        <div class="bot-footer">
+          <span class="launch-label">Read etymology</span>
+          <span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </a>
+
+    </div><!-- /etymology grid -->
+
     <footer class="page-footer">
       <p>
         &copy; 2026
@@ -892,7 +947,7 @@
         }
       });
     }, { rootMargin: "-40% 0px -55% 0px" });
-    ["top","apps","impact"].forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    ["top","apps","impact","etymology"].forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
   </script>
 </body>
 </html>

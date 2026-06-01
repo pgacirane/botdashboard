@@ -92,7 +92,8 @@ public class BotViewerTemplate implements Filter {
             case "arch":  botUrl = ctx + "/arch-diagram";            break;
             // ── NEW: Social Impact Assessment page ──
             case "sia":    botUrl = ctx + "/SocialImpact";   break;
-            case "ethics": botUrl = ctx + "/AIEthics";             break;
+            case "ethics":    botUrl = ctx + "/AIEthics";             break;
+            case "etymology": botUrl = ctx + "/Etymology";           break;
             default:      botUrl = "";                               break;
         }
 
@@ -108,11 +109,12 @@ public class BotViewerTemplate implements Filter {
         // ── NEW active state for sia pill ──
         String ks  = active(botKey, "sia");
         String ke  = active(botKey, "ethics");
+        String kety = active(botKey, "etymology");
 
         String iframeBlock = botUrl.isEmpty() ? emptyState(ctx) : iframe(botUrl);
 
         PrintWriter out = response.getWriter();
-        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks, ke));
+        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks, ke, kety));
         out.close();
     }
 
@@ -206,7 +208,7 @@ public class BotViewerTemplate implements Filter {
     private static String page(String ctx, String iframeBlock,
                                 String kl, String kb, String kg,
                                 String kc, String kh, String ka,
-                                String ks, String ke) {
+                                String ks, String ke, String kety) {
         return "<!DOCTYPE html>\n"
              + "<html lang=\"en\">\n"
              + "<head>\n"
@@ -246,6 +248,8 @@ public class BotViewerTemplate implements Filter {
              + pill(ctx, "sia",   ks, "fa-chart-pie",        "Social Impact")
              + "      <span class=\"strip-div\"></span>\n"
              + pill(ctx, "ethics", ke, "fa-shield-halved",    "AI Ethics")
+             + "      <span class=\"strip-div\"></span>\n"
+             + pill(ctx, "etymology", kety, "fa-book-open",   "AIonifier Etymology")
              + "    </div>\n"
              + "  </div>\n"
 

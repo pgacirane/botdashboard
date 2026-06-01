@@ -28,20 +28,18 @@
         <url-pattern>/AIEthics</url-pattern>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>home_dashboard</filter-name>
+        <url-pattern>/Etymology</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>BotViewerFilter</filter-name>
         <url-pattern>/BotViewer</url-pattern>
     </filter-mapping>
 
     <!-- ══ SERVLETS ═════════════════════════════════════════════════════════
-         RULE: @WebServlet annotation OR web.xml — NEVER both for same servlet.
-
-         BotViewer.java      uses @WebServlet("/BotViewer") → NOT declared here
-         ChatServlet.java    uses @WebServlet("/chat")       → NOT declared here
-         LoadArchitecture    uses @WebServlet("/arch",...)   → NOT declared here
-
-         AiBotsDashboard     has no annotation → declared here via <jsp-file>
-         SocialImpactServlet has no annotation → declared here
-         AIEthicsServlet     has no annotation → declared here
+         RULE: @WebServlet annotation OR web.xml — NEVER both.
+         BotViewer.java, ChatServlet.java, LoadArchitectureDiagram.java
+         all use @WebServlet — NOT declared here.
     ════════════════════════════════════════════════════════════════════════ -->
     <servlet>
         <servlet-name>AiBotsDashboard</servlet-name>
@@ -55,11 +53,12 @@
         <servlet-name>AIEthicsServlet</servlet-name>
         <servlet-class>servlets.AIEthicsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AIonifierEtymologyServlet</servlet-name>
+        <servlet-class>servlets.AIonifierEtymologyServlet</servlet-class>
+    </servlet>
 
-    <!-- ══ SERVLET MAPPINGS ═════════════════════════════════════════════════
-         BotViewerServlet mapping REMOVED — BotViewer.java @WebServlet handles it.
-         ChatServlet mapping REMOVED      — ChatServlet.java @WebServlet handles it.
-    ════════════════════════════════════════════════════════════════════════ -->
+    <!-- ══ SERVLET MAPPINGS ═════════════════════════════════════════════════ -->
     <servlet-mapping>
         <servlet-name>AiBotsDashboard</servlet-name>
         <url-pattern>/AiBotsDashboard</url-pattern>
@@ -71,6 +70,10 @@
     <servlet-mapping>
         <servlet-name>AIEthicsServlet</servlet-name>
         <url-pattern>/AIEthics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AIonifierEtymologyServlet</servlet-name>
+        <url-pattern>/Etymology</url-pattern>
     </servlet-mapping>
 
     <!-- ══ SESSION ══════════════════════════════════════════════════════════ -->
