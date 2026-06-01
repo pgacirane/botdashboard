@@ -454,7 +454,7 @@ body::before {
             <strong>MVP disclaimer:</strong> These applications are demonstrations only.
             They are not certified, regulated, or validated for professional or institutional
             use. Organisations interested in production deployment should contact
-            Evolve Ltd to discuss a fully engineered, validated, and compliant solution.
+            GACIRANE Patrick to discuss a fully engineered, validated, and compliant solution.
           </span>
         </div>
         <div class="chips" style="margin-top:12px">
@@ -541,8 +541,7 @@ body::before {
   <!-- ── FOOTER ── -->
   <footer class="ethics-footer">
     <div class="footer-left">
-      <strong>AIoniser Platform</strong> &nbsp;·&nbsp; AI Ethics &amp; Responsible Use &nbsp;·&nbsp;
-      Evolve Ltd, Kigali, Rwanda &nbsp;·&nbsp; Prepared by Gacirane Patrick &nbsp;·&nbsp; © 2026
+      <strong>AIoniser Platform</strong> &nbsp;·&nbsp; AI Ethics &amp; Responsible Use &nbsp;;·&nbsp; Prepared by Gacirane Patrick &nbsp;·&nbsp; © 2026
     </div>
     <div class="footer-right">Version 1.0 &nbsp;·&nbsp; Effective 2026</div>
   </footer>
