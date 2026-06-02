@@ -11,7 +11,7 @@
   <meta property="og:type"        content="website" />
   <meta property="og:site_name"   content="AIonifier.ai" />
   <meta property="og:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta property="og:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, HR and procurement — built end-to-end by GACIRANE Patrick." />
+  <meta property="og:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, and HR— built end-to-end by GACIRANE Patrick." />
   <meta property="og:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
   <meta property="og:image:width"  content="1200" />
   <meta property="og:image:height" content="630" />
@@ -20,11 +20,11 @@
   <!-- ── Twitter / X card ── -->
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta name="twitter:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, HR and procurement — built end-to-end by GACIRANE Patrick." />
+  <meta name="twitter:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="twitter:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
 
   <!-- ── Standard SEO ── -->
-  <meta name="description" content="AIonifier.ai — 6 live AI agentic applications spanning legal, clinical, banking, education, HR and procurement — built end-to-end by GACIRANE Patrick." />
+  <meta name="description" content="AIonifier.ai — 6 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="author"      content="GACIRANE Patrick" />
   <meta name="robots"      content="index, follow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -621,7 +621,6 @@
             <span class="pill">Python</span>
             <span class="pill">Java EE / JSP</span>
             <span class="pill">FastAPI</span>
-            <span class="pill">HuggingFace</span>
             <span class="pill">Heroku</span>
             <span class="pill">PostgreSQL</span>
             <span class="pill">Git</span>
@@ -741,7 +740,7 @@
         <div>
           <span class="bot-field">Platform &middot; AI Infrastructure &middot; Tech Stack</span>
           <h2 class="bot-name">Platform Architecture</h2>
-          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, HuggingFace deployments and PostgreSQL datastores behind all five domain MVPs.</p>
+          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all five domain MVPs.</p>
           <p class="bot-scale">Underpins &rarr; All 5 AI domain MVPs above</p>
         </div>
         <div class="bot-footer">
