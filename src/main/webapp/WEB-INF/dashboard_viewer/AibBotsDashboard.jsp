@@ -286,7 +286,7 @@
       <div class="icard engage-card">
         <div class="icard-label">Engage &amp; Scale</div>
         <div class="icard-body">
-          <p>Each app is an <strong>engineering MVP</strong> — validated on real domain documentation and architecturally ready to scale with a production team. <strong>Open to consulting, full-time roles</strong>, and <strong>investors or partners</strong> interested in taking any MVP to national scale. <a href="<%= ctx %>/Hire">View hire page &rarr;</a></p>
+          <p>Each app is an <strong>engineering MVP</strong> — validated on real domain documentation and architecturally ready to scale with a production team. <strong>Open to consulting, full-time roles</strong>, and <strong>investors or partners</strong> interested in taking any MVP to national scale. <a href="<%= ctx %>/BotViewer?bot=hire">View hire page &rarr;</a></p>
         </div>
       </div>
       <div class="icard stat-card">
