@@ -256,7 +256,7 @@
     <a href="<%= ctx %>/BotViewer?bot=arch" role="menuitem">Architecture</a>
     <a href="#etymology" role="menuitem">Etymology</a>
     <div class="drawer-sep"></div>
-    <a href="<%= ctx %>/BotViewer?bot=hire" role="menuitem" class="drawer-cta">&#128188; Hire me</a>
+    <a href="<%= ctx %>/" role="menuitem" class="drawer-cta">&#128188; Hire me</a>
     <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer" class="drawer-cta" style="margin-top:6px;">&#128100; LinkedIn</a>
     <a href="https://github.com/pgacirane" target="_blank" rel="noopener noreferrer" class="drawer-cta" style="margin-top:6px;">&#128187; GitHub</a>
   </div>
