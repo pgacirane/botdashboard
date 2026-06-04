@@ -11,7 +11,7 @@
   <meta property="og:type"        content="website" />
   <meta property="og:site_name"   content="AIonifier.ai" />
   <meta property="og:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta property="og:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, and HR— built end-to-end by GACIRANE Patrick." />
+  <meta property="og:description" content="5 live AI agentic applications spanning legal, clinical, banking, education, and HR— built end-to-end by GACIRANE Patrick." />
   <meta property="og:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
   <meta property="og:image:width"  content="1200" />
   <meta property="og:image:height" content="630" />
@@ -20,11 +20,11 @@
   <!-- ── Twitter / X card ── -->
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta name="twitter:description" content="6 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta name="twitter:description" content="5 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="twitter:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
 
   <!-- ── Standard SEO ── -->
-  <meta name="description" content="AIonifier.ai — 6 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta name="description" content="AIonifier.ai — 5 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="author"      content="GACIRANE Patrick" />
   <meta name="robots"      content="index, follow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -588,7 +588,7 @@
       <div class="icard">
         <div class="icard-label">Platform</div>
         <div class="icard-body">
-          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 6 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
+          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 5 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
         </div>
       </div>
       <div class="icard">
@@ -602,8 +602,8 @@
       </div>
       <div class="icard stat-card">
         <div class="icard-label">AI Apps</div>
-        <div class="stat-num">9+</div>
-        <div class="stat-sub">6 Live &middot; 3 In Dev</div>
+        <div class="stat-num">8+</div>
+        <div class="stat-sub">5 Live &middot; 3 In Dev</div>
       </div>
       <div class="icard">
         <div class="icard-label">Technology Stack</div>
