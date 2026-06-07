@@ -265,11 +265,11 @@
 
     <section class="hero">
       <div class="hero-photo-wrap">
-        <img class="hero-photo" src="<%= ctx %>/images/20250424_170544.png" alt="GACIRANE Patrick — AI Solutions Architect" />
+        <img class="hero-photo" src="<%= ctx %>/images/20250424_170544.png" alt="GACIRANE Patrick — AI Solution builder" />
       </div>
       <div class="hero-identity">
         <a class="hero-name" href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a>
-        <span class="hero-role">AI Solutions Architect &amp; Digital Systems Developer</span>
+        <span class="hero-role">AI Solutions Builder</span>
       </div>
       <div class="hero-title-wrap">
         <h1 class="hero-title"><span class="hl">AIonifier</span> &mdash; AI&nbsp;MVP&nbsp;Portfolio</h1>
