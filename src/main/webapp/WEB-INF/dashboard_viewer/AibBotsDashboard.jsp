@@ -48,7 +48,7 @@
       border-bottom: 1px solid var(--border); display: flex; align-items: center;
       padding: 0 clamp(16px,4vw,48px);
     }
-    .nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 0; }
     .nav-brand {
       font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
       color: var(--green); text-decoration: none; display: flex; align-items: center; gap: 7px; flex-shrink: 0;
@@ -61,8 +61,6 @@
       transition: color .2s, background .2s; white-space: nowrap;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--green); background: rgba(74,222,128,0.08); }
-    .nav-links a.hire-link { color: var(--green); border: 1px solid rgba(74,222,128,0.28); padding: 4px 11px; }
-    .nav-links a.hire-link:hover { color: #86efac; background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.5); }
     .nav-pip { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.12); margin: 0 2px; }
     .nav-ctas { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .nav-cta {
@@ -229,10 +227,12 @@
         <li><a href="<%= ctx %>/BotViewer?bot=arch">Architecture</a></li>
         <li><span class="nav-pip"></span></li>
         <li><a href="#etymology">Etymology</a></li>
-        <li><span class="nav-pip"></span></li>
-        <li><a href="<%= ctx %>/BotViewer?bot=hire" class="hire-link">&#128188; Hire me</a></li>
       </ul>
       <div class="nav-ctas">
+        <a class="nav-cta" href="<%= ctx %>/BotViewer?bot=hire">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          Hire me
+        </a>
         <a class="nav-cta" href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           LinkedIn
@@ -256,7 +256,7 @@
     <a href="<%= ctx %>/BotViewer?bot=arch" role="menuitem">Architecture</a>
     <a href="#etymology" role="menuitem">Etymology</a>
     <div class="drawer-sep"></div>
-    <a href="<%= ctx %>/" role="menuitem" class="drawer-cta">&#128188; Hire me</a>
+    <a href="<%= ctx %>/BotViewer?bot=hire" role="menuitem" class="drawer-cta">&#128188; Hire me</a>
     <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer" class="drawer-cta" style="margin-top:6px;">&#128100; LinkedIn</a>
     <a href="https://github.com/pgacirane" target="_blank" rel="noopener noreferrer" class="drawer-cta" style="margin-top:6px;">&#128187; GitHub</a>
   </div>
