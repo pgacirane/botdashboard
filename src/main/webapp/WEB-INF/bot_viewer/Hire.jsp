@@ -5,12 +5,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hire GACIRANE Patrick — AI Solutions Architect</title>
-  <meta name="description" content="Hire GACIRANE Patrick — AI Solutions Architect building production multi-agent systems, RAG pipelines, and MCP servers. Available for consulting, part-time, and remote roles across East Africa and internationally." />
+  <title>Hire GACIRANE Patrick — AI Solutions Builder</title>
+  <meta name="description" content="Hire GACIRANE Patrick — AI Solutions Builder building production multi-agent systems, RAG pipelines, and MCP servers. Available for consulting, part-time, and remote roles across East Africa and internationally." />
   <meta name="author" content="GACIRANE Patrick" />
   <meta name="robots" content="index, follow" />
   <meta property="og:type"        content="profile" />
-  <meta property="og:title"       content="Hire GACIRANE Patrick — AI Solutions Architect" />
+  <meta property="og:title"       content="Hire GACIRANE Patrick — AI Solution Builder" />
   <meta property="og:description" content="Building production multi-agent AI systems. Open to consulting, part-time, and remote roles across East Africa and internationally." />
   <meta property="og:image"       content="<%= ctx %>/images/aionifier-og.png" />
   <meta property="og:url"         content="https://aionifier.ai/hire" />
@@ -19,7 +19,7 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "GACIRANE Patrick",
-    "jobTitle": "AI Solutions Architect & Digital Systems Developer",
+    "jobTitle": "AI Solutions Builder",
     "url": "https://aionifier.ai",
     "sameAs": ["https://www.linkedin.com/in/patricus/","https://github.com/pgacirane"],
     "knowsAbout": ["Multi-Agent AI Systems","CrewAI","RAG Pipelines","MCP Servers","LLMOps","FastAPI","Java EE","PostgreSQL","ChromaDB","FAISS","AI Ethics","Regulatory AI","Clinical AI","Fintech AI"]
@@ -157,17 +157,17 @@
 
     <section class="hire-hero" aria-label="Hire introduction">
       <div class="hero-photo-wrap">
-        <img class="hero-photo" src="<%= ctx %>/images/20250424_170544.png" alt="GACIRANE Patrick — AI Solutions Architect" />
+        <img class="hero-photo" src="<%= ctx %>/images/20250424_170544.png" alt="GACIRANE Patrick — AI Solutions Builder" />
       </div>
       <div class="hero-identity">
         <a class="hero-name" href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a>
-        <span class="hero-role">AI Solutions Architect &amp; Digital Systems Developer</span>
+        <span class="hero-role">AI Solutions Builder &amp; Digital Systems Developer</span>
       </div>
       <div class="hire-headline">
         <h1><span class="hl">Available</span> for AI&nbsp;roles &mdash;<br/>worldwide.</h1>
       </div>
       <div class="hire-sub">
-        <p>AI engineer building <strong>production multi-agent systems</strong> grounded in regulatory, clinical, and financial contexts — with <strong>5 live demos</strong> you can interact with right now. Open to consulting engagements, part-time positions, and remote contracts across East Africa and internationally.</p>
+        <p>AI Solutions Builder building <strong>production multi-agent systems</strong> grounded in regulatory, clinical, and financial contexts — with <strong>5 live demos</strong> you can interact with right now. Open to consulting engagements, part-time positions, and remote contracts across East Africa and internationally.</p>
       </div>
     </section>
 
@@ -201,7 +201,7 @@
       <div class="ecard">
         <div class="ecard-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <span class="ecard-label">Full-time / Long-term</span>
-        <div class="ecard-title">AI Solutions Architect</div>
+        <div class="ecard-title">AI Solutions Builder</div>
         <div class="ecard-body">Join your team as an <strong>AI/ML Engineer or Solutions Architect</strong>. I design and build production AI systems end-to-end — multi-agent backends, RAG pipelines, streaming frontends, and vector datastores.</div>
         <div class="ecard-footer"><a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
       </div>
