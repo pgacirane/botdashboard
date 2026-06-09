@@ -484,7 +484,7 @@
     </div>
 
     <footer class="page-footer">
-      <p>&copy; 2026 <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a> &mdash; AIonifier AI Suite</p>
+      <p>&copy; 2026 <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a> &mdash; AIonifier AI Suite&mdash; MVP Showcase Portfolio &mdash; Not for production use</p>
     </footer>
   </div>
 
