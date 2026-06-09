@@ -58,6 +58,10 @@
         <servlet-class>servlets.HireServlet</servlet-class>
     </servlet>
     <!-- ══ SERVLET MAPPINGS ═════════════════════════════════════════════════ -->
+    <servlet>
+        <servlet-name>RobotsServlet</servlet-name>
+        <servlet-class>servlets.RobotsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AiBotsDashboard</servlet-name>
         <url-pattern>/AiBotsDashboard</url-pattern>
@@ -79,6 +83,10 @@
         <url-pattern>/Hire</url-pattern>
     </servlet-mapping>
     <!-- ══ SESSION ══════════════════════════════════════════════════════════ -->
+    <servlet-mapping>
+        <servlet-name>RobotsServlet</servlet-name>
+        <url-pattern>/RobotsServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
