@@ -9,16 +9,16 @@
   <meta property="og:type"        content="website" />
   <meta property="og:site_name"   content="AIonifier.ai" />
   <meta property="og:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta property="og:description" content="4 live AI agentic applications spanning legal, clinical, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta property="og:description" content="5 live AI agentic applications spanning legal, clinical, banking, education, and HR— built end-to-end by GACIRANE Patrick." />
   <meta property="og:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
   <meta property="og:image:width"  content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url"         content="https://aionifier.ai" />
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta name="twitter:description" content="4 live AI agentic applications spanning legal, clinical, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta name="twitter:description" content="5 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="twitter:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
-  <meta name="description" content="AIonifier.ai — 4 live AI agentic applications spanning legal, clinical, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta name="description" content="AIonifier.ai — 5 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="author"      content="GACIRANE Patrick" />
   <meta name="robots"      content="index, follow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -280,7 +280,7 @@
       <div class="icard">
         <div class="icard-label">Platform</div>
         <div class="icard-body">
-          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 4 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
+          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 5 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
         </div>
       </div>
       <div class="icard engage-card">
@@ -291,8 +291,8 @@
       </div>
       <div class="icard stat-card">
         <div class="icard-label">AI Apps</div>
-        <div class="stat-num">7+</div>
-        <div class="stat-sub">4 Live &middot; 3 In Dev</div>
+        <div class="stat-num">8+</div>
+        <div class="stat-sub">5 Live &middot; 3 In Dev</div>
       </div>
       <div class="icard">
         <div class="icard-label">Technology Stack</div>
@@ -331,6 +331,18 @@
           <h2 class="bot-name">Global Legal Advisor</h2>
           <p class="bot-desc">Navigate international regulations, draft legal briefs, and get jurisdiction-aware guidance across 180+ countries via multi-agent legal reasoning.</p>
           <p class="bot-scale">Scalable &rarr; Enterprise Legal Intelligence Platform</p>
+        </div>
+        <div class="bot-footer"><span class="launch-label">Launch advisor</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+      </a>
+
+      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=bank">
+        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
+        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="3" y="10" width="2.5" height="9" rx="0.5"/><rect x="7.5" y="10" width="2.5" height="9" rx="0.5"/><rect x="14" y="10" width="2.5" height="9" rx="0.5"/><rect x="18.5" y="10" width="2.5" height="9" rx="0.5"/><polyline points="1 10 12 3 23 10"/><line x1="1" y1="19" x2="23" y2="19"/><polyline points="7.5 16 10 13.5 14 15 18.5 11.5" stroke-width="1.4"/></svg></div>
+        <div>
+          <span class="bot-field">Banking &middot; CRM &middot; Financial Services</span>
+          <h2 class="bot-name">Bank CRM Advisor</h2>
+          <p class="bot-desc">Deepen client relationships, automate follow-ups, and surface actionable insights from banking CRM data — powered by a 9-agent CrewAI system.</p>
+          <p class="bot-scale">Scalable &rarr; Retail Banking Intelligence Suite</p>
         </div>
         <div class="bot-footer"><span class="launch-label">Launch advisor</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </a>
@@ -377,8 +389,8 @@
         <div>
           <span class="bot-field">Platform &middot; AI Infrastructure &middot; Tech Stack</span>
           <h2 class="bot-name">Platform Architecture</h2>
-          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all four domain MVPs.</p>
-          <p class="bot-scale">Underpins &rarr; All 4 AI domain MVPs above</p>
+          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all five domain MVPs.</p>
+          <p class="bot-scale">Underpins &rarr; All 5 AI domain MVPs above</p>
         </div>
         <div class="bot-footer"><span class="launch-label">View architecture</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </a>
@@ -472,7 +484,7 @@
     </div>
 
     <footer class="page-footer">
-      <p>&copy; 2026 <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a> &mdash; AIonifier AI Suite&mdash; MVP Showcase Portfolio &mdash; Not for production use</p>
+      <p>&copy; 2026 <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a> &mdash; AIonifier AI Suite</p>
     </footer>
   </div>
 

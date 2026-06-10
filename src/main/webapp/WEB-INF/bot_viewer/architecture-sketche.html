@@ -315,8 +315,9 @@
           <p>→ Multi-Layer · Multi-Agent · Multi-Domain Platform Architecture →</p>
         </div>
 
-          <div class="legend">
+        <div class="legend">
           <div class="leg-item"><div class="leg-dot serper"></div><span>Serper Web Scraper Tool</span></div>
+          <div class="leg-item"><div class="leg-dot sql"></div><span>Relational SQL DB (Neon PostgreSQL)</span></div>
           <div class="leg-item"><div class="leg-dot vec"></div><span>Vector DB (ChromaDB)</span></div>
           <div class="leg-item"><div class="leg-dot none"></div><span>No dedicated data store</span></div>
         </div>
@@ -332,7 +333,7 @@
           </div>
 
           <div class="arr-row">
-            <div class="arc">↙</div><div class="arc">↙</div><div class="arc">↘</div><div class="arc">↘</div>
+            <div class="arc">↙</div><div class="arc">↙</div><div class="arc">↓</div><div class="arc">↘</div><div class="arc">↘</div>
           </div>
 
           <!-- Presentation Layer -->
@@ -341,13 +342,14 @@
             <div class="cols">
               <div class="sb c1"><i class="ti ti-school"></i><span class="lbl">Smart Grad UI</span><span class="sub">Academic Advisory</span></div>
               <div class="sb c2"><i class="ti ti-scale"></i><span class="lbl">Smart Attorney UI</span><span class="sub">Legal Advisory</span></div>
+              <div class="sb c3"><i class="ti ti-building-bank"></i><span class="lbl">Bank CRM UI</span><span class="sub">CRM Advisory</span></div>
               <div class="sb c4"><i class="ti ti-activity"></i><span class="lbl">HIV Guideline UI</span><span class="sub">Clinical Guidelines</span></div>
               <div class="sb c5"><i class="ti ti-user-circle"></i><span class="lbl">MyCv Assistant UI</span><span class="sub">CV &amp; Recruitment</span></div>
             </div>
           </div>
 
           <div class="arr-row">
-            <div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div>
+            <div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div>
           </div>
 
           <!-- Agent Layer -->
@@ -356,13 +358,14 @@
             <div class="cols">
               <div class="sb c1"><i class="ti ti-brain"></i><span class="lbl">Smart Grad Agents</span><span class="sub">CrewAI Pipeline</span></div>
               <div class="sb c2"><i class="ti ti-brain"></i><span class="lbl">Attorney Agents</span><span class="sub">CrewAI Pipeline</span></div>
+              <div class="sb c3"><i class="ti ti-brain"></i><span class="lbl">Bank CRM Agents</span><span class="sub">9-Agent + MegaCrew</span></div>
               <div class="sb c4"><i class="ti ti-brain"></i><span class="lbl">HIV Guideline Agents</span><span class="sub">CrewAI Pipeline</span></div>
               <div class="sb c5"><i class="ti ti-brain"></i><span class="lbl">MyCv Agents</span><span class="sub">CrewAI Pipeline</span></div>
             </div>
           </div>
 
           <div class="arr-row">
-            <div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div>
+            <div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div><div class="arc">↓</div>
           </div>
 
           <!-- Tool / Pipeline Layer -->
@@ -381,6 +384,11 @@
                 <span class="lbl">Serper Tool</span>
                 <span class="sub">Live web search</span>
               </div>
+              <!-- Bank CRM uses BOTH Customer Charter AND Bank Tariffs MCP RAG servers -->
+              <div class="stack-cell">
+                <div class="sb c3"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">Customer Charter</span></div>
+                <div class="sb c3"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">Bank Tariffs</span></div>
+              </div>
               <div class="sb c4"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">HIV Guidelines PDF</span></div>
               <div class="sb c5"><i class="ti ti-database"></i><span class="lbl">MCP RAG Server</span><span class="sub">My CV Docs</span></div>
             </div>
@@ -391,6 +399,7 @@
             <div class="arc" style="color:#C43030">↓</div>
             <div class="arc">↓</div>
             <div class="arc">↓</div>
+            <div class="arc">↓</div>
           </div>
 
           <!-- Data Storage Layer -->
@@ -399,9 +408,23 @@
             <div class="cols" style="align-items:center">
               <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
               <div class="no-db"><i class="ti ti-world"></i><span class="lbl">Live Web</span><span class="sub">No local store</span></div>
+              <!-- Bank CRM has SQL relational DB + Chroma Vector DB for Charter -->
+              <div class="stack-cell">
+                <div class="sql-box">
+                  <span class="sql-badge">SQL · Relational</span>
+                  <i class="ti ti-table"></i>
+                  <span class="lbl">CRM Relational DB</span>
+                  <span class="sub">Neon PostgreSQL · 14 tables</span>
+                </div>
+                <div class="sb c3"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">Charter PDF Chunks</span></div>
+              </div>
               <div class="sb c4"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">HIV PDF Chunks</span></div>
               <div class="sb c5"><i class="ti ti-stack-2"></i><span class="lbl">Chroma Vector DB</span><span class="sub">CV PDF Chunks</span></div>
             </div>
+          </div>
+
+          <div class="arr-row" style="margin-bottom:4px">
+            <div class="arc"></div><div class="arc"></div><div class="arc">↓</div><div class="arc"></div><div class="arc"></div>
           </div>
 
           <!-- Infrastructure Lane -->
@@ -410,6 +433,7 @@
             <div class="infra-wrap">
               <div class="ib ib-serper"><i class="ti ti-world-search" style="color:#C43030"></i>Serper API<br><span class="sub2">Web Scraping</span></div>
               <div class="ib" style="background:#DCEEFF;color:#042C53"><i class="ti ti-brand-github"></i>GitHub Actions<br><span class="sub2">CI/CD Deploy</span></div>
+              <div class="ib ib-sql"><i class="ti ti-database" style="color:#B36B00"></i>Neon Postgres SQL<br><span class="sub2">Relational Database</span></div>
               <div class="ib" style="background:#FEF0DA;color:#412402"><i class="ti ti-server-2"></i>Heroku<br><span class="sub2">Space Hosting</span></div>
               <div class="ib" style="background:#EDE9FE;color:#26215C"><i class="ti ti-brain"></i>OpenAI API<br><span class="sub2">LLM Backbone</span></div>
               <div class="ib" style="background:#F0EEE7;color:#2C2C2A"><i class="ti ti-code"></i>Dev Environment<br><span class="sub2">VS Code · Netbeans · Git</span></div>
@@ -421,7 +445,7 @@
             <div class="note"><i class="ti ti-star"></i><div><strong>5 Live Assistants</strong>Each independently deployed on HuggingFace Spaces.</div></div>
             <div class="note"><i class="ti ti-target"></i><div><strong>RAG + Web + SQL</strong>Three data strategies — vector, relational &amp; live web search.</div></div>
             <div class="note"><i class="ti ti-refresh"></i><div><strong>Re-evaluate &amp; Iterate</strong>V2 crew configs + hybrid routing improve accuracy over time.</div></div>
-            <div class="note"><i class="ti ti-mood-smile"></i><div><strong>Multi-Domain Coverage</strong>Law, health, education &amp; recruitment — one platform.</div></div>
+            <div class="note"><i class="ti ti-mood-smile"></i><div><strong>Multi-Domain Coverage</strong>Law, health, banking, education &amp; recruitment — one platform.</div></div>
           </div>
 
         </div>

@@ -58,6 +58,7 @@ public class BotViewerTemplate implements Filter {
     }
 
     private static final String URL_LEGAL = env("URL_LEGAL");
+    private static final String URL_BANK  = env("URL_BANK");
     private static final String URL_GRAD  = env("URL_GRAD");
     private static final String URL_CV    = env("URL_CV");
     private static final String URL_HIV   = env("URL_HIV");
@@ -84,6 +85,7 @@ public class BotViewerTemplate implements Filter {
         String botUrl;
         switch (botKey.toLowerCase()) {
             case "legal": botUrl = URL_LEGAL;                        break;
+            case "bank":  botUrl = URL_BANK;                         break;
             case "grad":  botUrl = URL_GRAD;                         break;
             case "cv":    botUrl = URL_CV;                           break;
             case "hiv":   botUrl = URL_HIV;                          break;
@@ -100,6 +102,7 @@ public class BotViewerTemplate implements Filter {
         chain.doFilter(request, wrapper);
 
         String kl  = active(botKey, "legal");
+        String kb  = active(botKey, "bank");
         String kg  = active(botKey, "grad");
         String kc  = active(botKey, "cv");
         String kh  = active(botKey, "hiv");
@@ -114,7 +117,7 @@ public class BotViewerTemplate implements Filter {
                            :                             iframe(botUrl);
 
         PrintWriter out = response.getWriter();
-        out.println(page(ctx, iframeBlock, kl, kg, kc, kh, ka, ks, ke, kety));
+        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks, ke, kety));
         out.close();
     }
 
@@ -338,7 +341,7 @@ public class BotViewerTemplate implements Filter {
 
     // ── Full page assembly — added ks parameter for sia pill ─────────────────
     private static String page(String ctx, String iframeBlock,
-                                String kl, String kg,
+                                String kl, String kb, String kg,
                                 String kc, String kh, String ka,
                                 String ks, String ke, String kety) {
         return "<!DOCTYPE html>\n"
@@ -370,6 +373,7 @@ public class BotViewerTemplate implements Filter {
              + "    <div class=\"strip-pills\">\n"
              + pill(ctx, "hiv",   kh, "fa-heart-pulse",      "HIV Guidelines")
              + pill(ctx, "legal", kl, "fa-scale-balanced",   "Global Legal Advisor")
+             + pill(ctx, "bank",  kb, "fa-building-columns", "Bank CRM Advisor")
              + pill(ctx, "grad",  kg, "fa-graduation-cap",   "Smart Grad")
              + pill(ctx, "cv",    kc, "fa-id-card-clip",     "Talk to My CV")
              + "      <span class=\"strip-div arch-div\"></span>\n"
