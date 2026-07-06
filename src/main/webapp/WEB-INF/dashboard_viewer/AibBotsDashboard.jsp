@@ -127,15 +127,15 @@
     .icard {
       background: rgba(19,25,41,0.85); border: 1px solid rgba(74,222,128,0.15);
       border-radius: 11px; padding: 14px 15px 13px; display: flex; flex-direction: column; gap: 8px;
-      position: relative; overflow: hidden;
+      position: relative; overflow: hidden; min-width: 0;
     }
     .icard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, rgba(74,222,128,0.55), rgba(74,222,128,0.12)); }
     .icard.engage-card { border-color: rgba(74,222,128,0.25); }
     .icard.engage-card::before { background: linear-gradient(90deg, rgba(74,222,128,0.55), rgba(74,222,128,0.12)); }
     .icard-label { font-family: "IBM Plex Mono", monospace; font-size: 0.50rem; letter-spacing: .20em; text-transform: uppercase; color: rgba(74,222,128,0.65); }
     .icard.engage-card .icard-label { color: rgba(74,222,128,0.65); }
-    .icard-body { flex: 1; }
-    .icard-body p { font-size: 0.68rem; color: var(--muted); line-height: 1.65; margin: 0; }
+    .icard-body { flex: 1; min-width: 0; }
+    .icard-body p { font-size: 0.68rem; color: var(--muted); line-height: 1.65; margin: 0; overflow-wrap: anywhere; word-break: break-word; }
     .icard-body p strong { color: #c8d4e8; font-weight: 600; }
     .icard-body a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(74,222,128,0.30); }
     .icard-body a:hover { color: #86efac; }
@@ -226,8 +226,6 @@
         <li><span class="nav-pip"></span></li>
         <li><a href="<%= ctx %>/BotViewer?bot=arch">Architecture</a></li>
         <li><span class="nav-pip"></span></li>
-        <li><a href="https://musy3000-restricting-co-regulator-ui.hf.space/regulatory" target="_blank" rel="noopener noreferrer">Regulatory Navigator</a></li>
-        <li><span class="nav-pip"></span></li>
         <li><a href="#etymology">Etymology</a></li>
       </ul>
       <div class="nav-ctas">
@@ -256,7 +254,6 @@
     <a href="#impact" role="menuitem">Social Impact &amp; Ethics</a>
     <div class="drawer-sep"></div>
     <a href="<%= ctx %>/BotViewer?bot=arch" role="menuitem">Architecture</a>
-    <a href="https://musy3000-restricting-co-regulator-ui.hf.space/regulatory" target="_blank" rel="noopener noreferrer" role="menuitem">Regulatory Navigator</a>
     <a href="#etymology" role="menuitem">Etymology</a>
     <div class="drawer-sep"></div>
     <a href="<%= ctx %>/BotViewer?bot=hire" role="menuitem" class="drawer-cta">&#128188; Hire me</a>
@@ -275,7 +272,7 @@
         <span class="hero-role">AI Solutions Builder</span>
       </div>
       <div class="hero-title-wrap">
-        <h1 class="hero-title"><span class="hl">AIonifier</span> &mdash; AI&nbsp;(Artificial&nbsp;Intelligence)&nbsp;MVP&nbsp;(Minimum&nbsp;Viable&nbsp;Product)&nbsp;Portfolio</h1>
+        <h1 class="hero-title"><span class="hl">AIonifier</span> &mdash; AI&nbsp;MVP&nbsp;Portfolio</h1>
       </div>
     </section>
 
@@ -283,7 +280,7 @@
       <div class="icard">
         <div class="icard-label">Platform</div>
         <div class="icard-body">
-          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 6 live agentic applications and 2 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
+          <p><strong>AIonifier</strong> &mdash; AI (Artificial Intelligence) MVP (Minimum Viable Product) Portfolio &mdash; is a personal AI MVP portfolio by GACIRANE Patrick &mdash; 13 live agentic applications and 2 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
         </div>
       </div>
       <div class="icard engage-card">
@@ -294,8 +291,8 @@
       </div>
       <div class="icard stat-card">
         <div class="icard-label">AI Apps</div>
-        <div class="stat-num">8+</div>
-        <div class="stat-sub">6 Live &middot; 2 In Dev</div>
+        <div class="stat-num">13+</div>
+        <div class="stat-sub">13 Live &middot; 2 In Dev</div>
       </div>
       <div class="icard">
         <div class="icard-label">Technology Stack</div>
@@ -326,6 +323,18 @@
     </div>
 
     <div class="bots-grid">
+      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=coreg">
+        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
+        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="5" height="4" rx="1"/><rect x="17" y="3" width="5" height="4" rx="1"/><rect x="9" y="17" width="6" height="4" rx="1"/><line x1="4.5" y1="7" x2="4.5" y2="14"/><line x1="19.5" y1="7" x2="19.5" y2="14"/><line x1="4.5" y1="14" x2="12" y2="19"/><line x1="19.5" y1="14" x2="12" y2="19"/><circle cx="4.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/><circle cx="19.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/></svg></div>
+        <div>
+          <span class="bot-field">RegTech &middot; Cross-Regulatory Intelligence &middot; Compliance Advisory</span>
+          <h2 class="bot-name">Regulatory Navigator AI</h2>
+          <p class="bot-desc">Move confidently through multi-regulator compliance with a clear, guided path. Four specialist regulatory crews &mdash; <strong>RICA</strong>, <strong>RURA</strong>, <strong>NCSA</strong> and <strong>BNR</strong> &mdash; each answer questions within their own domain, while an <strong>orchestrator agent</strong> coordinates them and synthesises a single, well-reasoned, aggregated response. Every answer is grounded in official regulatory texts via a RAG knowledge base.</p>
+          <p class="bot-scale">Scalable &rarr; National Smart Regulation (RegTech) Platform</p>
+        </div>
+        <div class="bot-footer"><span class="launch-label">Launch navigator</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+      </a>
+
       <a class="bot-card" href="<%= ctx %>/BotViewer?bot=legal">
         <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
         <div class="bot-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4" y1="6" x2="20" y2="6"/><path d="M4 6 L2 11 Q4 13 6 11 Z"/><path d="M20 6 L18 11 Q20 13 22 11 Z"/><line x1="8" y1="21" x2="16" y2="21"/></svg></div>
@@ -384,18 +393,6 @@
           <p class="bot-scale">Scalable &rarr; AI-Powered Recruitment Screening Tool</p>
         </div>
         <div class="bot-footer"><span class="launch-label">Start a conversation</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=coreg">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="5" height="4" rx="1"/><rect x="17" y="3" width="5" height="4" rx="1"/><rect x="9" y="17" width="6" height="4" rx="1"/><line x1="4.5" y1="7" x2="4.5" y2="14"/><line x1="19.5" y1="7" x2="19.5" y2="14"/><line x1="4.5" y1="14" x2="12" y2="19"/><line x1="19.5" y1="14" x2="12" y2="19"/><circle cx="4.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/><circle cx="19.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/></svg></div>
-        <div>
-          <span class="bot-field">RegTech &middot; Compliance Intelligence &middot; Business Licensing</span>
-          <h2 class="bot-name">Regulatory Navigator AI</h2>
-          <p class="bot-desc">Navigate fragmented multi-regulator compliance landscapes with ease. A 6-agent CrewAI system that classifies your business activity, maps cross-regulatory obligations across multiple government institutions, sequences the correct order of approvals, and generates a structured <strong>Regulatory License Proposal</strong> — all grounded in official regulatory texts via a RAG knowledge base.</p>
-          <p class="bot-scale">Scalable &rarr; National Smart Regulation (RegTech) Platform</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Launch navigator</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </a>
 
       <a class="bot-card" href="<%= ctx %>/BotViewer?bot=arch">

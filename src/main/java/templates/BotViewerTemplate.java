@@ -62,7 +62,10 @@ public class BotViewerTemplate implements Filter {
     private static final String URL_GRAD  = env("URL_GRAD");
     private static final String URL_CV    = env("URL_CV");
     private static final String URL_HIV   = env("URL_HIV");
-    private static final String URL_COREG   = env("URL_COREG");
+    // Regulatory Navigator — defaults to the deployed HF Space if URL_COREG unset
+    private static final String URL_COREG = !env("URL_COREG").isEmpty()
+            ? env("URL_COREG")
+            : "https://musy3000-restricting-co-regulator-ui.hf.space/regulatory";
 
     @Override public void init(FilterConfig c) {}
     @Override public void destroy() {}
@@ -109,6 +112,8 @@ public class BotViewerTemplate implements Filter {
         String kc  = active(botKey, "cv");
         String kh  = active(botKey, "hiv");
         String ka  = active(botKey, "arch");
+        // ── NEW active state for Regulatory Navigator (coreg) pill ──
+        String kco = active(botKey, "coreg");
         // ── NEW active state for sia pill ──
         String ks  = active(botKey, "sia");
         String ke  = active(botKey, "ethics");
@@ -119,7 +124,7 @@ public class BotViewerTemplate implements Filter {
                            :                             iframe(botUrl);
 
         PrintWriter out = response.getWriter();
-        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, ks, ke, kety));
+        out.println(page(ctx, iframeBlock, kl, kb, kg, kc, kh, ka, kco, ks, ke, kety));
         out.close();
     }
 
@@ -341,11 +346,11 @@ public class BotViewerTemplate implements Filter {
              + "    </a>\n";
     }
 
-    // ── Full page assembly — added ks parameter for sia pill ─────────────────
+    // ── Full page assembly — added kco (Regulatory Navigator) + ks (sia) ─────
     private static String page(String ctx, String iframeBlock,
                                 String kl, String kb, String kg,
                                 String kc, String kh, String ka,
-                                String ks, String ke, String kety) {
+                                String kco, String ks, String ke, String kety) {
         return "<!DOCTYPE html>\n"
              + "<html lang=\"en\">\n"
              + "<head>\n"
@@ -373,19 +378,18 @@ public class BotViewerTemplate implements Filter {
              + "      <span class=\"strip-div\"></span>\n"
              + "    </div>\n"
              + "    <div class=\"strip-pills\">\n"
+             // ── AI Product MVPs — Regulatory Navigator first ──
+             + pill(ctx, "coreg", kco, "fa-compass",          "Regulatory Navigator")
              + pill(ctx, "hiv",   kh, "fa-heart-pulse",      "HIV Guidelines")
              + pill(ctx, "legal", kl, "fa-scale-balanced",   "Global Legal Advisor")
              + pill(ctx, "bank",  kb, "fa-building-columns", "Bank CRM Advisor")
              + pill(ctx, "grad",  kg, "fa-graduation-cap",   "Smart Grad")
              + pill(ctx, "cv",    kc, "fa-id-card-clip",     "Talk to My CV")
+             // ── Platform & Insight pages ──
              + "      <span class=\"strip-div arch-div\"></span>\n"
              + pill(ctx, "arch",  ka, "fa-sitemap",          "Architecture")
-             // ── NEW: Social Impact Assessment pill — separated by a divider ──
-             + "      <span class=\"strip-div\"></span>\n"
              + pill(ctx, "sia",   ks, "fa-chart-pie",        "Social Impact")
-             + "      <span class=\"strip-div\"></span>\n"
              + pill(ctx, "ethics", ke, "fa-shield-halved",    "AI Ethics")
-             + "      <span class=\"strip-div\"></span>\n"
              + pill(ctx, "etymology", kety, "fa-book-open",   "AIonifier Etymology")
              // ── Hire Me — direct link to /BotViewer?bot=hire, bypasses BotViewer iframe ──
              + "      <span class=\"strip-div\"></span>\n"
