@@ -51,7 +51,7 @@ public class BotViewer extends HttpServlet {
 
         // Validate the bot parameter — reject unknown values early
         String botKey = request.getParameter("bot");
-        if (botKey == null || !botKey.matches("legal|bank|grad|cv|hiv")) {
+        if (botKey == null || !botKey.matches("legal|bank|grad|cv|hiv|coreg")) {
             // Unknown bot — forward anyway; BotViewerTemplate will show
             // the empty-state placeholder instead of an iframe
         }

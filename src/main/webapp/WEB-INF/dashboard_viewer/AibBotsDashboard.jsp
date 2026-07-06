@@ -220,11 +220,13 @@
       <ul class="nav-links" role="list">
         <li><a href="#top">Home</a></li>
         <li><span class="nav-pip"></span></li>
-        <li><a href="#apps">AI MVPs</a></li>
+        <li><a href="#apps"><abbr title="Artificial Intelligence">AI</abbr> <abbr title="Minimum Viable Product">MVP</abbr>s</a></li>
         <li><span class="nav-pip"></span></li>
         <li><a href="#impact">Social Impact &amp; Ethics</a></li>
         <li><span class="nav-pip"></span></li>
         <li><a href="<%= ctx %>/BotViewer?bot=arch">Architecture</a></li>
+        <li><span class="nav-pip"></span></li>
+        <li><a href="https://musy3000-restricting-co-regulator-ui.hf.space/regulatory" target="_blank" rel="noopener noreferrer">Regulatory Navigator</a></li>
         <li><span class="nav-pip"></span></li>
         <li><a href="#etymology">Etymology</a></li>
       </ul>
@@ -250,10 +252,11 @@
 
   <div class="nav-drawer" id="drawer" role="menu">
     <a href="#top" role="menuitem">Home</a>
-    <a href="#apps" role="menuitem">AI MVPs</a>
+    <a href="#apps" role="menuitem"><abbr title="Artificial Intelligence">AI</abbr> <abbr title="Minimum Viable Product">MVP</abbr>s</a>
     <a href="#impact" role="menuitem">Social Impact &amp; Ethics</a>
     <div class="drawer-sep"></div>
     <a href="<%= ctx %>/BotViewer?bot=arch" role="menuitem">Architecture</a>
+    <a href="https://musy3000-restricting-co-regulator-ui.hf.space/regulatory" target="_blank" rel="noopener noreferrer" role="menuitem">Regulatory Navigator</a>
     <a href="#etymology" role="menuitem">Etymology</a>
     <div class="drawer-sep"></div>
     <a href="<%= ctx %>/BotViewer?bot=hire" role="menuitem" class="drawer-cta">&#128188; Hire me</a>
@@ -272,7 +275,7 @@
         <span class="hero-role">AI Solutions Builder</span>
       </div>
       <div class="hero-title-wrap">
-        <h1 class="hero-title"><span class="hl">AIonifier</span> &mdash; AI&nbsp;MVP&nbsp;Portfolio</h1>
+        <h1 class="hero-title"><span class="hl">AIonifier</span> &mdash; AI&nbsp;(Artificial&nbsp;Intelligence)&nbsp;MVP&nbsp;(Minimum&nbsp;Viable&nbsp;Product)&nbsp;Portfolio</h1>
       </div>
     </section>
 
@@ -280,7 +283,7 @@
       <div class="icard">
         <div class="icard-label">Platform</div>
         <div class="icard-body">
-          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 5 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
+          <p><strong>AIonifier</strong> is a personal AI MVP portfolio by GACIRANE Patrick — 6 live agentic applications and 2 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
         </div>
       </div>
       <div class="icard engage-card">
@@ -292,7 +295,7 @@
       <div class="icard stat-card">
         <div class="icard-label">AI Apps</div>
         <div class="stat-num">8+</div>
-        <div class="stat-sub">5 Live &middot; 3 In Dev</div>
+        <div class="stat-sub">6 Live &middot; 2 In Dev</div>
       </div>
       <div class="icard">
         <div class="icard-label">Technology Stack</div>
@@ -383,14 +386,26 @@
         <div class="bot-footer"><span class="launch-label">Start a conversation</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </a>
 
+      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=coreg">
+        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
+        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="5" height="4" rx="1"/><rect x="17" y="3" width="5" height="4" rx="1"/><rect x="9" y="17" width="6" height="4" rx="1"/><line x1="4.5" y1="7" x2="4.5" y2="14"/><line x1="19.5" y1="7" x2="19.5" y2="14"/><line x1="4.5" y1="14" x2="12" y2="19"/><line x1="19.5" y1="14" x2="12" y2="19"/><circle cx="4.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/><circle cx="19.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/></svg></div>
+        <div>
+          <span class="bot-field">RegTech &middot; Compliance Intelligence &middot; Business Licensing</span>
+          <h2 class="bot-name">Regulatory Navigator AI</h2>
+          <p class="bot-desc">Navigate fragmented multi-regulator compliance landscapes with ease. A 6-agent CrewAI system that classifies your business activity, maps cross-regulatory obligations across multiple government institutions, sequences the correct order of approvals, and generates a structured <strong>Regulatory License Proposal</strong> — all grounded in official regulatory texts via a RAG knowledge base.</p>
+          <p class="bot-scale">Scalable &rarr; National Smart Regulation (RegTech) Platform</p>
+        </div>
+        <div class="bot-footer"><span class="launch-label">Launch navigator</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+      </a>
+
       <a class="bot-card" href="<%= ctx %>/BotViewer?bot=arch">
         <div class="corner-glow"></div><span class="mvp-tag">DOCS</span>
         <div class="bot-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><line x1="12" y1="7" x2="12" y2="17"/><line x1="12" y1="17" x2="4" y2="17"/><line x1="12" y1="17" x2="20" y2="17"/><line x1="4" y1="17" x2="4" y2="19"/><line x1="20" y1="17" x2="20" y2="19"/><line x1="12" y1="17" x2="12" y2="19"/></svg></div>
         <div>
           <span class="bot-field">Platform &middot; AI Infrastructure &middot; Tech Stack</span>
           <h2 class="bot-name">Platform Architecture</h2>
-          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all five domain MVPs.</p>
-          <p class="bot-scale">Underpins &rarr; All 5 AI domain MVPs above</p>
+          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all six domain MVPs.</p>
+          <p class="bot-scale">Underpins &rarr; All 6 AI domain MVPs above</p>
         </div>
         <div class="bot-footer"><span class="launch-label">View architecture</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </a>
@@ -404,19 +419,6 @@
           <h2 class="bot-name">AI Voice Avatar</h2>
           <p class="bot-desc">A voice-first chatbot powered by a cloned voice of GACIRANE Patrick — letting visitors have a natural spoken conversation about his professional career, projects, skills, and experience. Built on voice synthesis, RAG over career data, and real-time audio streaming.</p>
           <p class="bot-scale">Scalable &rarr; AI-Powered Professional Digital Twin</p>
-        </div>
-        <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
-      </div>
-
-      <div class="bot-card coming-soon" role="article" aria-label="Regulatory Navigator AI — Coming Soon">
-        <div class="corner-glow"></div>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="5" height="4" rx="1"/><rect x="17" y="3" width="5" height="4" rx="1"/><rect x="9" y="17" width="6" height="4" rx="1"/><line x1="4.5" y1="7" x2="4.5" y2="14"/><line x1="19.5" y1="7" x2="19.5" y2="14"/><line x1="4.5" y1="14" x2="12" y2="19"/><line x1="19.5" y1="14" x2="12" y2="19"/><circle cx="4.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/><circle cx="19.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/></svg></div>
-        <div>
-          <div class="soon-badge">Upcoming MVP</div>
-          <span class="bot-field">RegTech &middot; Compliance Intelligence &middot; Business Licensing</span>
-          <h2 class="bot-name">Regulatory Navigator AI</h2>
-          <p class="bot-desc">Navigate fragmented multi-regulator compliance landscapes with ease. A 6-agent CrewAI system that classifies your business activity, maps cross-regulatory obligations across multiple government institutions, sequences the correct order of approvals, and generates a structured <strong>Regulatory License Proposal</strong> — all grounded in official regulatory texts via a RAG knowledge base.</p>
-          <p class="bot-scale">Scalable &rarr; National Smart Regulation (RegTech) Platform</p>
         </div>
         <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
       </div>

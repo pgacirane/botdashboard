@@ -62,6 +62,7 @@ public class BotViewerTemplate implements Filter {
     private static final String URL_GRAD  = env("URL_GRAD");
     private static final String URL_CV    = env("URL_CV");
     private static final String URL_HIV   = env("URL_HIV");
+    private static final String URL_COREG   = env("URL_COREG");
 
     @Override public void init(FilterConfig c) {}
     @Override public void destroy() {}
@@ -89,6 +90,7 @@ public class BotViewerTemplate implements Filter {
             case "grad":  botUrl = URL_GRAD;                         break;
             case "cv":    botUrl = URL_CV;                           break;
             case "hiv":   botUrl = URL_HIV;                          break;
+            case "coreg": botUrl = URL_COREG;                          break;
             case "arch":  botUrl = ctx + "/arch-diagram";            break;
             // ── NEW: Social Impact Assessment page ──
             case "sia":    botUrl = ctx + "/SocialImpact";   break;
