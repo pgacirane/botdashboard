@@ -346,6 +346,68 @@ public class BotViewerTemplate implements Filter {
              + "    </a>\n";
     }
 
+    // ── Dropdown category menu (Direction 3) ─────────────────────────────────
+
+    /** True if any of the passed active-flags is non-empty (" active"). */
+    private static boolean anyActive(String... flags) {
+        for (String f : flags) if (f != null && !f.isEmpty()) return true;
+        return false;
+    }
+
+    /** True for real external http(s) Space URLs (used for hover pre-warm). */
+    private static boolean isExternalSpace(String url) {
+        return url != null && !url.isEmpty()
+            && (url.startsWith("http://") || url.startsWith("https://"));
+    }
+
+    /** Space ROOT origin (scheme://host[:port]/) — most reliable wake target. */
+    private static String spaceRoot(String url) {
+        try {
+            java.net.URL u = new java.net.URL(url);
+            String o = u.getProtocol() + "://" + u.getHost();
+            if (u.getPort() != -1) o += ":" + u.getPort();
+            return o + "/";
+        } catch (Exception e) { return url; }
+    }
+
+    /**
+     * A category button that opens a dropdown of bot items on hover/focus.
+     * `activeGroup` highlights the button when the current bot lives in it.
+     */
+    private static String menuGroup(String label, String faIcon,
+                                     boolean activeGroup, String itemsHtml) {
+        String act = activeGroup ? " active" : "";
+        return "      <div class=\"menu-group\">\n"
+             + "        <button type=\"button\" class=\"menu-btn" + act + "\""
+             +          " aria-haspopup=\"true\" aria-expanded=\"false\">\n"
+             + "          <i class=\"fas " + faIcon + "\"></i>\n"
+             + "          <span class=\"menu-btn-label\">" + label + "</span>\n"
+             + "          <i class=\"fas fa-chevron-down menu-caret\"></i>\n"
+             + "        </button>\n"
+             + "        <div class=\"menu-panel\" role=\"menu\">\n"
+             + itemsHtml
+             + "        </div>\n"
+             + "      </div>\n";
+    }
+
+    /**
+     * A single item inside a category dropdown. Carries active state and,
+     * for external Spaces, a data-warm attribute for hover pre-warming.
+     */
+    private static String dropItem(String ctx, String bot, String active,
+                                    String faIcon, String label, String spaceUrl) {
+        String act = (active != null && !active.isEmpty()) ? " active" : "";
+        String warmAttr = isExternalSpace(spaceUrl)
+                ? " data-warm=\"" + spaceRoot(spaceUrl) + "\""
+                : "";
+        return "          <a class=\"menu-item" + act + "\" role=\"menuitem\""
+             +          " href=\"" + ctx + "/BotViewer?bot=" + bot + "\"" + warmAttr + ">\n"
+             + "            <i class=\"fas " + faIcon + "\"></i>\n"
+             + "            <span class=\"menu-item-label\">" + label + "</span>\n"
+             + "            <span class=\"item-dot\"></span>\n"
+             + "          </a>\n";
+    }
+
     // ── Full page assembly — added kco (Regulatory Navigator) + ks (sia) ─────
     private static String page(String ctx, String iframeBlock,
                                 String kl, String kb, String kg,
@@ -373,30 +435,32 @@ public class BotViewerTemplate implements Filter {
              + "    <div class=\"strip-left\">\n"
              + "      <a class=\"brand\" href=\"" + ctx + "/chat\" title=\"AIonifier Home\">\n"
              + "        " + logo()
-             + "        <span class=\"brand-name\">AIonifier</span>\n"
+             + "        <span class=\"brand-name\">AIonifier Home</span>\n"
              + "      </a>\n"
              + "      <span class=\"strip-div\"></span>\n"
              + "    </div>\n"
              + "    <div class=\"strip-pills\">\n"
-             // ── AI Product MVPs — Regulatory Navigator first ──
-             + pill(ctx, "coreg", kco, "fa-compass",          "Regulatory Navigator")
-             + pill(ctx, "hiv",   kh, "fa-heart-pulse",      "HIV Guidelines")
-             + pill(ctx, "legal", kl, "fa-scale-balanced",   "Global Legal Advisor")
-             + pill(ctx, "bank",  kb, "fa-building-columns", "Bank CRM Advisor")
-             + pill(ctx, "grad",  kg, "fa-graduation-cap",   "Smart Grad")
-             + pill(ctx, "cv",    kc, "fa-id-card-clip",     "Talk to My CV")
-             // ── Platform & Insight pages ──
-             + "      <span class=\"strip-div arch-div\"></span>\n"
-             + pill(ctx, "arch",  ka, "fa-sitemap",          "Architecture")
-             + pill(ctx, "sia",   ks, "fa-chart-pie",        "Social Impact")
-             + pill(ctx, "ethics", ke, "fa-shield-halved",    "AI Ethics")
-             + pill(ctx, "etymology", kety, "fa-book-open",   "AIonifier Etymology")
-             // ── Hire Me — direct link to /BotViewer?bot=hire, bypasses BotViewer iframe ──
-             + "      <span class=\"strip-div\"></span>\n"
-             + "    <a class=\"bot-pill\" href=\"" + ctx + "/BotViewer?bot=hire\">\n"
-             + "      <i class=\"fas fa-briefcase\"></i>"
-             + "<span class=\"pill-label\">Hire Me</span>\n"
-             + "    </a>\n"
+             // ═══ CATEGORY DROPDOWNS (Direction 3) ═══════════════════════════
+             // Assistants — the running AI bots
+             + menuGroup("Assistants", "fa-robot",
+                     anyActive(kco, kh, kl, kb, kg, kc),
+                     dropItem(ctx, "coreg", kco, "fa-compass",          "Regulatory Navigator", URL_COREG)
+                   + dropItem(ctx, "hiv",   kh,  "fa-heart-pulse",      "HIV Guidelines",        URL_HIV)
+                   + dropItem(ctx, "legal", kl,  "fa-scale-balanced",   "Global Legal Advisor",  URL_LEGAL)
+                   + dropItem(ctx, "bank",  kb,  "fa-building-columns", "Bank CRM Advisor",      URL_BANK)
+                   + dropItem(ctx, "grad",  kg,  "fa-graduation-cap",   "Smart Grad",            URL_GRAD)
+                   + dropItem(ctx, "cv",    kc,  "fa-id-card-clip",     "Talk to My CV",         URL_CV))
+             // Platform — architecture & insight pages
+             + menuGroup("Platform", "fa-layer-group",
+                     anyActive(ka, ks),
+                     dropItem(ctx, "arch", ka, "fa-sitemap",   "Architecture",   "")
+                   + dropItem(ctx, "sia",  ks, "fa-chart-pie", "Social Impact",  ""))
+             // About — ethics, etymology, hire
+             + menuGroup("About", "fa-circle-info",
+                     anyActive(ke, kety),
+                     dropItem(ctx, "ethics",    ke,   "fa-shield-halved", "AI Ethics",           "")
+                   + dropItem(ctx, "etymology", kety, "fa-book-open",     "AIonifier Etymology", "")
+                   + dropItem(ctx, "hire",      "",   "fa-briefcase",     "Hire Me",             ""))
              + "    </div>\n"
              + "  </div>\n"
 
@@ -468,7 +532,7 @@ public class BotViewerTemplate implements Filter {
           + "      display:flex;\n"
           + "      align-items:center;\n"
           + "      flex-wrap:wrap;\n"
-          + "      gap:4px;\n"
+          + "      gap:8px;\n"
           + "      flex:1 1 auto;\n"
           + "    }\n"
 
@@ -535,6 +599,72 @@ public class BotViewerTemplate implements Filter {
           + "      border-color:rgba(167,139,250,0.35);\n"
           + "    }\n"
 
+          // ═══ DROPDOWN CATEGORY MENU (Direction 3) ═══════════════════════════
+          + "    .menu-group { position:relative; }\n"
+          + "    .menu-btn {\n"
+          + "      display:inline-flex; align-items:center; gap:7px;\n"
+          + "      padding:7px 14px; border-radius:999px;\n"
+          + "      font-family:inherit; font-size:0.78rem; font-weight:600;\n"
+          + "      white-space:nowrap; cursor:pointer;\n"
+          + "      color:var(--text); background:transparent;\n"
+          + "      border:1px solid var(--border);\n"
+          + "      transition:color .2s, background .2s, border-color .2s, transform .18s;\n"
+          + "    }\n"
+          + "    .menu-btn i:first-child { font-size:0.72rem; color:var(--green); }\n"
+          + "    .menu-caret { font-size:0.58rem; opacity:0.6; transition:transform .2s; }\n"
+          + "    .menu-btn:hover {\n"
+          + "      color:var(--green); background:var(--green-lo);\n"
+          + "      border-color:var(--green-hi); transform:translateY(-1px);\n"
+          + "    }\n"
+          + "    .menu-btn.active {\n"
+          + "      color:var(--green); background:var(--green-md);\n"
+          + "      border-color:var(--green-hi);\n"
+          + "      box-shadow:0 0 0 2px rgba(74,222,128,0.22);\n"
+          + "    }\n"
+          + "    .menu-group:hover .menu-caret,\n"
+          + "    .menu-group:focus-within .menu-caret { transform:rotate(180deg); }\n"
+
+          + "    .menu-panel {\n"
+          + "      position:absolute; top:calc(100% + 8px); left:0; z-index:60;\n"
+          + "      min-width:230px; padding:6px;\n"
+          + "      background:var(--surface);\n"
+          + "      border:1px solid var(--border); border-radius:12px;\n"
+          + "      box-shadow:0 14px 40px rgba(0,0,0,0.55);\n"
+          + "      display:flex; flex-direction:column; gap:2px;\n"
+          + "      opacity:0; visibility:hidden; transform:translateY(-6px);\n"
+          + "      transition:opacity .16s ease, transform .16s ease, visibility .16s;\n"
+          + "    }\n"
+          // Bridge the 8px gap so the panel doesn't close when moving the cursor
+          + "    .menu-panel::before {\n"
+          + "      content:''; position:absolute; top:-8px; left:0; right:0; height:8px;\n"
+          + "    }\n"
+          + "    .menu-group:hover .menu-panel,\n"
+          + "    .menu-group:focus-within .menu-panel,\n"
+          + "    .menu-group.open .menu-panel,\n"
+          + "    .menu-panel:hover {\n"
+          + "      opacity:1; visibility:visible; transform:translateY(0);\n"
+          + "    }\n"
+          + "    .menu-group.open .menu-caret { transform:rotate(180deg); }\n"
+
+          + "    .menu-item {\n"
+          + "      display:flex; align-items:center; gap:10px;\n"
+          + "      padding:9px 11px; border-radius:8px;\n"
+          + "      font-size:0.8rem; font-weight:500; text-decoration:none;\n"
+          + "      color:var(--muted); position:relative;\n"
+          + "      transition:color .15s, background .15s;\n"
+          + "    }\n"
+          + "    .menu-item i { font-size:0.82rem; width:18px; text-align:center; color:var(--muted); transition:color .15s; }\n"
+          + "    .menu-item .menu-item-label { flex:1 1 auto; }\n"
+          + "    .menu-item:hover { color:var(--text); background:var(--green-lo); }\n"
+          + "    .menu-item:hover i { color:var(--green); }\n"
+          + "    .menu-item.active { color:var(--green); background:var(--green-md); }\n"
+          + "    .menu-item.active i { color:var(--green); }\n"
+          + "    .item-dot {\n"
+          + "      width:6px; height:6px; border-radius:50%; background:var(--green);\n"
+          + "      opacity:0; transition:opacity .15s; flex-shrink:0;\n"
+          + "    }\n"
+          + "    .menu-item.active .item-dot { opacity:1; }\n"
+
           + "    .dot {\n"
           + "      display:none; width:6px; height:6px; border-radius:50%;\n"
           + "      background:var(--green);\n"
@@ -586,12 +716,16 @@ public class BotViewerTemplate implements Filter {
           + "        row-gap:5px;\n"
           + "      }\n"
           + "      .strip-left  { width:100%; justify-content:flex-start; }\n"
-          + "      .strip-pills { width:100%; flex-wrap:wrap; }\n"
+          + "      .strip-pills { width:100%; flex-wrap:wrap; gap:6px; }\n"
           + "      .strip-div   { display:none; }\n"
           + "      .bot-pill    { padding:4px 8px; font-size:0.68rem; gap:3px; }\n"
           + "      .bot-pill i  { font-size:0.63rem; }\n"
           + "      .brand-name  { font-size:0.82rem; }\n"
           + "      .footer      { font-size:0.70rem; padding:5px 12px; }\n"
+          // Menu: full-width category buttons + panels that fit the viewport
+          + "      .menu-group  { flex:1 1 auto; }\n"
+          + "      .menu-btn    { width:100%; justify-content:center; padding:6px 10px; font-size:0.72rem; }\n"
+          + "      .menu-panel  { left:0; right:0; min-width:0; width:100%; }\n"
           + "    }\n"
 
           + "    @media (max-width:400px) {\n"
@@ -618,7 +752,42 @@ public class BotViewerTemplate implements Filter {
           + "    });\n"
           + "  } else if (overlay) {\n"
           + "    overlay.style.display = 'none';\n"
-          + "  }\n";
+          + "  }\n"
+          // ── Dropdown category menu: click/tap toggle (touch + a11y) ──────
+          + "  (function(){\n"
+          + "    var groups = document.querySelectorAll('.menu-group');\n"
+          + "    function closeAll(except){\n"
+          + "      groups.forEach(function(g){\n"
+          + "        if(g!==except){ g.classList.remove('open');\n"
+          + "          var b=g.querySelector('.menu-btn'); if(b) b.setAttribute('aria-expanded','false'); }\n"
+          + "      });\n"
+          + "    }\n"
+          + "    groups.forEach(function(g){\n"
+          + "      var btn=g.querySelector('.menu-btn');\n"
+          + "      if(!btn) return;\n"
+          + "      btn.addEventListener('click', function(e){\n"
+          + "        e.preventDefault(); e.stopPropagation();\n"
+          + "        var isOpen=g.classList.contains('open');\n"
+          + "        closeAll(g);\n"
+          + "        if(isOpen){ g.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }\n"
+          + "        else      { g.classList.add('open');    btn.setAttribute('aria-expanded','true'); }\n"
+          + "      });\n"
+          + "    });\n"
+          + "    document.addEventListener('click', function(){ closeAll(null); });\n"
+          + "    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(null); });\n"
+          + "  })();\n"
+          // ── Client-side pre-warm: ping Space on hover/press before navigation ──
+          + "  (function(){\n"
+          + "    var warmed={};\n"
+          + "    function warm(u){ if(!u||warmed[u])return; warmed[u]=true;\n"
+          + "      try{ fetch(u,{mode:'no-cors',cache:'no-store'}).catch(function(){}); }catch(e){} }\n"
+          + "    var els=document.querySelectorAll('[data-warm]');\n"
+          + "    for(var i=0;i<els.length;i++){ (function(el){ var u=el.getAttribute('data-warm');\n"
+          + "      el.addEventListener('mouseenter',function(){warm(u);});\n"
+          + "      el.addEventListener('mousedown', function(){warm(u);});\n"
+          + "      el.addEventListener('touchstart',function(){warm(u);},{passive:true});\n"
+          + "    })(els[i]); }\n"
+          + "  })();\n";
     }
 
     // ── Response wrapper ──────────────────────────────────────────────────────
