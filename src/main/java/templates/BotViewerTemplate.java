@@ -3,6 +3,8 @@ package templates;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import io.github.cdimascio.dotenv.Dotenv;
 
 /**
@@ -106,6 +108,14 @@ public class BotViewerTemplate implements Filter {
         CharResponseWrapper wrapper = new CharResponseWrapper(response);
         chain.doFilter(request, wrapper);
 
+        // ── Server-side pre-warm ──────────────────────────────────────────
+        // Fire a fire-and-forget wake-up ping so a sleeping HuggingFace Space
+        // starts booting WHILE this page renders, overlapping the cold start.
+        // Only for real external bot Spaces (not local pages or the hire block).
+        if (isExternalSpace(botUrl)) {
+            wakeSpaceAsync(botUrl);
+        }
+
         String kl  = active(botKey, "legal");
         String kb  = active(botKey, "bank");
         String kg  = active(botKey, "grad");
@@ -136,6 +146,63 @@ public class BotViewerTemplate implements Filter {
         return key.equalsIgnoreCase(match) ? " active" : "";
     }
 
+    // ── HuggingFace Space wake-up helpers ────────────────────────────────────
+
+    /**
+     * True only for real external HuggingFace Space URLs (http/https),
+     * not local pages (ctx + "/...") or the hire sentinel.
+     */
+    private static boolean isExternalSpace(String url) {
+        return url != null
+            && !url.isEmpty()
+            && !url.equals("__hire__")
+            && (url.startsWith("http://") || url.startsWith("https://"));
+    }
+
+    /**
+     * Returns the Space ROOT origin (scheme://host) for a bot URL.
+     * A sleeping Space wakes on ANY request to its container, and the root
+     * is the most reliable path to hit (the deep path may 404 while booting).
+     * e.g. https://user-space.hf.space/regulatory → https://user-space.hf.space/
+     */
+    private static String spaceRoot(String url) {
+        try {
+            URL u = new URL(url);
+            String origin = u.getProtocol() + "://" + u.getHost();
+            if (u.getPort() != -1) origin += ":" + u.getPort();
+            return origin + "/";
+        } catch (Exception e) {
+            return url;
+        }
+    }
+
+    /**
+     * Fire-and-forget wake-up ping on a daemon thread. Never blocks page
+     * rendering and never throws into the request. A sleeping Space takes
+     * this GET as the trigger to start its container; we don't care about
+     * the response body or status — only that the request lands.
+     */
+    private static void wakeSpaceAsync(final String botUrl) {
+        final String root = spaceRoot(botUrl);
+        Thread t = new Thread(() -> {
+            try {
+                HttpURLConnection c =
+                        (HttpURLConnection) new URL(root).openConnection();
+                c.setRequestMethod("GET");
+                c.setConnectTimeout(5000);
+                c.setReadTimeout(5000);
+                c.setInstanceFollowRedirects(true);
+                int code = c.getResponseCode();   // triggers the wake
+                System.out.println("[wake] " + root + " → " + code);
+                c.disconnect();
+            } catch (Exception e) {
+                System.out.println("[wake] " + root + " failed: " + e.getMessage());
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+    }
+
     private static String emptyState(String ctx) {
         return "    <div style=\"height:100%;display:flex;flex-direction:column;"
              + "align-items:center;justify-content:center;background:" + C_BG + ";"
@@ -154,13 +221,41 @@ public class BotViewerTemplate implements Filter {
     }
 
     private static String iframe(String botUrl) {
-        return "    <iframe id=\"bot-frame\"\n"
+        // Branded "waking up" overlay sits on top of the iframe and is hidden
+        // by the iframe's onload once the Space finishes loading. This replaces
+        // the raw HuggingFace "Building…" screen with our own UX during cold start.
+        return "  <div id=\"bot-wrap\" style=\"position:relative;width:100%;height:100%;\">\n"
+             + "    <div id=\"bot-loading\" style=\"position:absolute;inset:0;z-index:2;"
+             +        "display:flex;flex-direction:column;align-items:center;justify-content:center;"
+             +        "gap:16px;background:" + C_BG + ";color:" + C_GREEN + ";"
+             +        "font-family:'IBM Plex Mono',monospace;text-align:center;padding:24px;\">\n"
+             + "      <div class=\"wake-spinner\"></div>\n"
+             + "      <p id=\"wake-msg\" style=\"font-size:0.9rem;margin:0;letter-spacing:.04em;\">"
+             +        "Waking up the assistant&hellip;</p>\n"
+             + "      <p id=\"wake-sub\" style=\"font-size:0.72rem;color:" + C_MUTED + ";margin:0;"
+             +        "max-width:320px;line-height:1.6;\">First launch can take up to a minute while "
+             +        "the Space starts. Thanks for your patience.</p>\n"
+             + "    </div>\n"
+             + "    <iframe id=\"bot-frame\"\n"
              + "      src=\"" + botUrl + "\"\n"
              + "      title=\"AI Assistant\"\n"
              + "      allow=\"microphone; clipboard-write\"\n"
              + "      sandbox=\"allow-scripts allow-same-origin allow-forms allow-popups\"\n"
-             + "      style=\"width:100%;height:100%;border:none;display:block;\">\n"
-             + "    </iframe>\n";
+             + "      style=\"width:100%;height:100%;border:none;display:block;\"\n"
+             + "      onload=\"var l=document.getElementById('bot-loading');if(l)l.style.display='none';\">\n"
+             + "    </iframe>\n"
+             + "    <script>\n"
+             + "      // Safety net: if onload is delayed, escalate the message so the\n"
+             + "      // user knows it's still working rather than stuck.\n"
+             + "      (function(){\n"
+             + "        var msg=document.getElementById('wake-msg');\n"
+             + "        var t1=setTimeout(function(){ if(msg) msg.textContent='Still starting up\\u2026'; },20000);\n"
+             + "        var t2=setTimeout(function(){ if(msg) msg.textContent='Almost there\\u2026'; },40000);\n"
+             + "        var f=document.getElementById('bot-frame');\n"
+             + "        if(f){ f.addEventListener('load',function(){ clearTimeout(t1); clearTimeout(t2); }); }\n"
+             + "      })();\n"
+             + "    </script>\n"
+             + "  </div>\n";
     }
 
     // ── Hire page content — rendered inline inside BotViewerTemplate shell ──
@@ -338,12 +433,34 @@ public class BotViewerTemplate implements Filter {
     // ── Bot pill HTML helper ──────────────────────────────────────────────────
     private static String pill(String ctx, String bot, String active,
                                 String faIcon, String label) {
+        // Attach data-warm with the Space ROOT for external HF Space bots, so
+        // the client can pre-warm the Space on hover/press before navigation.
+        String botUrl = urlForKey(ctx, bot);
+        String warmAttr = isExternalSpace(botUrl)
+                ? " data-warm=\"" + spaceRoot(botUrl) + "\""
+                : "";
         return "    <a class=\"bot-pill" + active + "\" href=\"" + ctx
-             + "/BotViewer?bot=" + bot + "\">\n"
+             + "/BotViewer?bot=" + bot + "\"" + warmAttr + ">\n"
              + "      <span class=\"dot\"></span>\n"
              + "      <i class=\"fas " + faIcon + "\"></i>"
              + "<span class=\"pill-label\">" + label + "</span>\n"
              + "    </a>\n";
+    }
+
+    /**
+     * Resolve a bot key to its target URL (mirror of the doFilter switch).
+     * Used so pills can advertise the Space root for client-side pre-warming.
+     */
+    private static String urlForKey(String ctx, String bot) {
+        switch (bot == null ? "" : bot.toLowerCase()) {
+            case "legal": return URL_LEGAL;
+            case "bank":  return URL_BANK;
+            case "grad":  return URL_GRAD;
+            case "cv":    return URL_CV;
+            case "hiv":   return URL_HIV;
+            case "coreg": return URL_COREG;
+            default:      return "";   // local pages (arch/sia/ethics/etymology) — no warm
+        }
     }
 
     // ── Full page assembly — added kco (Regulatory Navigator) + ks (sia) ─────
@@ -560,6 +677,13 @@ public class BotViewerTemplate implements Filter {
           + "      animation:spin 0.7s linear infinite;\n"
           + "    }\n"
           + "    @keyframes spin { to { transform:rotate(360deg); } }\n"
+          + "    .wake-spinner {\n"
+          + "      width:42px; height:42px;\n"
+          + "      border:3px solid rgba(74,222,128,0.18);\n"
+          + "      border-top-color:var(--green);\n"
+          + "      border-radius:50%;\n"
+          + "      animation:spin 0.8s linear infinite;\n"
+          + "    }\n"
 
           + "    .footer {\n"
           + "      background:var(--bg); border-top:1px solid var(--border);\n"
@@ -618,7 +742,28 @@ public class BotViewerTemplate implements Filter {
           + "    });\n"
           + "  } else if (overlay) {\n"
           + "    overlay.style.display = 'none';\n"
-          + "  }\n";
+          + "  }\n"
+          // ── Client-side pre-warm ─────────────────────────────────────────
+          // Ping a Space the instant the user shows intent (hover / press),
+          // BEFORE the click navigates, so the container starts booting early.
+          + "  (function(){\n"
+          + "    var warmed = {};\n"
+          + "    function warm(url){\n"
+          + "      if(!url || warmed[url]) return;\n"
+          + "      warmed[url] = true;\n"
+          + "      try { fetch(url, { mode:'no-cors', cache:'no-store' }).catch(function(){}); }\n"
+          + "      catch(e){}\n"
+          + "    }\n"
+          + "    var els = document.querySelectorAll('[data-warm]');\n"
+          + "    for (var i=0;i<els.length;i++){\n"
+          + "      (function(el){\n"
+          + "        var url = el.getAttribute('data-warm');\n"
+          + "        el.addEventListener('mouseenter', function(){ warm(url); });\n"
+          + "        el.addEventListener('mousedown',  function(){ warm(url); });\n"
+          + "        el.addEventListener('touchstart', function(){ warm(url); }, {passive:true});\n"
+          + "      })(els[i]);\n"
+          + "    }\n"
+          + "  })();\n";
     }
 
     // ── Response wrapper ──────────────────────────────────────────────────────
