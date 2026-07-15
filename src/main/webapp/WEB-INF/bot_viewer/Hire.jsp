@@ -210,14 +210,14 @@
         <span class="ecard-label">Consulting / Contract</span>
         <div class="ecard-title">AI Platform Consulting</div>
         <div class="ecard-body">Fractional AI architect for your organisation. Scope includes: <strong>RAG system design</strong>, multi-agent pipeline architecture, LLMOps, AI ethics assessments, or scaling a prototype to production. Government, NGO, and enterprise.</div>
-        <div class="ecard-footer"><a href="mailto:pgacirane@gmail.com">Discuss your project <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+        <div class="ecard-footer"><a href="mailto:paga081@gmail.com">Discuss your project <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
       </div>
       <div class="ecard">
         <div class="ecard-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <span class="ecard-label">Partnerships / Investors</span>
         <div class="ecard-title">Scale an MVP</div>
         <div class="ecard-body">All five live MVPs are <strong>ready to scale</strong> with production investment. Each is architecturally validated, domain-grounded, and designed to grow into a national or regional platform.</div>
-        <div class="ecard-footer"><a href="mailto:pgacirane@gmail.com">Start the conversation <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+        <div class="ecard-footer"><a href="mailto:paga081@gmail.com">Start the conversation <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
       </div>
     </div>
 
@@ -252,7 +252,7 @@
     </div>
 
     <div class="cta-strip" role="region" aria-label="Contact actions">
-      <a class="cta-btn cta-primary" href="mailto:pgacirane@gmail.com">
+      <a class="cta-btn cta-primary" href="mailto:paga081@gmail.com">
         <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Email me directly
       </a>
@@ -275,7 +275,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite">Email copied!</div>
   <script>
     function copyEmail() {
-      navigator.clipboard.writeText("pgacirane@gmail.com").then(() => {
+      navigator.clipboard.writeText("paga081@gmail.com").then(() => {
         const t = document.getElementById("toast");
         t.classList.add("show");
         setTimeout(() => t.classList.remove("show"), 2400);
