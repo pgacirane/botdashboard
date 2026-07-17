@@ -1,0 +1,24 @@
+"""name: Sync to Hugging Face Hub
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install HF Hub
+        run: pip install huggingface_hub
+      - name: Push to HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python -c "from huggingface_hub import HfApi; \
+          api = HfApi(); \
+          api.upload_folder(folder_path='.', repo_id='musy3000/botsuit', repo_type='space', token='$HF_TOKEN', \
+          ignore_patterns=['.git', '.gitignore', 'target/', '*.class', 'nb-configuration.xml', 'nbactions.xml'])"
+          """"
