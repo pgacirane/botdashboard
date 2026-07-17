@@ -280,7 +280,7 @@
       <div class="icard">
         <div class="icard-label">Platform</div>
         <div class="icard-body">
-          <p><strong>AIonifier</strong> &mdash; AI (Artificial Intelligence) MVP (Minimum Viable Product) Portfolio &mdash; is a personal AI MVP portfolio by GACIRANE Patrick &mdash; 13 live agentic applications and 2 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
+          <p><strong>AIonifier</strong> &mdash; AI (Artificial Intelligence) MVP (Minimum Viable Product) Portfolio &mdash; is a personal AI MVP portfolio by GACIRANE Patrick &mdash; 13 live agentic applications and 3 in development, each built end-to-end to demonstrate production-grade AI engineering across real-world domains.</p>
         </div>
       </div>
       <div class="icard engage-card">
@@ -292,13 +292,15 @@
       <div class="icard stat-card">
         <div class="icard-label">AI Apps</div>
         <div class="stat-num">13+</div>
-        <div class="stat-sub">13 Live &middot; 2 In Dev</div>
+        <div class="stat-sub">13 Live &middot; 3 In Dev</div>
       </div>
       <div class="icard">
         <div class="icard-label">Technology Stack</div>
         <div class="icard-body">
           <div class="pill-row">
             <span class="pill">CrewAI Agents</span>
+            <span class="pill">A2A Protocol</span>
+            <span class="pill">BeeAI Framework</span>
             <span class="pill">RAG Pipelines</span>
             <span class="pill">MCP Servers</span>
             <span class="pill">Hybrid Search</span>
@@ -429,6 +431,19 @@
           <h2 class="bot-name">Global Funding Scout AI</h2>
           <p class="bot-desc">A 4-agent CrewAI system that autonomously searches international funding databases, scrapes full eligibility criteria and deadlines, verifies geographic eligibility for your target country, and generates <strong>sector-specific outreach messaging templates</strong> — delivering a compiled funding intelligence report with an interactive dashboard covering grants, investments, and sponsorships across Education, Youth, Women Empowerment, and Climate Resilience sectors.</p>
           <p class="bot-scale">Scalable &rarr; International Development Finance Intelligence Platform</p>
+        </div>
+        <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
+      </div>
+
+      <div class="bot-card coming-soon" role="article" aria-label="Climate Resilience Advisor AI — Coming Soon">
+        <div class="corner-glow"></div>
+        <div class="bot-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.5 9.5 Q8 8 12 9.5 T20.5 9.5" stroke-width="1.3"/><path d="M3.5 14.5 Q8 13 12 14.5 T20.5 14.5" stroke-width="1.3"/><path d="M12 3 Q9 8 12 12 Q15 16 12 21" stroke-width="1.3"/><path d="M15.5 6.5 Q19 5.5 18.5 9 Q16 9.5 15.5 6.5 Z" fill="#4ade80" stroke="none" opacity="0.8"/></svg></div>
+        <div>
+          <div class="soon-badge">Upcoming MVP</div>
+          <span class="bot-field">ClimateTech &middot; Multi-Agent A2A &middot; Climate Science</span>
+          <h2 class="bot-name">Climate Resilience Advisor AI</h2>
+          <p class="bot-desc">An <strong>A2A (Agent-to-Agent) protocol</strong> system where an orchestrator agent routes climate questions to three autonomous specialist agents &mdash; <strong>Agriculture &amp; Food Systems</strong>, <strong>Earth &amp; Atmospheric Sciences</strong>, and <strong>Ecology &amp; Biology</strong> &mdash; each an independent CrewAI crew with real-time web search, discoverable via published agent cards. Answers questions like drought-resilient crops for East Africa, heat impact on coffee, and flooding effects on rice production.</p>
+          <p class="bot-scale">Scalable &rarr; National Climate Adaptation Intelligence Platform</p>
         </div>
         <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
       </div>
