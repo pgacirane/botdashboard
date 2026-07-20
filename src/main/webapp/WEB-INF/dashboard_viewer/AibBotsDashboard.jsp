@@ -9,16 +9,16 @@
   <meta property="og:type"        content="website" />
   <meta property="og:site_name"   content="AIonifier.ai" />
   <meta property="og:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta property="og:description" content="5 live AI agentic applications spanning legal, clinical, banking, education, and HR— built end-to-end by GACIRANE Patrick." />
+  <meta property="og:description" content="13 live AI agentic applications spanning legal, clinical, banking,environment, education, and HR— built end-to-end by GACIRANE Patrick." />
   <meta property="og:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
   <meta property="og:image:width"  content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url"         content="https://aionifier.ai" />
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="AIonifier.ai — AI MVP Portfolio" />
-  <meta name="twitter:description" content="5 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta name="twitter:description" content="13 live AI agentic applications spanning legal, clinical, banking,environment,environment, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="twitter:image"       content="<%= request.getContextPath() %>/images/aionifier-og.png" />
-  <meta name="description" content="AIonifier.ai — 5 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
+  <meta name="description" content="AIonifier.ai — 13 live AI agentic applications spanning legal, clinical, banking, education, and HR — built end-to-end by GACIRANE Patrick." />
   <meta name="author"      content="GACIRANE Patrick" />
   <meta name="robots"      content="index, follow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
