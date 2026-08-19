@@ -151,40 +151,67 @@
     .divider span { font-family: "IBM Plex Mono", monospace; font-size: 0.57rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
     .dl  { flex: 1; height: 1px; background: linear-gradient(to right,  rgba(255,255,255,0.07), transparent); }
     .dlr { flex: 1; height: 1px; background: linear-gradient(to left,   rgba(255,255,255,0.07), transparent); }
-    /* GRID */
-    .bots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 2vw, 22px); width: 100%; }
-    @media (max-width: 860px) { .bots-grid { grid-template-columns: repeat(2, 1fr); } .bots-grid .bot-card:nth-child(5) { grid-column: auto; } }
-    @media (max-width: 480px) { .bots-grid { grid-template-columns: 1fr; } }
-    /* COMING SOON */
-    .bot-card.coming-soon { flex-direction: column; cursor: default; border-style: dashed; border-color: rgba(74,222,128,0.28); border-top: 3px solid rgba(74,222,128,0.55); background: rgba(13,17,28,0.7); opacity: 0.9; }
-    .bot-card.coming-soon:hover { transform: none; box-shadow: none; border-color: rgba(74,222,128,0.42); }
-    .bot-card.coming-soon:hover::before { opacity: 0.3; }
-    .soon-badge { display: inline-flex; align-items: center; gap: 6px; font-family: "IBM Plex Mono", monospace; font-size: clamp(0.54rem, 0.9vw, 0.62rem); letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); border: 1px dashed rgba(74,222,128,0.45); background: rgba(74,222,128,0.06); padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; width: fit-content; }
-    .soon-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: .75; animation: blink 1.8s ease-in-out infinite; }
-    .cs-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .cs-eta { font-family: "IBM Plex Mono", monospace; font-size: clamp(0.52rem, 0.85vw, 0.60rem); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); opacity: .6; white-space: nowrap; }
-    /* CARD */
-    .bot-card { position: relative; border-radius: 16px; padding: clamp(18px,2.5vw,26px) clamp(16px,2vw,22px) clamp(16px,2vw,22px); text-decoration: none; cursor: pointer; display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: transform .3s cubic-bezier(.22,.68,0,1.2), box-shadow .3s, border-color .3s; }
-    .bot-card::before { content: ""; position: absolute; inset: 0; border-radius: 16px; background: radial-gradient(ellipse at top left, rgba(74,222,128,0.09) 0%, transparent 65%); opacity: 0; transition: opacity .3s; pointer-events: none; }
-    .bot-card:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(74,222,128,0.3); box-shadow: 0 18px 40px rgba(74,222,128,0.11); }
-    .bot-card:hover::before { opacity: 1; }
-    .mvp-tag, .sia-tag, .ety-tag, .ethics-tag { position: absolute; top: 11px; right: 0; font-family: "IBM Plex Mono", monospace; font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 3px 8px 3px 6px; border-radius: 4px 0 0 4px; background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.16); border-right: none; color: rgba(74,222,128,0.6); }
-    .corner-glow { position: absolute; top: -16px; right: -16px; width: 72px; height: 72px; border-radius: 50%; background: radial-gradient(circle, rgba(74,222,128,0.11) 0%, transparent 70%); pointer-events: none; }
-    .bot-icon { width: clamp(44px,6vw,54px); height: clamp(44px,6vw,54px); border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(74,222,128,0.09); border: 1px solid rgba(74,222,128,0.2); flex-shrink: 0; transition: background .3s, transform .3s; }
-    .bot-icon svg { width: clamp(22px,3vw,26px); height: clamp(22px,3vw,26px); stroke: var(--green); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .bot-card:hover .bot-icon { background: rgba(74,222,128,0.17); transform: rotate(-4deg) scale(1.08); }
+    /* ============ RADIAL WHEEL ============ */
+    .wheel-section { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(14px, 3vw, 34px); align-items: start; }
+    @media (max-width: 900px) { .wheel-section { grid-template-columns: 1fr; } }
+    .wheel-stage { position: relative; width: 100%; max-width: 960px; margin: 0 auto; }
+    .wheel-stage svg { width: 100%; height: auto; display: block; }
+    .wheel-hint { text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); opacity: .65; margin-top: 8px; }
+    /* wedges */
+    .wedge { fill: rgba(19,25,41,0.92); stroke: rgba(74,222,128,0.22); stroke-width: 1; cursor: pointer; transition: fill .25s; outline: none; }
+    .wedge:hover, .wedge:focus-visible { fill: rgba(74,222,128,0.12); }
+    .wedge:focus-visible { stroke: var(--green); stroke-width: 1.6; }
+    .wedge.selected { fill: rgba(74,222,128,0.18); stroke: var(--green); stroke-width: 1.6; }
+    .wedge.soon { fill: rgba(13,17,28,0.75); stroke-dasharray: 5 4; }
+    .wedge-label { font-family: "IBM Plex Mono", monospace; font-size: 13.5px; letter-spacing: 0.06em; text-transform: uppercase; fill: #c8d4e8; pointer-events: none; }
+    .wedge-label .sub { font-size: 9.5px; fill: rgba(74,222,128,0.75); letter-spacing: 0.14em; }
+    .wedge-label .sub-soon { font-size: 10px; fill: var(--green); letter-spacing: 0.14em; }
+    .subgroup-arc-label { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: 0.20em; text-transform: uppercase; fill: rgba(74,222,128,0.8); }
+    .subgroup-arc-line { fill: none; stroke: rgba(74,222,128,0.45); stroke-width: 1.2; stroke-dasharray: 4 4; }
+    /* hub */
+    .hub-circle { fill: rgba(11,15,26,0.95); stroke: rgba(74,222,128,0.55); stroke-width: 1.6; cursor: pointer; transition: fill .25s, stroke .25s; outline: none; }
+    .hub-group:hover .hub-circle, .hub-circle:focus-visible { fill: rgba(74,222,128,0.12); stroke: var(--green); }
+    .hub-group.selected .hub-circle { fill: rgba(74,222,128,0.18); stroke: var(--green); }
+    .hub-text { font-family: "IBM Plex Mono", monospace; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; fill: var(--green); pointer-events: none; }
+    .hub-sub { font-family: "IBM Plex Mono", monospace; font-size: 8.5px; letter-spacing: 0.16em; text-transform: uppercase; fill: var(--muted); pointer-events: none; }
+    /* section arcs */
+    .section-ring { fill: none; stroke: rgba(74,222,128,0.16); stroke-width: 1; }
+    .section-arc-label { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; fill: var(--green); opacity: .85; }
+    .section-divider-line { stroke: rgba(74,222,128,0.45); stroke-width: 1.4; }
+    /* DETAIL PANEL */
+    .wheel-detail {
+      position: sticky; top: calc(var(--nav-h) + 16px);
+      background: var(--surface); border: 1px solid rgba(74,222,128,0.25); border-radius: 16px;
+      padding: clamp(18px,2.5vw,26px) clamp(16px,2vw,24px); overflow: hidden; min-height: 300px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .wheel-detail::before { content: ""; position: absolute; inset: 0; border-radius: 16px; background: radial-gradient(ellipse at top left, rgba(74,222,128,0.09) 0%, transparent 65%); pointer-events: none; }
+    @media (max-width: 900px) { .wheel-detail { position: static; } }
+    .d-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .d-tag { font-family: "IBM Plex Mono", monospace; font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.16); color: rgba(74,222,128,0.7); white-space: nowrap; }
+    .d-section { font-family: "IBM Plex Mono", monospace; font-size: 0.50rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); opacity: .7; }
     .bot-field { font-family: "IBM Plex Mono", monospace; font-size: clamp(0.52rem, 0.85vw, 0.60rem); letter-spacing: 0.17em; text-transform: uppercase; color: var(--green); opacity: .72; margin-bottom: 3px; display: block; }
-    .bot-name { font-size: clamp(0.9rem, 1.5vw, 1.04rem); font-weight: 700; color: var(--text); margin: 0 0 7px; line-height: 1.22; }
-    .bot-desc { font-size: clamp(0.70rem, 1.1vw, 0.77rem); color: var(--muted); line-height: 1.65; margin: 0; font-weight: 300; }
-    .bot-scale { font-family: "IBM Plex Mono", monospace; font-size: 0.52rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--green); opacity: .45; margin-top: 3px; display: flex; align-items: center; gap: 4px; }
-    .bot-scale::before { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
-    .bot-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .launch-label { font-family: "IBM Plex Mono", monospace; font-size: clamp(0.54rem, 0.88vw, 0.62rem); letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); opacity: .58; transition: opacity .2s; }
-    .bot-card:hover .launch-label { opacity: 1; }
-    .arrow-circle { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; background: rgba(74,222,128,0.09); border: 1px solid rgba(74,222,128,0.26); display: flex; align-items: center; justify-content: center; transition: background .25s, transform .25s; }
-    .arrow-circle svg { width: 12px; height: 12px; stroke: var(--green); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: stroke .25s; }
-    .bot-card:hover .arrow-circle { background: var(--green); transform: translateX(3px); }
-    .bot-card:hover .arrow-circle svg { stroke: var(--bg); }
+    .bot-name { font-size: clamp(0.98rem, 1.7vw, 1.18rem); font-weight: 700; color: var(--text); margin: 0 0 7px; line-height: 1.22; }
+    .bot-desc { font-size: clamp(0.70rem, 1.1vw, 0.78rem); color: var(--muted); line-height: 1.7; margin: 0; font-weight: 300; }
+    .bot-desc strong { color: #c8d4e8; }
+    .bot-scale { font-family: "IBM Plex Mono", monospace; font-size: 0.52rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--green); opacity: .55; margin-top: 10px; display: flex; align-items: center; gap: 4px; }
+    .bot-scale::before { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .d-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .d-launch {
+      font-family: "IBM Plex Mono", monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--bg); background: var(--green); text-decoration: none; padding: 8px 18px; border-radius: 7px;
+      display: inline-flex; align-items: center; gap: 8px; transition: background .2s, transform .2s; font-weight: 500;
+    }
+    .d-launch:hover { background: #86efac; transform: translateX(2px); }
+    .d-launch svg { width: 12px; height: 12px; stroke: var(--bg); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .soon-badge { display: inline-flex; align-items: center; gap: 6px; font-family: "IBM Plex Mono", monospace; font-size: clamp(0.54rem, 0.9vw, 0.62rem); letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); border: 1px dashed rgba(74,222,128,0.45); background: rgba(74,222,128,0.06); padding: 3px 10px; border-radius: 20px; width: fit-content; }
+    .soon-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: .75; animation: blink 1.8s ease-in-out infinite; }
+    .cs-eta { font-family: "IBM Plex Mono", monospace; font-size: clamp(0.52rem, 0.85vw, 0.60rem); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); opacity: .6; white-space: nowrap; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .wedge, .hub-circle, .d-launch { transition: none; }
+      .soon-badge::before { animation: none; }
+    }
     /* FOOTER */
     .page-footer { text-align: center; margin-top: clamp(36px,5vw,56px); padding-top: 20px; border-top: 1px solid var(--border); }
     .page-footer p { font-family: "IBM Plex Mono", monospace; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
@@ -321,181 +348,20 @@
     </div>
 
     <div class="divider" id="apps">
-      <div class="dl"></div><span>AI MVP Applications &mdash; Select a Specialist</span><div class="dlr"></div>
+      <span id="impact" style="position:absolute;"></span>
+      <span id="etymology" style="position:absolute;"></span>
+      <div class="dl"></div><span>The AIonifier Wheel &mdash; Select a Specialist</span><div class="dlr"></div>
     </div>
 
-    <div class="bots-grid">
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=coreg">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="5" height="4" rx="1"/><rect x="17" y="3" width="5" height="4" rx="1"/><rect x="9" y="17" width="6" height="4" rx="1"/><line x1="4.5" y1="7" x2="4.5" y2="14"/><line x1="19.5" y1="7" x2="19.5" y2="14"/><line x1="4.5" y1="14" x2="12" y2="19"/><line x1="19.5" y1="14" x2="12" y2="19"/><circle cx="4.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/><circle cx="19.5" cy="14" r="1.2" fill="#4ade80" stroke="none"/></svg></div>
-        <div>
-          <span class="bot-field">RegTech &middot; Cross-Regulatory Intelligence &middot; Compliance Advisory</span>
-          <h2 class="bot-name">Regulatory Navigator AI</h2>
-          <p class="bot-desc">Move confidently through multi-regulator compliance with a clear, guided path. Four specialist regulatory crews &mdash; <strong>RICA</strong>, <strong>RURA</strong>, <strong>NCSA</strong> and <strong>BNR</strong> &mdash; each answer questions within their own domain, while an <strong>orchestrator agent</strong> coordinates them and synthesises a single, well-reasoned, aggregated response. Every answer is grounded in official regulatory texts via a RAG knowledge base.</p>
-          <p class="bot-scale">Scalable &rarr; National Smart Regulation (RegTech) Platform</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Launch navigator</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=legal">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4" y1="6" x2="20" y2="6"/><path d="M4 6 L2 11 Q4 13 6 11 Z"/><path d="M20 6 L18 11 Q20 13 22 11 Z"/><line x1="8" y1="21" x2="16" y2="21"/></svg></div>
-        <div>
-          <span class="bot-field">Legal Tech &middot; Compliance Automation</span>
-          <h2 class="bot-name">Global Legal Advisor</h2>
-          <p class="bot-desc">Navigate international regulations, draft legal briefs, and get jurisdiction-aware guidance across 180+ countries via multi-agent legal reasoning.</p>
-          <p class="bot-scale">Scalable &rarr; Enterprise Legal Intelligence Platform</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Launch advisor</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=bank">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="3" y="10" width="2.5" height="9" rx="0.5"/><rect x="7.5" y="10" width="2.5" height="9" rx="0.5"/><rect x="14" y="10" width="2.5" height="9" rx="0.5"/><rect x="18.5" y="10" width="2.5" height="9" rx="0.5"/><polyline points="1 10 12 3 23 10"/><line x1="1" y1="19" x2="23" y2="19"/><polyline points="7.5 16 10 13.5 14 15 18.5 11.5" stroke-width="1.4"/></svg></div>
-        <div>
-          <span class="bot-field">Banking &middot; CRM &middot; Financial Services</span>
-          <h2 class="bot-name">Bank CRM Advisor</h2>
-          <p class="bot-desc">Deepen client relationships, automate follow-ups, and surface actionable insights from banking CRM data — powered by a 9-agent CrewAI system.</p>
-          <p class="bot-scale">Scalable &rarr; Retail Banking Intelligence Suite</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Launch advisor</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=hiv">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="18" rx="1.5"/><rect x="3" y="9" width="18" height="6" rx="1.5"/><polyline points="3 12 6 12 8 8 10 16 12 10 14 14 16 12 21 12" stroke-width="1.3" stroke="#0b0f1a" fill="none"/></svg></div>
-        <div>
-          <span class="bot-field">Healthcare &middot; Clinical Guidelines &middot; HIV/AIDS</span>
-          <h2 class="bot-name">HIV Guidelines Assistant</h2>
-          <p class="bot-desc">Retrieve verified ART regimens, PMTCT protocols, and paediatric dosing from Rwanda HIV Guidelines 2022 via RAG over RBC clinical documentation.</p>
-          <p class="bot-scale">Scalable &rarr; National Clinical Decision Support System</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Launch advisor</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=grad">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><polygon points="12 3 22 8 12 13 2 8"/><path d="M6 10.5 v5 Q12 18.5 18 15.5 v-5"/><line x1="22" y1="8" x2="22" y2="14"/><circle cx="22" cy="15" r="1" fill="#4ade80" stroke="none"/></svg></div>
-        <div>
-          <span class="bot-field">EdTech &middot; Career Advisory &middot; Education</span>
-          <h2 class="bot-name">Smart Grad</h2>
-          <p class="bot-desc">Agentic university scouting, financial roadmapping, visa navigation and cultural landing — built for any students pursuing global education.</p>
-          <p class="bot-scale">Scalable &rarr; Global Student Advisory Platform</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Launch advisor</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=cv">
-        <div class="corner-glow"></div><span class="mvp-tag">MVP</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><circle cx="7" cy="11" r="2.5"/><line x1="11" y1="9.5" x2="14.5" y2="9.5"/><line x1="11" y1="12" x2="14.5" y2="12"/><path d="M17 4 h4 a1 1 0 0 1 1 1 v5 a1 1 0 0 1 -1 1 h-2 l-2 2 v-2 a1 1 0 0 1 -1 -1 v-5 a1 1 0 0 1 1 -1 z"/><circle cx="19" cy="7" r="0.6" fill="#4ade80" stroke="none"/><circle cx="21" cy="7" r="0.6" fill="#4ade80" stroke="none"/></svg></div>
-        <div>
-          <span class="bot-field">HRTech &middot; Talent Intelligence &middot; Recruitment</span>
-          <h2 class="bot-name">Talk to My CV</h2>
-          <p class="bot-desc">Chat directly with Patrick's CV — skills, projects, and experience all conversationally accessible via RAG-powered talent profiling.</p>
-          <p class="bot-scale">Scalable &rarr; AI-Powered Recruitment Screening Tool</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Start a conversation</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=arch">
-        <div class="corner-glow"></div><span class="mvp-tag">DOCS</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><line x1="12" y1="7" x2="12" y2="17"/><line x1="12" y1="17" x2="4" y2="17"/><line x1="12" y1="17" x2="20" y2="17"/><line x1="4" y1="17" x2="4" y2="19"/><line x1="20" y1="17" x2="20" y2="19"/><line x1="12" y1="17" x2="12" y2="19"/></svg></div>
-        <div>
-          <span class="bot-field">Platform &middot; AI Infrastructure &middot; Tech Stack</span>
-          <h2 class="bot-name">Platform Architecture</h2>
-          <p class="bot-desc">Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all six domain MVPs.</p>
-          <p class="bot-scale">Underpins &rarr; All 6 AI domain MVPs above</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">View architecture</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <div class="bot-card coming-soon" role="article" aria-label="AI Voice Avatar — Coming Soon">
-        <div class="corner-glow"></div>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/><circle cx="12" cy="7" r="1.2" fill="#4ade80" stroke="none"/></svg></div>
-        <div>
-          <div class="soon-badge">Upcoming MVP</div>
-          <span class="bot-field">Voice AI &middot; Career Intelligence &middot; Digital Twin</span>
-          <h2 class="bot-name">AI Voice Avatar</h2>
-          <p class="bot-desc">A voice-first chatbot powered by a cloned voice of GACIRANE Patrick — letting visitors have a natural spoken conversation about his professional career, projects, skills, and experience. Built on voice synthesis, RAG over career data, and real-time audio streaming.</p>
-          <p class="bot-scale">Scalable &rarr; AI-Powered Professional Digital Twin</p>
-        </div>
-        <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
+    <section class="wheel-section" aria-label="AIonifier application wheel">
+      <div class="wheel-stage">
+        <svg id="wheel" viewBox="0 0 760 760" role="group" aria-label="Radial menu of AIonifier applications"></svg>
+        <p class="wheel-hint">Tap a segment for details &middot; Centre hub &rarr; Platform Architecture</p>
       </div>
-
-      <div class="bot-card coming-soon" role="article" aria-label="Global Funding Scout AI — Coming Soon">
-        <div class="corner-glow"></div>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/><line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/><circle cx="11" cy="11" r="2.5" fill="#4ade80" stroke="none" opacity="0.35"/></svg></div>
-        <div>
-          <div class="soon-badge">Upcoming MVP</div>
-          <span class="bot-field">FundTech &middot; Grant Intelligence &middot; International Finance</span>
-          <h2 class="bot-name">Global Funding Scout AI</h2>
-          <p class="bot-desc">A 4-agent CrewAI system that autonomously searches international funding databases, scrapes full eligibility criteria and deadlines, verifies geographic eligibility for your target country, and generates <strong>sector-specific outreach messaging templates</strong> — delivering a compiled funding intelligence report with an interactive dashboard covering grants, investments, and sponsorships across Education, Youth, Women Empowerment, and Climate Resilience sectors.</p>
-          <p class="bot-scale">Scalable &rarr; International Development Finance Intelligence Platform</p>
-        </div>
-        <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
-      </div>
-
-      <div class="bot-card coming-soon" role="article" aria-label="Climate Resilience Advisor AI — Coming Soon">
-        <div class="corner-glow"></div>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.5 9.5 Q8 8 12 9.5 T20.5 9.5" stroke-width="1.3"/><path d="M3.5 14.5 Q8 13 12 14.5 T20.5 14.5" stroke-width="1.3"/><path d="M12 3 Q9 8 12 12 Q15 16 12 21" stroke-width="1.3"/><path d="M15.5 6.5 Q19 5.5 18.5 9 Q16 9.5 15.5 6.5 Z" fill="#4ade80" stroke="none" opacity="0.8"/></svg></div>
-        <div>
-          <div class="soon-badge">Upcoming MVP</div>
-          <span class="bot-field">ClimateTech &middot; Multi-Agent A2A &middot; Climate Science</span>
-          <h2 class="bot-name">Climate Resilience Advisor AI</h2>
-          <p class="bot-desc">An <strong>A2A (Agent-to-Agent) protocol</strong> system where an orchestrator agent routes climate questions to three autonomous specialist agents &mdash; <strong>Agriculture &amp; Food Systems</strong>, <strong>Earth &amp; Atmospheric Sciences</strong>, and <strong>Ecology &amp; Biology</strong> &mdash; each an independent CrewAI crew with real-time web search, discoverable via published agent cards. Answers questions like drought-resilient crops for East Africa, heat impact on coffee, and flooding effects on rice production.</p>
-          <p class="bot-scale">Scalable &rarr; National Climate Adaptation Intelligence Platform</p>
-        </div>
-        <div class="cs-footer"><span class="launch-label" style="opacity:.4;">Coming soon</span><span class="cs-eta">&#128336;&nbsp; In Development</span></div>
-      </div>
-    </div>
-
-    <div class="divider" id="impact">
-      <div class="dl"></div><span>Social Impact Assessments &mdash; AIonifier AI Ethics</span><div class="dlr"></div>
-    </div>
-
-    <div class="bots-grid">
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=sia">
-        <div class="corner-glow"></div><span class="sia-tag">REPORT</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12 Q10 8 12 12 Q14 16 16 12"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="3" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/></svg></div>
-        <div>
-          <span class="bot-field">AI Ethics &middot; Responsible AI &middot; Policy</span>
-          <h2 class="bot-name">Social Impact Assessment</h2>
-          <p class="bot-desc">A structured Social Impact Matrix evaluation of two AIonifier MVPs — <strong style="color:#c8d4e8;">SmartAttorney AI</strong> and the <strong style="color:#c8d4e8;">Rwanda HIV Guidelines Assistant</strong>. Each is assessed across Individual, Collective, and Societal dimensions for both <em>harms</em> and <em>benefits</em> — following the Social Impact Matrix methodology adopted across East Africa. Essential reading for investors, regulators, and implementation partners.</p>
-          <p class="bot-scale">Framework &rarr; Social Impact Matrix (Assessing Harms &amp; Amplifying Benefits)</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">View full assessment</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=ethics">
-        <div class="corner-glow"></div><span class="ethics-tag">ETHICS</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7z"/><polyline points="9 12 11 14 15 10"/></svg></div>
-        <div>
-          <span class="bot-field">AI Ethics &middot; Responsible AI &middot; Platform Principles</span>
-          <h2 class="bot-name">AIonifier AI Ethics</h2>
-          <p class="bot-desc">The ethical framework governing every AI application on this platform. We do not collect personal data, we do not use cookies or tracking, we warn that AI can generate incorrect information, and we clearly state that this platform is not for real production use. Six principles covering privacy, transparency, human oversight, accuracy, scope, and accountability.</p>
-          <p class="bot-scale">Framework &rarr; Responsible AI &amp; Ethical Deployment Principles</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Read AI Ethics</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-    </div>
-
-    <div class="divider" id="etymology">
-      <div class="dl"></div><span>AIonifier Etymology &mdash; Origin of the Word</span><div class="dlr"></div>
-    </div>
-
-    <div class="bots-grid">
-      <a class="bot-card" href="<%= ctx %>/BotViewer?bot=etymology">
-        <div class="corner-glow"></div><span class="ety-tag">LEXICON</span>
-        <div class="bot-icon"><svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v13"/><path d="M4 19a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1v-1"/><line x1="8" y1="7" x2="14" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg></div>
-        <div>
-          <span class="bot-field">Linguistics &middot; Word Origin &middot; Lexicology</span>
-          <h2 class="bot-name">AIonifier &mdash; Etymology</h2>
-          <p class="bot-desc">An AI-generated exploration of the word <strong style="color:#86efac;">AIonifier</strong>, first thought of by Gacirane Patrick in 2026. Traces the morphological roots of <em>AI</em> + <em>-on-</em> + <em>-ify</em> + <em>-er</em> back to Latin, Greek, and Old French sources. Includes IPA pronunciation, word forms, and definitions. <em>Note: this word is not recognised by any official linguistic authority and is used solely on this platform.</em></p>
-          <p class="bot-scale">AI-generated etymology &rarr; For platform use only &middot; 2026</p>
-        </div>
-        <div class="bot-footer"><span class="launch-label">Read etymology</span><span class="arrow-circle"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
-      </a>
-    </div>
+      <aside class="wheel-detail" id="detailPanel" aria-live="polite">
+        <!-- filled by JS -->
+      </aside>
+    </section>
 
     <footer class="page-footer">
       <p>&copy; 2026 <a href="https://www.linkedin.com/in/patricus/" target="_blank" rel="noopener noreferrer">GACIRANE Patrick</a> &mdash; AIonifier AI Suite</p>
@@ -503,29 +369,316 @@
   </div>
 
   <script>
-    const burger = document.getElementById("burger");
-    const drawer = document.getElementById("drawer");
-    burger.addEventListener("click", () => {
-      const open = drawer.classList.toggle("open");
+    var CTX = "<%= ctx %>";
+
+    /* ---------- burger nav (unchanged behaviour) ---------- */
+    var burger = document.getElementById("burger");
+    var drawer = document.getElementById("drawer");
+    burger.addEventListener("click", function () {
+      var open = drawer.classList.toggle("open");
       burger.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", open);
     });
-    drawer.querySelectorAll("a").forEach(l => l.addEventListener("click", () => {
-      drawer.classList.remove("open");
-      burger.classList.remove("open");
-      burger.setAttribute("aria-expanded", false);
-    }));
-    const navAs = document.querySelectorAll(".nav-links a");
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          navAs.forEach(a => a.classList.remove("active"));
-          const m = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-          if (m) m.classList.add("active");
-        }
+    drawer.querySelectorAll("a").forEach(function (l) {
+      l.addEventListener("click", function () {
+        drawer.classList.remove("open");
+        burger.classList.remove("open");
+        burger.setAttribute("aria-expanded", false);
       });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    ["top","apps","impact","etymology"].forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    });
+
+    /* ---------- data: all original descriptions preserved verbatim ---------- */
+    var SECTIONS = {
+      apps:      "AI MVP Applications \u2014 Select a Specialist",
+      impact:    "Social Impact Assessments \u2014 AIonifier AI Ethics",
+      etymology: "AIonifier Etymology \u2014 Origin of the Word"
+    };
+
+    var ITEMS = [
+      { id: "coreg", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=coreg",
+        label: ["Regulatory", "Navigator AI"],
+        field: "RegTech \u00B7 Cross-Regulatory Intelligence \u00B7 Compliance Advisory",
+        name: "Regulatory Navigator AI",
+        desc: "Move confidently through multi-regulator compliance with a clear, guided path. Four specialist regulatory crews \u2014 <strong>RICA</strong>, <strong>RURA</strong>, <strong>NCSA</strong> and <strong>BNR</strong> \u2014 each answer questions within their own domain, while an <strong>orchestrator agent</strong> coordinates them and synthesises a single, well-reasoned, aggregated response. Every answer is grounded in official regulatory texts via a RAG knowledge base.",
+        scale: "Scalable \u2192 National Smart Regulation (RegTech) Platform",
+        launch: "Launch navigator" },
+      { id: "legal", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=legal",
+        label: ["Global Legal", "Advisor"],
+        field: "Legal Tech \u00B7 Compliance Automation",
+        name: "Global Legal Advisor",
+        desc: "Navigate international regulations, draft legal briefs, and get jurisdiction-aware guidance across 180+ countries via multi-agent legal reasoning.",
+        scale: "Scalable \u2192 Enterprise Legal Intelligence Platform",
+        launch: "Launch advisor" },
+      { id: "bank", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=bank",
+        label: ["Bank CRM", "Advisor"],
+        field: "Banking \u00B7 CRM \u00B7 Financial Services",
+        name: "Bank CRM Advisor",
+        desc: "Deepen client relationships, automate follow-ups, and surface actionable insights from banking CRM data \u2014 powered by a 9-agent CrewAI system.",
+        scale: "Scalable \u2192 Retail Banking Intelligence Suite",
+        launch: "Launch advisor" },
+      { id: "hiv", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=hiv",
+        label: ["HIV Guidelines", "Assistant"],
+        field: "Healthcare \u00B7 Clinical Guidelines \u00B7 HIV/AIDS",
+        name: "HIV Guidelines Assistant",
+        desc: "Retrieve verified ART regimens, PMTCT protocols, and paediatric dosing from Rwanda HIV Guidelines 2022 via RAG over RBC clinical documentation.",
+        scale: "Scalable \u2192 National Clinical Decision Support System",
+        launch: "Launch advisor" },
+      { id: "grad", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=grad",
+        label: ["Smart Grad"],
+        field: "EdTech \u00B7 Career Advisory \u00B7 Education",
+        name: "Smart Grad",
+        desc: "Agentic university scouting, financial roadmapping, visa navigation and cultural landing \u2014 built for any students pursuing global education.",
+        scale: "Scalable \u2192 Global Student Advisory Platform",
+        launch: "Launch advisor" },
+      { id: "cv", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=cv",
+        label: ["Talk to", "My CV"],
+        field: "HRTech \u00B7 Talent Intelligence \u00B7 Recruitment",
+        name: "Talk to My CV",
+        desc: "Chat directly with Patrick's CV \u2014 skills, projects, and experience all conversationally accessible via RAG-powered talent profiling.",
+        scale: "Scalable \u2192 AI-Powered Recruitment Screening Tool",
+        launch: "Start a conversation" },
+      { id: "voice", section: "apps", tag: "UPCOMING", soon: true,
+        label: ["AI Voice", "Avatar"],
+        field: "Voice AI \u00B7 Career Intelligence \u00B7 Digital Twin",
+        name: "AI Voice Avatar",
+        desc: "A voice-first chatbot powered by a cloned voice of GACIRANE Patrick \u2014 letting visitors have a natural spoken conversation about his professional career, projects, skills, and experience. Built on voice synthesis, RAG over career data, and real-time audio streaming.",
+        scale: "Scalable \u2192 AI-Powered Professional Digital Twin" },
+      { id: "funding", section: "apps", tag: "UPCOMING", soon: true,
+        label: ["Global Funding", "Scout AI"],
+        field: "FundTech \u00B7 Grant Intelligence \u00B7 International Finance",
+        name: "Global Funding Scout AI",
+        desc: "A 4-agent CrewAI system that autonomously searches international funding databases, scrapes full eligibility criteria and deadlines, verifies geographic eligibility for your target country, and generates <strong>sector-specific outreach messaging templates</strong> \u2014 delivering a compiled funding intelligence report with an interactive dashboard covering grants, investments, and sponsorships across Education, Youth, Women Empowerment, and Climate Resilience sectors.",
+        scale: "Scalable \u2192 International Development Finance Intelligence Platform" },
+      { id: "climate", section: "apps", tag: "UPCOMING", soon: true,
+        label: ["Climate Resilience", "Advisor AI"],
+        field: "ClimateTech \u00B7 Multi-Agent A2A \u00B7 Climate Science",
+        name: "Climate Resilience Advisor AI",
+        desc: "An <strong>A2A (Agent-to-Agent) protocol</strong> system where an orchestrator agent routes climate questions to three autonomous specialist agents \u2014 <strong>Agriculture &amp; Food Systems</strong>, <strong>Earth &amp; Atmospheric Sciences</strong>, and <strong>Ecology &amp; Biology</strong> \u2014 each an independent CrewAI crew with real-time web search, discoverable via published agent cards. Answers questions like drought-resilient crops for East Africa, heat impact on coffee, and flooding effects on rice production.",
+        scale: "Scalable \u2192 National Climate Adaptation Intelligence Platform" },
+      { id: "sia", section: "impact", tag: "REPORT", href: CTX + "/BotViewer?bot=sia",
+        label: ["Social Impact", "Assessment"],
+        field: "AI Ethics \u00B7 Responsible AI \u00B7 Policy",
+        name: "Social Impact Assessment",
+        desc: "A structured Social Impact Matrix evaluation of two AIonifier MVPs \u2014 <strong style=\"color:#c8d4e8;\">SmartAttorney AI</strong> and the <strong style=\"color:#c8d4e8;\">Rwanda HIV Guidelines Assistant</strong>. Each is assessed across Individual, Collective, and Societal dimensions for both <em>harms</em> and <em>benefits</em> \u2014 following the Social Impact Matrix methodology adopted across East Africa. Essential reading for investors, regulators, and implementation partners.",
+        scale: "Framework \u2192 Social Impact Matrix (Assessing Harms &amp; Amplifying Benefits)",
+        launch: "View full assessment" },
+      { id: "ethics", section: "impact", tag: "ETHICS", href: CTX + "/BotViewer?bot=ethics",
+        label: ["AIonifier", "AI Ethics"],
+        field: "AI Ethics \u00B7 Responsible AI \u00B7 Platform Principles",
+        name: "AIonifier AI Ethics",
+        desc: "The ethical framework governing every AI application on this platform. We do not collect personal data, we do not use cookies or tracking, we warn that AI can generate incorrect information, and we clearly state that this platform is not for real production use. Six principles covering privacy, transparency, human oversight, accuracy, scope, and accountability.",
+        scale: "Framework \u2192 Responsible AI &amp; Ethical Deployment Principles",
+        launch: "Read AI Ethics" },
+      { id: "etymology", section: "etymology", tag: "LEXICON", href: CTX + "/BotViewer?bot=etymology",
+        label: ["Etymology"],
+        field: "Linguistics \u00B7 Word Origin \u00B7 Lexicology",
+        name: "AIonifier \u2014 Etymology",
+        desc: "An AI-generated exploration of the word <strong style=\"color:#86efac;\">AIonifier</strong>, first thought of by Gacirane Patrick in 2026. Traces the morphological roots of <em>AI</em> + <em>-on-</em> + <em>-ify</em> + <em>-er</em> back to Latin, Greek, and Old French sources. Includes IPA pronunciation, word forms, and definitions. <em>Note: this word is not recognised by any official linguistic authority and is used solely on this platform.</em>",
+        scale: "AI-generated etymology \u2192 For platform use only \u00B7 2026",
+        launch: "Read etymology" }
+    ];
+
+    var ARCH = {
+      id: "arch", section: "hub", tag: "DOCS", href: CTX + "/BotViewer?bot=arch",
+      field: "Platform \u00B7 AI Infrastructure \u00B7 Tech Stack",
+      name: "Platform Architecture",
+      desc: "Explore multi-agent pipelines, RAG MCP servers, Java EE frontends, Heroku deployments and PostgreSQL datastores behind all six domain MVPs.",
+      scale: "Underpins \u2192 All 6 AI domain MVPs above",
+      launch: "View architecture"
+    };
+
+    /* ---------- geometry helpers (angles: degrees clockwise from 12 o'clock) ---------- */
+    var CX = 380, CY = 380;
+    var R_LABEL = 348;   /* section label arc */
+    var R_OUT   = 312;   /* wedge outer radius */
+    var R_IN    = 132;   /* wedge inner radius */
+    var R_HUB   = 110;   /* centre hub */
+    var R_TEXT  = 224;   /* wedge label radius */
+    var SVG_NS  = "http://www.w3.org/2000/svg";
+
+    function pt(aDeg, r) {
+      var a = (aDeg * Math.PI) / 180;
+      return [CX + r * Math.sin(a), CY - r * Math.cos(a)];
+    }
+    function wedgePath(a0, a1, rIn, rOut) {
+      var p1 = pt(a0, rIn), p2 = pt(a0, rOut), p3 = pt(a1, rOut), p4 = pt(a1, rIn);
+      var large = (a1 - a0) > 180 ? 1 : 0;
+      return "M" + p1[0] + " " + p1[1] +
+             " L" + p2[0] + " " + p2[1] +
+             " A" + rOut + " " + rOut + " 0 " + large + " 1 " + p3[0] + " " + p3[1] +
+             " L" + p4[0] + " " + p4[1] +
+             " A" + rIn + " " + rIn + " 0 " + large + " 0 " + p1[0] + " " + p1[1] + " Z";
+    }
+    function arcPath(a0, a1, r, reverse) {
+      var s = reverse ? pt(a1, r) : pt(a0, r);
+      var e = reverse ? pt(a0, r) : pt(a1, r);
+      var large = (a1 - a0) > 180 ? 1 : 0;
+      var sweep = reverse ? 0 : 1;
+      return "M" + s[0] + " " + s[1] + " A" + r + " " + r + " 0 " + large + " " + sweep + " " + e[0] + " " + e[1];
+    }
+    function el(name, attrs, parent) {
+      var e = document.createElementNS(SVG_NS, name);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+
+    /* ---------- build the wheel ---------- */
+    var svg = document.getElementById("wheel");
+    var STEP = 360 / ITEMS.length;           /* 12 equal wedges of 30\u00B0 */
+    var selectedId = null;
+
+    /* outer decorative rings */
+    el("circle", { cx: CX, cy: CY, r: R_OUT + 6,  "class": "section-ring" }, svg);
+    el("circle", { cx: CX, cy: CY, r: R_LABEL + 14, "class": "section-ring" }, svg);
+
+    /* section spans (contiguous items share a section) */
+    var spans = [];
+    ITEMS.forEach(function (it, i) {
+      var last = spans[spans.length - 1];
+      if (last && last.section === it.section) { last.a1 = (i + 1) * STEP; }
+      else { spans.push({ section: it.section, a0: i * STEP, a1: (i + 1) * STEP }); }
+    });
+
+    /* section arc labels + boundary lines */
+    spans.forEach(function (sp, idx) {
+      var mid = (sp.a0 + sp.a1) / 2;
+      var reverse = mid > 90 && mid < 270; /* keep text upright on the bottom half */
+      var pathId = "secArc" + idx;
+      el("path", { id: pathId, d: arcPath(sp.a0 + 2, sp.a1 - 2, R_LABEL, reverse), fill: "none" }, svg);
+      var t = el("text", { "class": "section-arc-label" }, svg);
+      var tp = el("textPath", { startOffset: "50%", "text-anchor": "middle" }, t);
+      tp.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pathId);
+      tp.setAttribute("href", "#" + pathId);
+      tp.textContent = SECTIONS[sp.section];
+      var b0 = pt(sp.a0, R_IN), b1 = pt(sp.a0, R_LABEL + 14);
+      el("line", { x1: b0[0], y1: b0[1], x2: b1[0], y2: b1[1], "class": "section-divider-line" }, svg);
+    });
+
+    /* subgroup arc: upcoming MVPs, labelled but kept inside the AI MVP Applications group */
+    var soonIdx = [];
+    ITEMS.forEach(function (it, i) { if (it.soon) soonIdx.push(i); });
+    if (soonIdx.length) {
+      var sg0 = soonIdx[0] * STEP, sg1 = (soonIdx[soonIdx.length - 1] + 1) * STEP;
+      var sgMid = (sg0 + sg1) / 2, sgRev = sgMid > 90 && sgMid < 270;
+      el("path", { d: arcPath(sg0 + 1.5, sg1 - 1.5, R_OUT + 6), "class": "subgroup-arc-line" }, svg);
+      el("path", { id: "sgArc", d: arcPath(sg0 + 2, sg1 - 2, R_OUT + 22, sgRev), fill: "none" }, svg);
+      var sgt = el("text", { "class": "subgroup-arc-label" }, svg);
+      var sgtp = el("textPath", { startOffset: "50%", "text-anchor": "middle" }, sgt);
+      sgtp.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#sgArc");
+      sgtp.setAttribute("href", "#sgArc");
+      sgtp.textContent = "Upcoming MVPs \u2014 In Development";
+    }
+
+    /* wedges + labels */
+    ITEMS.forEach(function (it, i) {
+      var a0 = i * STEP, a1 = (i + 1) * STEP, mid = (a0 + a1) / 2;
+      var w = el("path", {
+        d: wedgePath(a0 + 0.6, a1 - 0.6, R_IN, R_OUT),
+        "class": "wedge" + (it.soon ? " soon" : ""),
+        tabindex: "0", role: "button",
+        "aria-label": it.name + (it.soon ? " (coming soon)" : "")
+      }, svg);
+      w.dataset.id = it.id;
+      w.addEventListener("click", function () { select(it.id, true); });
+      w.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(it.id, true); }
+      });
+
+      var rot = mid - 90;
+      if (mid > 180 && mid < 360) rot += 180;   /* keep left-side labels readable */
+      var p = pt(mid, R_TEXT);
+      var txt = el("text", {
+        x: p[0], y: p[1], "text-anchor": "middle",
+        transform: "rotate(" + rot + " " + p[0] + " " + p[1] + ")",
+        "class": "wedge-label"
+      }, svg);
+      var lines = it.label.slice();
+      if (it.soon) lines.push("\u23F3 SOON");
+      var lh = 15, y0 = p[1] - ((lines.length - 1) * lh) / 2;
+      lines.forEach(function (ln, li) {
+        var ts = el("tspan", { x: p[0], y: y0 + li * lh }, txt);
+        if (it.soon && li === lines.length - 1) ts.setAttribute("class", "sub-soon");
+        ts.textContent = ln;
+      });
+    });
+
+    /* centre hub = Platform Architecture */
+    var hub = el("g", { "class": "hub-group", role: "button", tabindex: "0", "aria-label": "Platform Architecture" }, svg);
+    el("circle", { cx: CX, cy: CY, r: R_HUB, "class": "hub-circle" }, hub);
+    el("circle", { cx: CX, cy: CY, r: R_HUB - 10, fill: "none", stroke: "rgba(74,222,128,0.18)", "stroke-dasharray": "3 5" }, hub);
+    var ht = el("text", { x: CX, y: CY - 4, "text-anchor": "middle", "class": "hub-text" }, hub);
+    ht.textContent = "ARCHITECTURE";
+    var hs = el("text", { x: CX, y: CY + 16, "text-anchor": "middle", "class": "hub-sub" }, hub);
+    hs.textContent = "PLATFORM CORE \u00B7 DOCS";
+    hub.addEventListener("click", function () { select("arch", true); });
+    hub.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select("arch", true); }
+    });
+
+    /* ---------- detail panel ---------- */
+    var panel = document.getElementById("detailPanel");
+
+    function findItem(id) {
+      if (id === "arch") return ARCH;
+      for (var i = 0; i < ITEMS.length; i++) if (ITEMS[i].id === id) return ITEMS[i];
+      return null;
+    }
+
+    function render(it) {
+      var html = "";
+      html += "<div class=\"d-head\"><span class=\"d-section\">" +
+              (it.section === "hub" ? "Platform Core" : SECTIONS[it.section]) +
+              "</span><span class=\"d-tag\">" + it.tag + "</span></div>";
+      if (it.soon) html += "<div class=\"soon-badge\">Upcoming MVP</div>";
+      html += "<div><span class=\"bot-field\">" + it.field + "</span>";
+      html += "<h2 class=\"bot-name\">" + it.name + "</h2>";
+      html += "<p class=\"bot-desc\">" + it.desc + "</p>";
+      html += "<p class=\"bot-scale\">" + it.scale + "</p></div>";
+      html += "<div class=\"d-footer\">";
+      if (it.soon) {
+        html += "<span class=\"launch-label\" style=\"opacity:.4;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);\">Coming soon</span>";
+        html += "<span class=\"cs-eta\">&#128336;&nbsp; In Development</span>";
+      } else {
+        html += "<a class=\"d-launch\" href=\"" + it.href + "\">" + it.launch +
+                " <svg viewBox=\"0 0 24 24\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/><polyline points=\"12 5 19 12 12 19\"/></svg></a>";
+      }
+      html += "</div>";
+      panel.innerHTML = html;
+    }
+
+    function select(id, scroll) {
+      selectedId = id;
+      svg.querySelectorAll(".wedge").forEach(function (w) {
+        w.classList.toggle("selected", w.dataset.id === id);
+      });
+      hub.classList.toggle("selected", id === "arch");
+      var it = findItem(id);
+      if (it) render(it);
+      if (scroll && window.matchMedia("(max-width: 900px)").matches) {
+        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }
+
+    /* nav anchors still land on the right content: hash \u2192 first item of that section */
+    function handleHash() {
+      var h = (location.hash || "").replace("#", "");
+      if (h === "apps") select("coreg", false);
+      else if (h === "impact") select("sia", false);
+      else if (h === "etymology") select("etymology", false);
+    }
+    window.addEventListener("hashchange", handleHash);
+
+    /* nav active-state highlighting driven by selection */
+    var navAs = document.querySelectorAll(".nav-links a");
+    function markNav(hash) {
+      navAs.forEach(function (a) { a.classList.toggle("active", a.getAttribute("href") === hash); });
+    }
+    window.addEventListener("hashchange", function () { markNav(location.hash); });
+
+    /* initial state */
+    handleHash();
+    if (!selectedId) select("coreg", false);
   </script>
 </body>
 </html>
