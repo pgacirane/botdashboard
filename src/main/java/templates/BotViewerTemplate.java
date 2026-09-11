@@ -113,7 +113,8 @@ public class BotViewerTemplate implements Filter {
         String kh  = active(botKey, "hiv");
         String ka  = active(botKey, "arch");
         // ── NEW active state for Regulatory Navigator (coreg) pill ──
-        String kco = active(botKey, "coreg");
+        String kco = active(botKey, "corego");
+        //String kco = active(botKey, "coreg");
         // ── NEW active state for sia pill ──
         String ks  = active(botKey, "sia");
         String ke  = active(botKey, "ethics");
@@ -444,7 +445,7 @@ public class BotViewerTemplate implements Filter {
              // Assistants — the running AI bots
              + menuGroup("Assistants", "fa-robot",
                      anyActive(kco, kh, kl, kb, kg, kc),
-                     dropItem(ctx, "coreg", kco, "fa-compass",          "Regulatory Navigator", URL_COREG)
+                     dropItem(ctx, "corego", kco, "fa-compass",          "Regulatory Navigator(Please write to Patrick to have access)", URL_COREG)
                    + dropItem(ctx, "hiv",   kh,  "fa-heart-pulse",      "HIV Guidelines",        URL_HIV)
                    + dropItem(ctx, "legal", kl,  "fa-scale-balanced",   "Global Legal Advisor",  URL_LEGAL)
                    + dropItem(ctx, "bank",  kb,  "fa-building-columns", "Bank CRM Advisor",      URL_BANK)

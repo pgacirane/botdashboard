@@ -394,14 +394,21 @@
       etymology: "AIonifier Etymology \u2014 Origin of the Word"
     };
 
+    /* shorter fallbacks, used only when a section's arc is too narrow for the full title */
+    var SECTIONS_SHORT = {
+      apps:      "AI MVP Applications",
+      impact:    "Social Impact \u0026 Ethics",
+      etymology: "Etymology"
+    };
+
     var ITEMS = [
-      { id: "coreg", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=coreg",
+      { id: "coreg", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=corego",
         label: ["Regulatory", "Navigator AI"],
         field: "RegTech \u00B7 Cross-Regulatory Intelligence \u00B7 Compliance Advisory",
         name: "Regulatory Navigator AI",
-        desc: "Move confidently through multi-regulator compliance with a clear, guided path. Four specialist regulatory crews \u2014 <strong>RICA</strong>, <strong>RURA</strong>, <strong>NCSA</strong> and <strong>BNR</strong> \u2014 each answer questions within their own domain, while an <strong>orchestrator agent</strong> coordinates them and synthesises a single, well-reasoned, aggregated response. Every answer is grounded in official regulatory texts via a RAG knowledge base.",
+        desc: "Simplify multi-regulator compliance using a coordinated network of AI specialists",
         scale: "Scalable \u2192 National Smart Regulation (RegTech) Platform",
-        launch: "Launch navigator" },
+        launch: "Test Navigator upon request" },
       { id: "legal", section: "apps", tag: "MVP", href: CTX + "/BotViewer?bot=legal",
         label: ["Global Legal", "Advisor"],
         field: "Legal Tech \u00B7 Compliance Automation",
@@ -496,6 +503,12 @@
     var R_TEXT  = 224;   /* wedge label radius */
     var SVG_NS  = "http://www.w3.org/2000/svg";
 
+    /* Wheel start angle. The 6 implemented apps are the first 6 items and span
+       6 x 30 = 180 degrees, so starting at 270 (9 o'clock) places them across the
+       WHOLE UPPER SEMICIRCLE (270 -> 0 -> 90). Everything else falls below. */
+    var ROT = 270;
+    function norm(a) { a %= 360; return a < 0 ? a + 360 : a; }
+
     function pt(aDeg, r) {
       var a = (aDeg * Math.PI) / 180;
       return [CX + r * Math.sin(a), CY - r * Math.cos(a)];
@@ -516,6 +529,7 @@
       var sweep = reverse ? 0 : 1;
       return "M" + s[0] + " " + s[1] + " A" + r + " " + r + " 0 " + large + " " + sweep + " " + e[0] + " " + e[1];
     }
+    function arcLength(a0, a1, r) { return 2 * Math.PI * r * ((a1 - a0) / 360); }
     function el(name, attrs, parent) {
       var e = document.createElementNS(SVG_NS, name);
       for (var k in attrs) e.setAttribute(k, attrs[k]);
@@ -532,17 +546,37 @@
     el("circle", { cx: CX, cy: CY, r: R_OUT + 6,  "class": "section-ring" }, svg);
     el("circle", { cx: CX, cy: CY, r: R_LABEL + 14, "class": "section-ring" }, svg);
 
-    /* section spans (contiguous items share a section) */
+    /* section spans (contiguous items share a section), offset by ROT */
     var spans = [];
     ITEMS.forEach(function (it, i) {
+      var a0 = ROT + i * STEP, a1 = ROT + (i + 1) * STEP;
       var last = spans[spans.length - 1];
-      if (last && last.section === it.section) { last.a1 = (i + 1) * STEP; }
-      else { spans.push({ section: it.section, a0: i * STEP, a1: (i + 1) * STEP }); }
+      if (last && last.section === it.section) { last.a1 = a1; }
+      else { spans.push({ section: it.section, a0: a0, a1: a1 }); }
     });
+
+    /* arc-riding labels are auto-fitted so a narrow section never clips its text */
+    var arcLabels = [];
+    function fitArcLabels() {
+      arcLabels.forEach(function (L) {
+        var budget = L.len * 0.94;
+        var variants = (L.short && L.short !== L.full) ? [L.full, L.short] : [L.full];
+        for (var v = 0; v < variants.length; v++) {
+          L.tp.textContent = variants[v];
+          for (var fs = L.base; fs >= 7; fs -= 0.5) {
+            L.text.style.fontSize = fs + "px";
+            L.text.style.letterSpacing = (fs >= L.base - 1 ? "" : "0.10em");
+            var w = 0;
+            try { w = L.text.getComputedTextLength(); } catch (e) { return; }
+            if (w <= budget) return;
+          }
+        }
+      });
+    }
 
     /* section arc labels + boundary lines */
     spans.forEach(function (sp, idx) {
-      var mid = (sp.a0 + sp.a1) / 2;
+      var mid = norm((sp.a0 + sp.a1) / 2);
       var reverse = mid > 90 && mid < 270; /* keep text upright on the bottom half */
       var pathId = "secArc" + idx;
       el("path", { id: pathId, d: arcPath(sp.a0 + 2, sp.a1 - 2, R_LABEL, reverse), fill: "none" }, svg);
@@ -551,6 +585,8 @@
       tp.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pathId);
       tp.setAttribute("href", "#" + pathId);
       tp.textContent = SECTIONS[sp.section];
+      arcLabels.push({ text: t, tp: tp, len: arcLength(sp.a0 + 2, sp.a1 - 2, R_LABEL),
+                       full: SECTIONS[sp.section], short: SECTIONS_SHORT[sp.section], base: 12 });
       var b0 = pt(sp.a0, R_IN), b1 = pt(sp.a0, R_LABEL + 14);
       el("line", { x1: b0[0], y1: b0[1], x2: b1[0], y2: b1[1], "class": "section-divider-line" }, svg);
     });
@@ -559,8 +595,9 @@
     var soonIdx = [];
     ITEMS.forEach(function (it, i) { if (it.soon) soonIdx.push(i); });
     if (soonIdx.length) {
-      var sg0 = soonIdx[0] * STEP, sg1 = (soonIdx[soonIdx.length - 1] + 1) * STEP;
-      var sgMid = (sg0 + sg1) / 2, sgRev = sgMid > 90 && sgMid < 270;
+      var sg0 = ROT + soonIdx[0] * STEP;
+      var sg1 = ROT + (soonIdx[soonIdx.length - 1] + 1) * STEP;
+      var sgRev = (function () { var m = norm((sg0 + sg1) / 2); return m > 90 && m < 270; })();
       el("path", { d: arcPath(sg0 + 1.5, sg1 - 1.5, R_OUT + 6), "class": "subgroup-arc-line" }, svg);
       el("path", { id: "sgArc", d: arcPath(sg0 + 2, sg1 - 2, R_OUT + 22, sgRev), fill: "none" }, svg);
       var sgt = el("text", { "class": "subgroup-arc-label" }, svg);
@@ -568,11 +605,14 @@
       sgtp.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#sgArc");
       sgtp.setAttribute("href", "#sgArc");
       sgtp.textContent = "Upcoming MVPs \u2014 In Development";
+      arcLabels.push({ text: sgt, tp: sgtp, len: arcLength(sg0 + 2, sg1 - 2, R_OUT + 22),
+                       full: "Upcoming MVPs \u2014 In Development", short: "Upcoming MVPs", base: 10.5 });
     }
 
     /* wedges + labels */
     ITEMS.forEach(function (it, i) {
-      var a0 = i * STEP, a1 = (i + 1) * STEP, mid = (a0 + a1) / 2;
+      var a0 = ROT + i * STEP, a1 = ROT + (i + 1) * STEP;
+      var midN = norm((a0 + a1) / 2);
       var w = el("path", {
         d: wedgePath(a0 + 0.6, a1 - 0.6, R_IN, R_OUT),
         "class": "wedge" + (it.soon ? " soon" : ""),
@@ -585,9 +625,9 @@
         if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(it.id, true); }
       });
 
-      var rot = mid - 90;
-      if (mid > 180 && mid < 360) rot += 180;   /* keep left-side labels readable */
-      var p = pt(mid, R_TEXT);
+      var rot = midN - 90;
+      if (midN > 180 && midN < 360) rot += 180;   /* keep left-side labels readable */
+      var p = pt(midN, R_TEXT);
       var txt = el("text", {
         x: p[0], y: p[1], "text-anchor": "middle",
         transform: "rotate(" + rot + " " + p[0] + " " + p[1] + ")",
@@ -679,6 +719,8 @@
     /* initial state */
     handleHash();
     if (!selectedId) select("coreg", false);
+    fitArcLabels();
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitArcLabels); }
   </script>
 </body>
 </html>
