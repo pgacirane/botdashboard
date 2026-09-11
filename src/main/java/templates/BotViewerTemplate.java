@@ -150,7 +150,7 @@ public class BotViewerTemplate implements Filter {
              + "      <span style=\"font-size:0.88rem;\">No assistant selected.</span>\n"
              + "      <a href=\"" + ctx + "/chat\""
              + " style=\"font-size:0.8rem;color:" + C_GREEN + ";text-decoration:none;"
-             + "border-bottom:1px solid rgba(74,222,128,0.3);\">&#8592; Back to AI Suite</a>\n"
+             + "border-bottom:1px solid rgba(74,222,128,0.3);\">&#8592; Please write to pattos1900@gmail.com to have access to bots</a>\n"
              + "    </div>\n";
     }
 
